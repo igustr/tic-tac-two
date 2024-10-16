@@ -29,12 +29,6 @@ public class TicTacTwoBrain
         get => GetBoard();
         private set => _gameBoard = value;
     }
-    
-    public EGamePiece[,] Grid
-    {
-        get => GetGrid();
-        private set => _grid = value;
-    }
 
     public int DimX => _gameBoard.GetLength(0);
     public int DimY => _gameBoard.GetLength(1);
@@ -51,22 +45,29 @@ public class TicTacTwoBrain
                 copyOfBoard[x, y] = _gameBoard[x, y];
             }
         }
-
         return copyOfBoard;
     }
-
+    
     private EGamePiece[,] GetGrid()
     {
-        var copyOfGrid = new EGamePiece[_grid.GetLength(0), _grid.GetLength(1)];
-        for (var x = 0; x < _grid.GetLength(0); x++)
+        List<int> gridXCoordinatesList = [..GridXCoordinates];
+        List<int> gridYCoordinatesList = [..GridYCoordinates];
+        gridXCoordinatesList.Sort();
+        gridYCoordinatesList.Sort();
+        
+        var board = GetBoard();
+        var grid = new EGamePiece[GridXCoordinates.Count, GridYCoordinates.Count];
+        for (var y = 0; y < GridYCoordinates.Count; y++)
         {
-            for (var y = 0; y < _grid.GetLength(1); y++)
+            for (var x = 0; x < GridXCoordinates.Count; x++)
             {
-                copyOfGrid[x, y] = _grid[x, y];
+                Console.WriteLine(gridXCoordinatesList[x] + " " + gridYCoordinatesList[y] + " "
+                                  + board[gridXCoordinatesList[x] - 1, gridYCoordinatesList[y] - 1] 
+                                  + " y: " + y + " x: " + x);
+                grid[x, y] = board[gridXCoordinatesList[x] - 1, gridYCoordinatesList[y] - 1];
             }
         }
-        
-        return copyOfGrid;
+        return grid;
     }
     
     public bool MakeAMove(int x, int y)
@@ -98,9 +99,11 @@ public class TicTacTwoBrain
         GridYCoordinates.Add(_gridY);
         GridXCoordinates.Add(_gridX);
         
+        /*
         Console.WriteLine("Grid start X: " + _gridX);
         Console.WriteLine("Grid start Y: " + _gridY);
         Console.WriteLine();
+        */
         
         for (int i = 0; i < GridY - 2; i++)
         {
@@ -112,16 +115,22 @@ public class TicTacTwoBrain
             GridXCoordinates.Add(_gridX + (i - 1));
         }
         
+
         Console.WriteLine("grid x coords: " + string.Join(", ", GridXCoordinates));
         Console.WriteLine("grid y coords: " + string.Join(", ", GridYCoordinates));
         Console.WriteLine("------------------------------------------------------");
         Console.WriteLine();
 
+
         MoveGridCheck();
     }
 
     public void MoveGrid()
-    {        
+    {
+        var board = GetBoard();
+        Console.WriteLine("Here:" + board[0,0]);
+        
+        Console.WriteLine("-------------------------------");
         Console.WriteLine("Choose grid movement direction:");
         Console.WriteLine("Use one of the following directions: ");
         Console.WriteLine("'U' for Up, 'D' for Down, 'L' for Left, 'R' for Right.");
@@ -136,18 +145,22 @@ public class TicTacTwoBrain
             case "U":
                 Console.WriteLine("Moving grid Up.");
                 _gridYMove -= 1;
+                _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
                 break;
             case "D":
                 Console.WriteLine("Moving grid Down.");
                 _gridYMove += 1;
+                _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
                 break;
             case "L":
                 Console.WriteLine("Moving grid Left.");
                 _gridXMove -= 1;
+                _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
                 break;
             case "R":
                 Console.WriteLine("Moving grid Right.");
                 _gridXMove += 1;
+                _nextMoveBy = _nextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
                 break;
             default:
                 Console.WriteLine("Invalid direction. Please choose 'U', 'D', 'L', or 'R'.");
@@ -157,7 +170,6 @@ public class TicTacTwoBrain
 
     private void MoveGridCheck()
     {
-        Console.WriteLine("1) Grid Y move: " + _gridYMove + " Grid X Move: " + _gridXMove);
         if (GridXCoordinates.Max() > DimX || GridYCoordinates.Max() > DimY
                                           || GridXCoordinates.Min() <= 0 || GridYCoordinates.Min() <= 0)
         {
@@ -167,11 +179,18 @@ public class TicTacTwoBrain
             _gridYMove = _previousGridYMove;
             _gridXMove = _previousGridXMove;
             
-            Console.WriteLine("2) Grid Y move: " + _gridYMove + " Grid X Move: " + _gridXMove);
-            
             MoveGrid();
             GridPlacement();
         }
+    }
+
+    public bool CheckWin()
+    {
+        var grid = GetGrid();
+        Console.WriteLine("HERE GRID AHAHAHAH 0,0: " + grid[0, 0]);
+        Console.WriteLine("HERE GRID AHAHAHAH: 1,1: " + grid[1, 1]);
+        Console.WriteLine("HERE GRID AHAHAHAH: 2,2: " + grid[2, 2]);
+        return false;
     }
 
     public void ResetGame()

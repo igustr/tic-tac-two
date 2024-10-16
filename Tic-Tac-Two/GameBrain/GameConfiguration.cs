@@ -2,9 +2,7 @@
 
 public record struct GameConfiguration()
 {
-   
     public string Name { get; set; } = default!;
-    
     public int BoardSizeWidth { get; set; } = 5;
     public int BoardSizeHeight { get; set; } = 5;
 
@@ -12,7 +10,7 @@ public record struct GameConfiguration()
     public int WinCondition { get; set; } = 3;
 
     // 0 disabled
-    public int MovePieceAfterNMoves { get; set; } = 0;
+    public int MovePieceAfterNMoves { get; set; } = 4;
     public int AmountOfPieces { get; set; } = 4;
     public int GridSizeHeight { get; set; } = 3;
     public int GridSizeWidth { get; set; } = 3;
@@ -31,15 +29,17 @@ public record struct GameConfiguration()
             BoardSizeHeight = _size; 
             BoardSizeWidth = _size;
             
-            Console.WriteLine("Amount of Pieces: ");
-            AmountOfPieces = int.Parse(Console.ReadLine());
-            
             Console.WriteLine("Grid Size: ");
             _gridSize = int.Parse(Console.ReadLine());
             GridSizeHeight = _gridSize;
             GridSizeWidth = _gridSize;
             
-            Console.WriteLine("Amount of Pieces to Win (Should be more or equal to amount of pieces): ");
+            Console.WriteLine("Amount of Pieces: ");
+            AmountOfPieces = int.Parse(Console.ReadLine());
+            MovePieceAfterNMoves = AmountOfPieces;
+            
+            Console.WriteLine("Amount of Pieces to Win: ");
+            // if wrong input write: ""Amount of Pieces to Win (Should be less or equal to amount of pieces): ""
             WinCondition = int.Parse(Console.ReadLine());
         }
     }

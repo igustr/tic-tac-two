@@ -8,7 +8,7 @@ namespace ConsoleApp;
 public static class GameController
 {
     private static readonly ConfigRepository ConfigRepository = new ConfigRepository();
-    private static string _direction;
+    private static bool _invalidInput = false;
     
     public static string MainLoop()
     {
@@ -36,17 +36,24 @@ public static class GameController
         // draw the board again
         // ask input again, validate input
         // is game over?
-
-        //TODO Wrong input implementation
         
         do
         {
+            Console.WriteLine();
             Visualizer.DrawGame(gameInstance);
+            gameInstance.CheckWin();
+            if (_invalidInput)
+            {
+                Console.WriteLine();
+                Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
+            }
             Console.WriteLine();
             Console.WriteLine("Press G to move grid: ");
             Console.WriteLine("Insert coordinates <x,y>: ");
             Console.Write("> ");
             var input = Console.ReadLine()!;
+            _invalidInput = false;
+            
             if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
             {
                 gameInstance.MoveGrid();
@@ -54,13 +61,24 @@ public static class GameController
             else
             {
                 var inputSplit = input.Split(",");
-                var inputX = int.Parse(inputSplit[0]);
-                var inputY = int.Parse(inputSplit[1]);
-                gameInstance.MakeAMove(inputX - 1, inputY - 1);
+
+                if (inputSplit.Length != 2)
+                {
+                    _invalidInput = true;
+                    continue; 
+                }
+                
+                if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
+                {
+                    gameInstance.MakeAMove(inputX - 1, inputY - 1); ;
+                }
+                else
+                {
+                    _invalidInput = true;
+                }
             }
         } while (true);
     }
-    
 
     private static string ChooseConfiguration()
     {
