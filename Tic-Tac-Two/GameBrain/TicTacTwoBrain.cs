@@ -61,9 +61,11 @@ public class TicTacTwoBrain
         {
             for (var x = 0; x < GridXCoordinates.Count; x++)
             {
+                /*
                 Console.WriteLine(gridXCoordinatesList[x] + " " + gridYCoordinatesList[y] + " "
                                   + board[gridXCoordinatesList[x] - 1, gridYCoordinatesList[y] - 1] 
                                   + " y: " + y + " x: " + x);
+                                  */
                 grid[x, y] = board[gridXCoordinatesList[x] - 1, gridYCoordinatesList[y] - 1];
             }
         }
@@ -186,11 +188,54 @@ public class TicTacTwoBrain
 
     public bool CheckWin()
     {
-        var grid = GetGrid();
-        Console.WriteLine("HERE GRID AHAHAHAH 0,0: " + grid[0, 0]);
-        Console.WriteLine("HERE GRID AHAHAHAH: 1,1: " + grid[1, 1]);
-        Console.WriteLine("HERE GRID AHAHAHAH: 2,2: " + grid[2, 2]);
+        var winCondition = _gameConfiguration.WinCondition;
+        var gridSize = GridXCoordinates.Count;
+
+        for (var i = 0; i < gridSize; i++)
+        {
+            for (var j = 0; j <= gridSize - winCondition; j++)
+            {
+                // horizontal
+                if (j <= gridSize - winCondition && CheckLine(i, j, 0, 1))
+                    return true;
+
+                // vertical
+                if (i <= gridSize - winCondition && CheckLine(i, j, 1, 0))
+                    return true;
+
+                // diagonal left to right
+                if (i <= gridSize - winCondition && j <= gridSize - winCondition && CheckLine(i, j, 1, 1))
+                    return true;
+
+                // diagonal right to left
+                if (i <= gridSize - winCondition && j >= winCondition - 1 && CheckLine(i, j, 1, -1))
+                    return true;
+            }
+        }
+
         return false;
+    }
+    
+    private bool CheckLine(int startX, int startY, int stepX, int stepY)
+    {
+        var grid = GetGrid();
+        /*
+        Console.WriteLine("HERE GRID AHAHAHAH 0,0: " + grid[0, 0]);
+        Console.WriteLine("HERE GRID AHAHAHAH: 0,1: " + grid[0, 1]);
+        Console.WriteLine("HERE GRID AHAHAHAH: 2,2: " + grid[2, 2]);
+        */
+        var winCondition = _gameConfiguration.WinCondition;
+        var startSymbol = grid[startX, startY];
+        
+        if (startSymbol == EGamePiece.Empty) return false;
+
+        for (var i = 1; i < winCondition; i++)
+        {
+            if (grid[startX + i * stepX, startY + i * stepY] != startSymbol)
+                return false;
+        }
+
+        return true;
     }
 
     public void ResetGame()

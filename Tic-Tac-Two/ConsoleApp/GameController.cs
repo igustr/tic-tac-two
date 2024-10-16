@@ -42,6 +42,7 @@ public static class GameController
             Console.WriteLine();
             Visualizer.DrawGame(gameInstance);
             gameInstance.CheckWin();
+            Console.WriteLine("Win? : " + gameInstance.CheckWin());
             if (_invalidInput)
             {
                 Console.WriteLine();
