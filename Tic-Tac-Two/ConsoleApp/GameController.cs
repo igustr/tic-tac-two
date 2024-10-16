@@ -1,4 +1,5 @@
-﻿using ConsoleUI;
+﻿using System.Globalization;
+using ConsoleUI;
 using DAL;
 using GameBrain;
 using MenuSystem;
@@ -41,6 +42,13 @@ public static class GameController
         {
             Console.WriteLine();
             Visualizer.DrawGame(gameInstance);
+            if (gameInstance.CheckWin())
+            {
+                //Todo return to menu where you can choose to continue or return
+                return "Winner is X";
+                // Implement start new game button
+            }
+
             gameInstance.CheckWin();
             Console.WriteLine("Win? : " + gameInstance.CheckWin());
             if (_invalidInput)
