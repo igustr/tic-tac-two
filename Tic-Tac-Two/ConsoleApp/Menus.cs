@@ -38,16 +38,16 @@ public static class Menus
         "TIC-TAC-TOE", [
             new MenuItem()
             {
-                Shortcut = "O",
-                Title = "Options",
-                MenuItemAction = OptionsMenu.Run
-            },
-            new MenuItem()
-            {
                 Shortcut = "N",
                 Title = "New game",
                 MenuItemAction = GameController.MainLoop
-            }
+            },
+            new MenuItem()
+            {
+            Shortcut = "O",
+            Title = "Options",
+            MenuItemAction = OptionsMenu.Run
+            },
         ]);
 
     private static string DummyMethod()

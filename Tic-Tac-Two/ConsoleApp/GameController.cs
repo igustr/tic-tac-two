@@ -8,7 +8,7 @@ namespace ConsoleApp;
 
 public static class GameController
 {
-    private static readonly ConfigRepository ConfigRepository = new ConfigRepository();
+    private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
     private static bool _invalidInput = false;
     
     public static string MainLoop()
@@ -57,8 +57,9 @@ public static class GameController
                 Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
             }
             Console.WriteLine();
-            Console.WriteLine("Press G to move grid: ");
-            Console.WriteLine("Insert coordinates <x,y>: ");
+            Console.WriteLine("1) Insert G to move grid: ");
+            Console.WriteLine("2) Insert coordinates <x,y>: ");
+            Console.WriteLine("3) Insert save to save game: ");
             Console.Write("> ");
             var input = Console.ReadLine()!;
             _invalidInput = false;
@@ -66,6 +67,9 @@ public static class GameController
             if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
             {
                 gameInstance.MoveGrid();
+            } else if (input.Equals("save", StringComparison.CurrentCultureIgnoreCase))
+            {
+                
             }
             else
             {
