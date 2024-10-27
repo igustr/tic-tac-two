@@ -41,7 +41,7 @@ public static class Visualizer
             Console.Write(y + 1);
             for (var x = 0; x < gameInstance.DimX; x++)
             {
-                Console.Write(" " + DrawGamePiece(gameInstance.GameBoard[x, y]) + " ");
+                Console.Write(" " + DrawGamePiece(gameInstance.GameBoard[x][y]) + " ");
                 if (x == gameInstance.DimX - 1) continue;
                 if (GridXCoordinates.Contains(x + 1) 
                     && GridYCoordinates.Contains(y + 1)

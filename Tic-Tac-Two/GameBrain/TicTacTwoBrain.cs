@@ -56,23 +56,20 @@ public class TicTacTwoBrain
     
     private EGamePiece[][] GetGrid()
     {
-        List<int> gridXCoordinatesList = [..GridXCoordinates];
-        List<int> gridYCoordinatesList = [..GridYCoordinates];
+        List<int> gridXCoordinatesList = GridXCoordinates.ToList();
+        List<int> gridYCoordinatesList = GridYCoordinates.ToList();
         gridXCoordinatesList.Sort();
         gridYCoordinatesList.Sort();
         
         var board = GetBoard();
-        var grid = new EGamePiece[GridXCoordinates.Count, GridYCoordinates.Count];
+        var grid = new EGamePiece[GridYCoordinates.Count][];
+    
         for (var y = 0; y < GridYCoordinates.Count; y++)
         {
+            grid[y] = new EGamePiece[GridXCoordinates.Count];
             for (var x = 0; x < GridXCoordinates.Count; x++)
             {
-                /*
-                Console.WriteLine(gridXCoordinatesList[x] + " " + gridYCoordinatesList[y] + " "
-                                  + board[gridXCoordinatesList[x] - 1, gridYCoordinatesList[y] - 1] 
-                                  + " y: " + y + " x: " + x);
-                                  */
-                grid[x, y] = board[gridXCoordinatesList[x] - 1, gridYCoordinatesList[y] - 1];
+                grid[y][x] = board[gridXCoordinatesList[x] - 1][gridYCoordinatesList[y] - 1];
             }
         }
         return grid;
@@ -232,13 +229,13 @@ public class TicTacTwoBrain
         Console.WriteLine("HERE GRID AHAHAHAH: 2,2: " + grid[2, 2]);
         */
         var winCondition = _gameState.GameConfiguration.WinCondition;
-        var startSymbol = grid[startX, startY];
+        var startSymbol = grid[startX][startY];
         
         if (startSymbol == EGamePiece.Empty) return false;
 
         for (var i = 1; i < winCondition; i++)
         {
-            if (grid[startX + i * stepX, startY + i * stepY] != startSymbol)
+            if (grid[startX + i * stepX][startY + i * stepY] != startSymbol)
                 return false;
         }
 
