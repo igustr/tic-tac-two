@@ -4,19 +4,17 @@ namespace DAL;
 
 public class ConfigRepositoryJson : IConfigRepository
 {
-    private readonly string _basePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-        "Tic-Tac-Two"
-    ) + Path.DirectorySeparatorChar;
-    
+    private const string Filter = "*";
+
     public List<string> GetConfigurationNames()
     {
-        Console.WriteLine("PATH: " + _basePath);
+        //Console.WriteLine("PATH: " + FileHandler.BasePath);
         
         _checkAndCreatInitialConfig();
 
         var res = new List<string>();
-        foreach (var fullFileName in System.IO.Directory.GetFiles(_basePath, "*.config.json"))
+        foreach (var fullFileName in System.IO.Directory.GetFiles(
+                     FileHandler.BasePath, Filter + FileHandler.ConfigExtension))
         {
             var filenameParts = System.IO.Path.GetFileNameWithoutExtension(fullFileName);
             var primaryName = System.IO.Path.GetFileNameWithoutExtension(filenameParts);
@@ -27,7 +25,8 @@ public class ConfigRepositoryJson : IConfigRepository
 
     public GameConfiguration GetConfigurationByName(string name)
     {
-        var configJsonStr = System.IO.File.ReadAllText(_basePath + name + ".config.json");
+        var configJsonStr = System.IO.File.ReadAllText(
+            FileHandler.BasePath + name + FileHandler.ConfigExtension);
         var config = System.Text.Json.JsonSerializer.Deserialize<GameConfiguration>(configJsonStr);
         return config;
 
@@ -35,11 +34,14 @@ public class ConfigRepositoryJson : IConfigRepository
 
     private void _checkAndCreatInitialConfig()
     {
-        if (!System.IO.Directory.Exists(_basePath))
+        if (!System.IO.Directory.Exists(FileHandler.BasePath))
         {
-            System.IO.Directory.CreateDirectory(_basePath);
+            System.IO.Directory.CreateDirectory(FileHandler.BasePath);
         }
-        var data = System.IO.Directory.GetFiles(_basePath, "*.config.json").ToList();
+        
+        var data = System.IO.Directory.GetFiles(
+            FileHandler.BasePath, Filter + FileHandler.ConfigExtension).ToList();
+        
         if (data.Count == 0)
         {
             var hardcodedRepo = new ConfigRepositoryHardcoded();
@@ -50,7 +52,7 @@ public class ConfigRepositoryJson : IConfigRepository
                 var optionJsonStr = System.Text.Json.JsonSerializer.Serialize(gameOption);
                 Console.WriteLine("HERE" + optionJsonStr);
                 System.IO.File.WriteAllText(
-                    Path.Combine(_basePath, gameOption.Name + ".config.json"), 
+                    Path.Combine(FileHandler.BasePath, gameOption.Name + FileHandler.ConfigExtension), 
                     optionJsonStr
                 );
 

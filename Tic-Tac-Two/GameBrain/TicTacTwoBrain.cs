@@ -3,44 +3,58 @@
 public class TicTacTwoBrain
 {
     
-    public static HashSet<int> GridXCoordinates = [];
-    public static HashSet<int> GridYCoordinates = [];
+    public static HashSet<int> GridXCoordinates = new();
+    public static HashSet<int> GridYCoordinates = new();
     private readonly GameState _gameState;
+    private int _gridX;
+    private int _gridY;
     
     public TicTacTwoBrain(GameConfiguration gameConfiguration)
     {
-        _gameState = new GameState(gameConfiguration, 
-            new EGamePiece[gameConfiguration.BoardSizeWidth, gameConfiguration.BoardSizeHeight],
-                new EGamePiece[gameConfiguration.GridSizeWidth, gameConfiguration.GridSizeHeight]
-            );
-    }
-    
-    public EGamePiece[,] GameBoard
-    {
-        get => GetBoard();
-        private set => _gameState.GameBoard = value;
-    }
-
-    public int DimX => _gameState.GameBoard.GetLength(0);
-    public int DimY => _gameState.GameBoard.GetLength(1);
-    public int GridX => _gameState.Grid.GetLength(0);
-    public int GridY => _gameState.Grid.GetLength(1);
-    
-    private EGamePiece[,] GetBoard()
-    {
-        var copyOfBoard = new EGamePiece[_gameState.GameBoard.GetLength(0), 
-            _gameState.GameBoard.GetLength(1)];
-        for (var x = 0; x < _gameState.GameBoard.GetLength(0); x++)
+        
+        var gameBoard = new EGamePiece[gameConfiguration.BoardSizeWidth][];
+        for (var x = 0; x < gameBoard.Length; x++)
         {
-            for (var y = 0; y < _gameState.GameBoard.GetLength(1); y++)
+            gameBoard[x] = new EGamePiece[gameConfiguration.BoardSizeHeight];
+        }
+        
+        var grid = new EGamePiece[gameConfiguration.GridSizeWidth][];
+        for (var x = 0; x < grid.Length; x++)
+        {
+            grid[x] = new EGamePiece[gameConfiguration.GridSizeHeight];
+        }
+
+        _gameState = new GameState(
+            gameConfiguration,
+            gameBoard,
+            grid
+        );
+    }
+    
+    public string GetGameStateJson() => _gameState.ToString();
+    public string GetGameConfigName() => _gameState.GameConfiguration.Name;
+    public EGamePiece[][] GameBoard => GetBoard();
+    public int DimX => _gameState.GameBoard.Length;
+    public int DimY => _gameState.GameBoard[0].Length;
+    public int GridX => _gameState.Grid.Length;
+    public int GridY => _gameState.Grid[0].Length;
+    
+    private EGamePiece[][] GetBoard()
+    {
+        var copyOfBoard = new EGamePiece[_gameState.GameBoard.GetLength(0)][];
+            //, _gameState.GameBoard.GetLength(1)];
+        for (var x = 0; x < _gameState.GameBoard.Length; x++)
+        {
+            copyOfBoard[x] = new EGamePiece[_gameState.GameBoard[x].Length];
+            for (var y = 0; y < _gameState.GameBoard[x].Length; y++)
             {
-                copyOfBoard[x, y] = _gameState.GameBoard[x, y];
+                copyOfBoard[x][y] = _gameState.GameBoard[x][y];
             }
         }
         return copyOfBoard;
     }
     
-    private EGamePiece[,] GetGrid()
+    private EGamePiece[][] GetGrid()
     {
         List<int> gridXCoordinatesList = [..GridXCoordinates];
         List<int> gridYCoordinatesList = [..GridYCoordinates];
@@ -66,12 +80,12 @@ public class TicTacTwoBrain
     
     public bool MakeAMove(int x, int y)
     {
-        if (GameBoard[x, y] != EGamePiece.Empty)
+        if (_gameState.GameBoard[x][y] != EGamePiece.Empty)
         {
             return false;
         }
 
-        GameBoard[x, y] = _gameState.NextMoveBy;
+        _gameState.GameBoard[x][y] = _gameState.NextMoveBy;
         
         // flip the next piece
         _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
@@ -84,14 +98,14 @@ public class TicTacTwoBrain
         GridXCoordinates.Clear();
         GridYCoordinates.Clear();
         
-        _gameState._gridX = (DimX % 2 == 0) ? DimX / 2 : DimX / 2 + 1;
-        _gameState._gridY = (DimY % 2 == 0) ? DimY / 2 : DimY / 2 + 1;
+        _gridX = (DimX % 2 == 0) ? DimX / 2 : DimX / 2 + 1;
+        _gridY = (DimY % 2 == 0) ? DimY / 2 : DimY / 2 + 1;
         
-        _gameState._gridX += _gameState._gridXMove;
-        _gameState._gridY += _gameState._gridYMove;
+        _gridX += _gameState._gridXMove;
+        _gridY += _gameState._gridYMove;
         
-        GridYCoordinates.Add(_gameState._gridY);
-        GridXCoordinates.Add(_gameState._gridX);
+        GridYCoordinates.Add(_gridY);
+        GridXCoordinates.Add(_gridX);
         
         /*
         Console.WriteLine("Grid start X: " + _gridX);
@@ -101,12 +115,12 @@ public class TicTacTwoBrain
         
         for (int i = 0; i < GridY - 2; i++)
         {
-            GridYCoordinates.Add(_gameState._gridY + (i + 1));
-            GridYCoordinates.Add(_gameState._gridY + (i - 1));
+            GridYCoordinates.Add(_gridY + (i + 1));
+            GridYCoordinates.Add(_gridY + (i - 1));
         }
         for (int i = 0; i < GridX - 2; i++) {
-            GridXCoordinates.Add(_gameState._gridX + (i + 1));
-            GridXCoordinates.Add(_gameState._gridX + (i - 1));
+            GridXCoordinates.Add(_gridX + (i + 1));
+            GridXCoordinates.Add(_gridX + (i - 1));
         }
         
 
@@ -122,7 +136,7 @@ public class TicTacTwoBrain
     public void MoveGrid()
     {
         var board = GetBoard();
-        Console.WriteLine("Here:" + board[0,0]);
+       // Console.WriteLine("Here:" + board[0,0]);
         
         Console.WriteLine("-------------------------------");
         Console.WriteLine("Choose grid movement direction:");
@@ -233,7 +247,20 @@ public class TicTacTwoBrain
 
     public void ResetGame()
     {
-        GameBoard = new EGamePiece[GameBoard.GetLength(0), GameBoard.GetLength(1)];
+        var gameBoard = new EGamePiece[_gameState.GameConfiguration.BoardSizeWidth][];
+        for (var x = 0; x < gameBoard.Length; x++)
+        {
+            gameBoard[x] = new EGamePiece[_gameState.GameConfiguration.BoardSizeHeight];
+        }
+        
+        var grid = new EGamePiece[_gameState.GameConfiguration.GridSizeWidth][];
+        for (var x = 0; x < grid.Length; x++)
+        {
+            grid[x] = new EGamePiece[_gameState.GameConfiguration.GridSizeHeight];
+        }
+
+        _gameState.GameBoard = gameBoard;
+        _gameState.Grid = grid;
         _gameState.NextMoveBy = EGamePiece.X;
     }
 

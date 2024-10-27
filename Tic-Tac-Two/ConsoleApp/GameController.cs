@@ -9,7 +9,9 @@ namespace ConsoleApp;
 public static class GameController
 {
     private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
+    private static readonly IGameRepository GameRepository = new GameRepositoryJson();
     private static bool _invalidInput = false;
+    
     
     public static string MainLoop()
     {
@@ -69,7 +71,7 @@ public static class GameController
                 gameInstance.MoveGrid();
             } else if (input.Equals("save", StringComparison.CurrentCultureIgnoreCase))
             {
-                
+                GameRepository.SaveGame(gameInstance.GetGameStateJson(), gameInstance.GetGameConfigName());
             }
             else
             {

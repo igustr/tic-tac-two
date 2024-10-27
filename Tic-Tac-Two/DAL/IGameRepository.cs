@@ -1,4 +1,6 @@
-﻿namespace DAL;
+﻿using GameBrain;
+
+namespace DAL;
 
 public interface IGameRepository
 {
