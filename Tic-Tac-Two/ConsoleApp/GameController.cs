@@ -46,7 +46,8 @@ public static class GameController
         {
             //Console.Clear();
             Console.WriteLine();
-            Visualizer.DrawGame(gameInstance);
+            Visualizer.DrawGame(gameInstance); 
+            Console.WriteLine(InputCheck());
             if (gameInstance.CheckWin())
             {
                 //Todo return to menu where you can choose to continue or return
@@ -97,7 +98,6 @@ public static class GameController
                 }
             }
             
-            Console.WriteLine(InputCheck());
             
         } while (true);
     }
@@ -141,11 +141,15 @@ public static class GameController
             GameOptionsMenu(gameInstance);
         } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
         {
+            bool moveSuccessful;
             do
             {
-                gameInstance.MovePiece();
-            } while (gameInstance.MovePiece() == false);
-
+                moveSuccessful = gameInstance.MovePiece();
+            } while (!moveSuccessful);
+            Console.WriteLine("Type <x,y> - Insert new coordinates");
+            Console.Write("> ");
+            var newInput = Console.ReadLine()!;
+            InsertCoordinates(gameInstance, newInput);
         }
         else
         {
@@ -173,10 +177,15 @@ public static class GameController
             GameOptionsMenu(gameInstance);
         } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
         {
+            bool moveSuccessful;
             do
             {
-                gameInstance.MovePiece();
-            } while (gameInstance.MovePiece() == false);
+                moveSuccessful = gameInstance.MovePiece();
+            } while (!moveSuccessful);
+            Console.WriteLine("Type <x,y> - Insert new coordinates");
+            Console.Write("> ");
+            var newInput = Console.ReadLine()!;
+            InsertCoordinates(gameInstance, newInput);
         }
     }
     

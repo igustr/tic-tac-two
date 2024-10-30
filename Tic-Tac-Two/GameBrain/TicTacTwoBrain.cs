@@ -115,39 +115,17 @@ public class TicTacTwoBrain
             Console.WriteLine("\u001b[31mInvalid coordinates format. Please use <x,y> format.\u001b[0m");
             return false;
         }
-
+        
+        Console.WriteLine("GameBoard: " + _gameState.GameBoard[x - 1][y - 1]);
+       // Console.WriteLine(x + " " +  y);
+        
         // Validate that the chosen piece belongs to the current player and is not empty
-        if (_gameState.GameBoard[x][y] == _gameState.NextMoveBy)
+        if (_gameState.GameBoard[x - 1][y - 1] == _gameState.NextMoveBy)
         {
             // Mark the original location as empty
-            _gameState.GameBoard[x][y] = EGamePiece.Empty;
-            Console.WriteLine("Type <x,y> - Insert new coordinates");
-            Console.Write("> ");
-        
-            var newInput = Console.ReadLine()!;
-            var newInputSplit = newInput.Split(",");
-
-            if (newInputSplit.Length != 2 || 
-                !int.TryParse(newInputSplit[0], out var newX) || 
-                !int.TryParse(newInputSplit[1], out var newY))
-            {
-                Console.WriteLine("\u001b[31mInvalid coordinates format for new location.\u001b[0m");
-                return false;
-            }
-
-            if (_gameState.GameBoard[newX][newY] == EGamePiece.Empty)
-            {
-                // Move the piece to the new coordinates
-                _gameState.GameBoard[newX][newY] = _gameState.NextMoveBy;
-                Console.WriteLine("Piece moved successfully.");
-                _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("\u001b[31mThe new location is not empty. Choose an empty cell.\u001b[0m");
-                return false;
-            }
+            _gameState.GameBoard[x - 1][y - 1] = EGamePiece.Empty;
+            Console.WriteLine("GameBoard 2: " + _gameState.GameBoard[x - 1][y - 1]);
+            return true;
         }
         else
         {
@@ -155,9 +133,6 @@ public class TicTacTwoBrain
             return false;
         }
     }
-
-    
-    
     
     public void GridPlacement()
     {
