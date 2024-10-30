@@ -101,29 +101,61 @@ public class TicTacTwoBrain
         return true;
     }
 
-    public void MovePiece()
+    public bool MovePiece()
     {
         Console.WriteLine("Type <x,y> - Insert Piece coordinates");
         Console.Write("> ");
         var input = Console.ReadLine()!;
         var inputSplit = input.Split(",");
-        
-        if (int.TryParse(inputSplit[0], out var x) 
-            && int.TryParse(inputSplit[1], out var y) 
-            && _gameState.GameBoard[x][y] != EGamePiece.Empty && _gameState.GameBoard[x][y] == _gameState.NextMoveBy)
+
+        if (inputSplit.Length != 2 || 
+            !int.TryParse(inputSplit[0], out var x) || 
+            !int.TryParse(inputSplit[1], out var y))
         {
+            Console.WriteLine("\u001b[31mInvalid coordinates format. Please use <x,y> format.\u001b[0m");
+            return false;
+        }
+
+        // Validate that the chosen piece belongs to the current player and is not empty
+        if (_gameState.GameBoard[x][y] == _gameState.NextMoveBy)
+        {
+            // Mark the original location as empty
             _gameState.GameBoard[x][y] = EGamePiece.Empty;
-            Console.WriteLine("Type <x,y> - Insert Piece coordinates");
+            Console.WriteLine("Type <x,y> - Insert new coordinates");
             Console.Write("> ");
-            
+        
+            var newInput = Console.ReadLine()!;
+            var newInputSplit = newInput.Split(",");
+
+            if (newInputSplit.Length != 2 || 
+                !int.TryParse(newInputSplit[0], out var newX) || 
+                !int.TryParse(newInputSplit[1], out var newY))
+            {
+                Console.WriteLine("\u001b[31mInvalid coordinates format for new location.\u001b[0m");
+                return false;
+            }
+
+            if (_gameState.GameBoard[newX][newY] == EGamePiece.Empty)
+            {
+                // Move the piece to the new coordinates
+                _gameState.GameBoard[newX][newY] = _gameState.NextMoveBy;
+                Console.WriteLine("Piece moved successfully.");
+                _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("\u001b[31mThe new location is not empty. Choose an empty cell.\u001b[0m");
+                return false;
+            }
         }
         else
         {
-            Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
-            Console.WriteLine("Type <x,y> - Insert new coordinates");
-            Console.Write("> ");
+            Console.WriteLine("\u001b[31mInvalid piece selection. Choose a piece belonging to you.\u001b[0m");
+            return false;
         }
     }
+
     
     
     

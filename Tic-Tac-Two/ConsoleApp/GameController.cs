@@ -96,11 +96,13 @@ public static class GameController
                     SecondLevel(gameInstance);
                 }
             }
-
+            
             Console.WriteLine(InputCheck());
+            
         } while (true);
     }
-
+    
+    
     private static void FirstLevel(TicTacTwoBrain gameInstance)
     {
         Console.WriteLine();
@@ -113,29 +115,9 @@ public static class GameController
         {
             GameOptionsMenu(gameInstance);
         }
-
         else
         {
-            var inputSplit = input.Split(",");
-
-            if (inputSplit.Length != 2)
-            {
-                _invalidInput = true;
-                return;
-            }
-
-            if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
-            {
-                if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
-                {
-                    gameInstance.MakeAMove(inputX - 1, inputY - 1);
-                    AmountOfPiecesCounter(gameInstance);
-                }
-                else
-                {
-                    _invalidMove = true;
-                }
-            }
+            InsertCoordinates(gameInstance, input);
         }
     }
 
@@ -144,8 +126,8 @@ public static class GameController
         Console.WriteLine();
         Console.WriteLine("1) Type <x,y> - Insert coordinates");
         Console.WriteLine("M) Move Piece");
-        Console.WriteLine("G) Move grid: ");
-        Console.WriteLine("O) Options: ");
+        Console.WriteLine("G) Move grid");
+        Console.WriteLine("O) Options");
         Console.Write("> ");
         var input = Console.ReadLine()!;
         
@@ -159,30 +141,15 @@ public static class GameController
             GameOptionsMenu(gameInstance);
         } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
         {
-            gameInstance.MovePiece();
+            do
+            {
+                gameInstance.MovePiece();
+            } while (gameInstance.MovePiece() == false);
+
         }
         else
         {
-            var inputSplit = input.Split(",");
-
-            if (inputSplit.Length != 2)
-            {
-                _invalidInput = true;
-                return;
-            }
-
-            if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
-            {
-                if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
-                {
-                    gameInstance.MakeAMove(inputX - 1, inputY - 1);
-                    AmountOfPiecesCounter(gameInstance);
-                }
-                else
-                {
-                    _invalidMove = true;
-                }
-            }
+            InsertCoordinates(gameInstance, input);
         }
     }
 
@@ -190,8 +157,8 @@ public static class GameController
     {
         Console.WriteLine();
         Console.WriteLine("M) Move Piece");
-        Console.WriteLine("G) Move grid: ");
-        Console.WriteLine("O) Options: ");
+        Console.WriteLine("G) Move grid");
+        Console.WriteLine("O) Options");
         Console.Write("> ");
         
         var input = Console.ReadLine()!;
@@ -206,7 +173,34 @@ public static class GameController
             GameOptionsMenu(gameInstance);
         } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
         {
-            gameInstance.MovePiece();
+            do
+            {
+                gameInstance.MovePiece();
+            } while (gameInstance.MovePiece() == false);
+        }
+    }
+    
+    private static void InsertCoordinates(TicTacTwoBrain gameInstance, string input)
+    {
+        var inputSplit = input.Split(",");
+
+        if (inputSplit.Length != 2)
+        {
+            _invalidInput = true;
+            return;
+        }
+
+        if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
+        {
+            if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
+            {
+                gameInstance.MakeAMove(inputX - 1, inputY - 1);
+                AmountOfPiecesCounter(gameInstance);
+            }
+            else
+            {
+                _invalidMove = true;
+            }
         }
     }
 
