@@ -14,6 +14,7 @@ public static class GameController
     private static bool _invalidMove = false;
     public static int AmountOfPiecesX = 0;
     public static int AmountOfPiecesO = 0;
+    private static int _movePieceAfterNMoves = 2;
     
     
     public static string MainLoop()
@@ -33,7 +34,11 @@ public static class GameController
         if (chosenConfig.Name == "Custom")
         {
             chosenConfig.CustomGameCheck();
-        }
+            _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
+        } 
+
+        
+        
         
         var gameInstance = new TicTacTwoBrain(chosenConfig);
 
@@ -51,16 +56,17 @@ public static class GameController
 
             //gameInstance.CheckWin();
             //Console.WriteLine("Win? : " + gameInstance.CheckWin());
-            Console.WriteLine("X " + AmountOfPiecesX);
-            Console.WriteLine("O " + AmountOfPiecesO);
-            
-            Console.WriteLine("MovePieceAfterNMoves " + chosenConfig.MovePieceAfterNMoves);
-            Console.WriteLine("Next Move By " + gameInstance.NextMoveBy);
+            //Console.WriteLine("X " + AmountOfPiecesX);
+            //Console.WriteLine("O " + AmountOfPiecesO);
+            //Console.WriteLine("MovePieceAfterNMoves " + _movePieceAfterNMoves);
+            //Console.WriteLine("Next Move By " + gameInstance.NextMoveBy);
 
+           
+            
             // Player X Turn
             if (gameInstance.NextMoveBy == EGamePiece.X)
             {
-                if (AmountOfPiecesX < chosenConfig.MovePieceAfterNMoves)
+                if (AmountOfPiecesX < _movePieceAfterNMoves)
                 {
                     FirstLevel(gameInstance);
                 }
@@ -68,7 +74,7 @@ public static class GameController
                 {
                     ThirdLevel(gameInstance);
                 }
-                else if (AmountOfPiecesX >= chosenConfig.MovePieceAfterNMoves)
+                else if (AmountOfPiecesX >= _movePieceAfterNMoves)
                 {
                     SecondLevel(gameInstance);
                 }
@@ -77,7 +83,7 @@ public static class GameController
             // Player O Turn
             else if (gameInstance.NextMoveBy == EGamePiece.O)
             {
-                if (AmountOfPiecesO < chosenConfig.MovePieceAfterNMoves)
+                if (AmountOfPiecesO < _movePieceAfterNMoves)
                 {
                     FirstLevel(gameInstance);
                 }
@@ -85,69 +91,13 @@ public static class GameController
                 {
                     ThirdLevel(gameInstance);
                 }
-                else if (AmountOfPiecesO >= chosenConfig.MovePieceAfterNMoves)
+                else if (AmountOfPiecesO >= _movePieceAfterNMoves)
                 {
                     SecondLevel(gameInstance);
                 }
             }
 
             Console.WriteLine(InputCheck());
-
-            /*
-            Console.WriteLine();
-            Console.WriteLine("1) Type <x,y> - Insert coordinates");
-            Console.WriteLine("M) Move Piece");
-            Console.WriteLine("G) Move grid: ");
-            Console.WriteLine("O) Options: ");
-            Console.Write("> ");
-            var input = Console.ReadLine()!;
-
-            if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
-            {
-                Console.Clear();
-                Visualizer.DrawGame(gameInstance);
-                gameInstance.MoveGrid();
-            } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
-            {
-                GameOptionsMenu(gameInstance);
-            } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
-            {
-                gameInstance.MovePiece();
-            }
-            else
-            {
-                var inputSplit = input.Split(",");
-
-                if (inputSplit.Length != 2)
-                {
-                    _invalidInput = true;
-                    continue;
-                }
-                if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
-                {
-                    if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
-                    {
-                        gameInstance.MakeAMove(inputX - 1, inputY - 1);
-                        if (gameInstance.NextMoveBy == EGamePiece.X)
-                        {
-                            AmountOfPiecesX += 1;
-                        } else if (gameInstance.NextMoveBy == EGamePiece.O)
-                        {
-                            AmountOfPiecesO += 1;
-                        }
-                    }
-                    else
-                    {
-                        _invalidMove = true;
-                    }
-
-                }
-                else
-                {
-                    _invalidInput = true;
-                }
-            }
-        */
         } while (true);
     }
 
