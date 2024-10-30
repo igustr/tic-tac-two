@@ -42,6 +42,7 @@ public static class GameController
         
         do
         {
+            Console.Clear();
             Console.WriteLine();
             Visualizer.DrawGame(gameInstance);
             if (gameInstance.CheckWin())
@@ -53,25 +54,30 @@ public static class GameController
 
             gameInstance.CheckWin();
             Console.WriteLine("Win? : " + gameInstance.CheckWin());
+            
             if (_invalidInput)
             {
                 Console.WriteLine();
                 Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
             }
+            
             Console.WriteLine();
-            Console.WriteLine("1) Insert G to move grid: ");
-            Console.WriteLine("2) Insert coordinates <x,y>: ");
-            Console.WriteLine("3) Insert save to save game: ");
+            Console.WriteLine("1) Type <x,y> - Insert coordinates: ");
+            Console.WriteLine("G) Move grid: ");
+            Console.WriteLine("O) Options: ");
             Console.Write("> ");
+            
             var input = Console.ReadLine()!;
             _invalidInput = false;
             
             if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
             {
+                Console.Clear();
+                Visualizer.DrawGame(gameInstance);
                 gameInstance.MoveGrid();
-            } else if (input.Equals("save", StringComparison.CurrentCultureIgnoreCase))
+            } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
             {
-                GameRepository.SaveGame(gameInstance.GetGameStateJson(), gameInstance.GetGameConfigName());
+                GameOptionsMenu(gameInstance);
             }
             else
             {
@@ -95,6 +101,42 @@ public static class GameController
         } while (true);
     }
 
+    private static void GameOptionsMenu(TicTacTwoBrain gameInstance)
+    {
+        Console.Clear();
+        Console.WriteLine("GAME OPTIONS");
+        Console.WriteLine("============");
+        Console.WriteLine("B) Back");
+        Console.WriteLine("S) Save");
+        Console.WriteLine("R) Restart");
+        Console.WriteLine("E) Exit");
+        
+        Console.Write("> ");
+        var input = Console.ReadLine()!;
+
+        switch (input)
+        {
+            case "B":
+                break;
+            case "R":
+                gameInstance.ResetGame();
+                break;
+            case "S":
+                GameRepository.SaveGame(gameInstance.GetGameStateJson(), gameInstance.GetGameConfigName());
+                break;
+            case "E":
+                gameInstance.ExitGame();
+                break;
+            default:
+                Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
+                Console.WriteLine("B) Back");
+                Console.WriteLine("S) Save");
+                Console.WriteLine("R) Restart");
+                Console.WriteLine("E) Exit");
+                break;
+        }
+    }
+
     private static string ChooseConfiguration()
     {
         var configMenuItems = new List<MenuItem>();
@@ -109,6 +151,7 @@ public static class GameController
                 MenuItemAction = () => returnValue
             });
         }
+        
 
         var configMenu = new Menu(EMenuLevel.Secondary,
             "TIC-TAC-TOE - choose game config",

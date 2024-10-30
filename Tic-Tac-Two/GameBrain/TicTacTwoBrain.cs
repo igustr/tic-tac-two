@@ -38,6 +38,7 @@ public class TicTacTwoBrain
     public int DimY => _gameState.GameBoard[0].Length;
     public int GridX => _gameState.Grid.Length;
     public int GridY => _gameState.Grid[0].Length;
+    public EGamePiece NextMoveBy => _gameState.NextMoveBy;
     
     private EGamePiece[][] GetBoard()
     {
@@ -120,11 +121,12 @@ public class TicTacTwoBrain
             GridXCoordinates.Add(_gridX + (i - 1));
         }
         
-
+        /*
         Console.WriteLine("grid x coords: " + string.Join(", ", GridXCoordinates));
         Console.WriteLine("grid y coords: " + string.Join(", ", GridYCoordinates));
         Console.WriteLine("------------------------------------------------------");
         Console.WriteLine();
+        */
 
 
         MoveGridCheck();
@@ -134,11 +136,11 @@ public class TicTacTwoBrain
     {
         var board = GetBoard();
        // Console.WriteLine("Here:" + board[0,0]);
-        
+       Console.WriteLine();
+       Console.WriteLine("Choose grid movement direction");
         Console.WriteLine("-------------------------------");
-        Console.WriteLine("Choose grid movement direction:");
-        Console.WriteLine("Use one of the following directions: ");
-        Console.WriteLine("'U' for Up, 'D' for Down, 'L' for Left, 'R' for Right.");
+        Console.WriteLine("Use one of the following directions!");
+        Console.WriteLine("'U' for Up, 'D' for Down, 'L' for Left, 'R' for Right, 'B' to go back!");
         Console.Write("> ");
         var directionInput = Console.ReadLine()!.ToUpper();
 
@@ -166,6 +168,9 @@ public class TicTacTwoBrain
                 Console.WriteLine("Moving grid Right.");
                 _gameState._gridXMove += 1;
                 _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+                break;
+            case "B":
+                Console.WriteLine("Going Back");
                 break;
             default:
                 Console.WriteLine("Invalid direction. Please choose 'U', 'D', 'L', or 'R'.");
@@ -259,6 +264,11 @@ public class TicTacTwoBrain
         _gameState.GameBoard = gameBoard;
         _gameState.Grid = grid;
         _gameState.NextMoveBy = EGamePiece.X;
+    }
+
+    public void ExitGame()
+    {
+        //IMPLEMENT
     }
 
     public static HashSet<int> GetGridXCoordinates()

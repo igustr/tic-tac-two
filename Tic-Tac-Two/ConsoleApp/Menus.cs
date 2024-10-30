@@ -49,6 +49,31 @@ public static class Menus
             MenuItemAction = OptionsMenu.Run
             },
         ]);
+    
+    /*
+    public static Menu GameOptionsMenu = new Menu(
+        EMenuLevel.Main,
+        "OPTIONS MENU", [
+            new MenuItem()
+            {
+                Shortcut = "B",
+                Title = "Back",
+                MenuItemAction = GameController.MainLoop
+            },
+            new MenuItem()
+            {
+                Shortcut = "S",
+                Title = "Save",
+                MenuItemAction = OptionsMenu.Run
+            },            
+            new MenuItem()
+            {
+                Shortcut = "E",
+                Title = "Exit",
+                MenuItemAction = OptionsMenu.Run
+            },
+        ]);
+        */
 
     private static string DummyMethod()
     {
