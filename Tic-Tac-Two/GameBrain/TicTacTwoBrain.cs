@@ -5,6 +5,7 @@ public class TicTacTwoBrain
     
     public static HashSet<int> GridXCoordinates = new();
     public static HashSet<int> GridYCoordinates = new();
+    
     private readonly GameState _gameState;
     private int _gridX;
     private int _gridY;
@@ -76,19 +77,52 @@ public class TicTacTwoBrain
         return grid;
     }
     
-    public bool MakeAMove(int x, int y)
+    public void MakeAMove(int x, int y)
     {
-        if (_gameState.GameBoard[x][y] != EGamePiece.Empty)
+        _gameState.GameBoard[x][y] = _gameState.NextMoveBy;
+        
+            // flip the next piece
+        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+
+    }
+
+    public bool MakeAMoveCheck(int x, int y)
+    {
+        /*
+        Console.WriteLine("X COORDS: " + string.Join(", ", GridXCoordinates));
+        Console.WriteLine("Y COORDS: " + string.Join(", ", GridYCoordinates));
+        */
+        if (_gameState.GameBoard[x][y] != EGamePiece.Empty 
+            || !GridXCoordinates.Contains(y + 1) 
+            || !GridYCoordinates.Contains(x + 1))
         {
             return false;
         }
-
-        _gameState.GameBoard[x][y] = _gameState.NextMoveBy;
-        
-        // flip the next piece
-        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
-
         return true;
+    }
+
+    public void MovePiece()
+    {
+        Console.WriteLine("Type <x,y> - Insert Piece coordinates");
+        Console.Write("> ");
+        var input = Console.ReadLine()!;
+        var inputSplit = input.Split(",");
+        
+        if (int.TryParse(inputSplit[0], out var x) 
+            && int.TryParse(inputSplit[1], out var y) 
+            && _gameState.GameBoard[x][y] != EGamePiece.Empty && _gameState.GameBoard[x][y] == _gameState.NextMoveBy)
+        {
+            _gameState.GameBoard[x][y] = EGamePiece.Empty;
+            Console.WriteLine("Type <x,y> - Insert Piece coordinates");
+            Console.Write("> ");
+            
+        }
+        else
+        {
+            Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
+            Console.WriteLine("Type <x,y> - Insert new coordinates");
+            Console.Write("> ");
+        }
     }
     
     public void GridPlacement()
@@ -135,46 +169,68 @@ public class TicTacTwoBrain
     public void MoveGrid()
     {
         var board = GetBoard();
-       // Console.WriteLine("Here:" + board[0,0]);
-       Console.WriteLine();
-       Console.WriteLine("Choose grid movement direction");
+        Console.WriteLine();
+        Console.WriteLine("Choose grid movement direction");
         Console.WriteLine("-------------------------------");
-        Console.WriteLine("Use one of the following directions!");
-        Console.WriteLine("'U' for Up, 'D' for Down, 'L' for Left, 'R' for Right, 'B' to go back!");
+        Console.WriteLine("Use one of the following directions:");
+        Console.WriteLine(
+            "'U' for Up, 'D' for Down, 'L' for Left, 'R' for Right, 'UL' for Up-Left, 'UR' for Up-Right, 'DL' for Down-Left, 'DR' for Down-Right, 'B' to go back!");
         Console.Write("> ");
         var directionInput = Console.ReadLine()!.ToUpper();
 
         _gameState._previousGridYMove = _gameState._gridYMove;
         _gameState._previousGridXMove = _gameState._gridXMove;
-        
+
         switch (directionInput)
         {
             case "U":
                 Console.WriteLine("Moving grid Up.");
                 _gameState._gridYMove -= 1;
-                _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
                 break;
             case "D":
                 Console.WriteLine("Moving grid Down.");
                 _gameState._gridYMove += 1;
-                _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
                 break;
             case "L":
                 Console.WriteLine("Moving grid Left.");
                 _gameState._gridXMove -= 1;
-                _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
                 break;
             case "R":
                 Console.WriteLine("Moving grid Right.");
                 _gameState._gridXMove += 1;
-                _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+                break;
+            case "UL":
+                Console.WriteLine("Moving grid Up-Left.");
+                _gameState._gridYMove -= 1;
+                _gameState._gridXMove -= 1;
+                break;
+            case "UR":
+                Console.WriteLine("Moving grid Up-Right.");
+                _gameState._gridYMove -= 1;
+                _gameState._gridXMove += 1;
+                break;
+            case "DL":
+                Console.WriteLine("Moving grid Down-Left.");
+                _gameState._gridYMove += 1;
+                _gameState._gridXMove -= 1;
+                break;
+            case "DR":
+                Console.WriteLine("Moving grid Down-Right.");
+                _gameState._gridYMove += 1;
+                _gameState._gridXMove += 1;
                 break;
             case "B":
                 Console.WriteLine("Going Back");
                 break;
             default:
-                Console.WriteLine("Invalid direction. Please choose 'U', 'D', 'L', or 'R'.");
+                Console.WriteLine("Invalid direction. Please choose 'U', 'D', 'L', 'R', 'UL', 'UR', 'DL', or 'DR'.");
                 break;
+        }
+
+        // Toggle the next player after each move, if a valid move was made
+        if (directionInput != "B" && "UDLRULURDLDR".Contains(directionInput))
+        {
+            _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
         }
     }
 
@@ -281,7 +337,3 @@ public class TicTacTwoBrain
         return GridYCoordinates;
     }
 }
-
-
-
-

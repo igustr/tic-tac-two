@@ -14,7 +14,6 @@ public class ConfigRepositoryHardcoded : IConfigRepository
         new GameConfiguration()
         {
             Name = "Custom",
-            MovePieceAfterNMoves = 3,
         },
     };
     

@@ -11,6 +11,9 @@ public static class GameController
     private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
     private static readonly IGameRepository GameRepository = new GameRepositoryJson();
     private static bool _invalidInput = false;
+    private static bool _invalidMove = false;
+    private static int _amountOfPiecesX = 0;
+    private static int _amountOfPiecesO = 0;
     
     
     public static string MainLoop()
@@ -33,16 +36,10 @@ public static class GameController
         }
         
         var gameInstance = new TicTacTwoBrain(chosenConfig);
-
-
-        // main loop of gameplay
-        // draw the board again
-        // ask input again, validate input
-        // is game over?
         
         do
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine();
             Visualizer.DrawGame(gameInstance);
             if (gameInstance.CheckWin())
@@ -52,23 +49,18 @@ public static class GameController
                 // Implement start new game button
             }
 
-            gameInstance.CheckWin();
-            Console.WriteLine("Win? : " + gameInstance.CheckWin());
-            
-            if (_invalidInput)
-            {
-                Console.WriteLine();
-                Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
-            }
+            //gameInstance.CheckWin();
+            //Console.WriteLine("Win? : " + gameInstance.CheckWin());
+
+            Console.WriteLine(InputCheck());
             
             Console.WriteLine();
-            Console.WriteLine("1) Type <x,y> - Insert coordinates: ");
+            Console.WriteLine("1) Type <x,y> - Insert coordinates");
+            Console.WriteLine("M) Move Piece");
             Console.WriteLine("G) Move grid: ");
             Console.WriteLine("O) Options: ");
             Console.Write("> ");
-            
             var input = Console.ReadLine()!;
-            _invalidInput = false;
             
             if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -78,6 +70,9 @@ public static class GameController
             } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
             {
                 GameOptionsMenu(gameInstance);
+            } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
+            {
+                gameInstance.MovePiece();
             }
             else
             {
@@ -88,10 +83,24 @@ public static class GameController
                     _invalidInput = true;
                     continue; 
                 }
-                
                 if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
                 {
-                    gameInstance.MakeAMove(inputX - 1, inputY - 1); ;
+                    if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
+                    {
+                        gameInstance.MakeAMove(inputX - 1, inputY - 1);
+                        if (gameInstance.NextMoveBy == EGamePiece.X)
+                        {
+                            _amountOfPiecesX += 1;
+                        } else if (gameInstance.NextMoveBy == EGamePiece.O)
+                        {
+                            _amountOfPiecesO += 1;
+                        }
+                    }
+                    else
+                    {
+                        _invalidMove = true;
+                    }
+
                 }
                 else
                 {
@@ -99,6 +108,24 @@ public static class GameController
                 }
             }
         } while (true);
+    }
+
+    private static string InputCheck()
+    {
+        if (_invalidInput)
+        {
+            Console.WriteLine();
+            return "\u001b[31mInvalid input!\u001b[0m";
+        }
+            
+        if (_invalidMove)
+        {
+            Console.WriteLine();
+            return "\u001b[31mYou can put piece only in the grid!\u001b[0m";
+        }
+        _invalidInput = false;
+        _invalidMove = false;
+        return "";
     }
 
     private static void GameOptionsMenu(TicTacTwoBrain gameInstance)
@@ -137,6 +164,8 @@ public static class GameController
         }
     }
 
+    
+    
     private static string ChooseConfiguration()
     {
         var configMenuItems = new List<MenuItem>();
@@ -152,7 +181,6 @@ public static class GameController
             });
         }
         
-
         var configMenu = new Menu(EMenuLevel.Secondary,
             "TIC-TAC-TOE - choose game config",
             configMenuItems,

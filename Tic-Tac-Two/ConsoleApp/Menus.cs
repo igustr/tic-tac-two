@@ -44,6 +44,12 @@ public static class Menus
             },
             new MenuItem()
             {
+                Shortcut = "L",
+                Title = "Load game",
+                MenuItemAction = GameController.MainLoop
+            },
+            new MenuItem()
+            {
             Shortcut = "O",
             Title = "Options",
             MenuItemAction = OptionsMenu.Run

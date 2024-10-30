@@ -10,7 +10,7 @@ public record struct GameConfiguration()
     public int WinCondition { get; set; } = 3;
 
     // 0 disabled
-    public int MovePieceAfterNMoves { get; set; } = 4;
+    public int MovePieceAfterNMoves { get; set; } = 2;
     public int AmountOfPieces { get; set; } = 4;
     public int GridSizeHeight { get; set; } = 3;
     public int GridSizeWidth { get; set; } = 3;
@@ -36,7 +36,7 @@ public record struct GameConfiguration()
             
             Console.WriteLine("Amount of Pieces: ");
             AmountOfPieces = int.Parse(Console.ReadLine());
-            MovePieceAfterNMoves = AmountOfPieces;
+            MovePieceAfterNMoves = AmountOfPieces / 2;
             
             Console.WriteLine("Amount of Pieces to Win: ");
             // if wrong input write: ""Amount of Pieces to Win (Should be less or equal to amount of pieces): ""
