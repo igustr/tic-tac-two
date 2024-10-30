@@ -9,7 +9,7 @@ public class ConfigRepositoryHardcoded : IConfigRepository
     {
         new GameConfiguration()
         {
-            Name = "Classical"
+            Name = "Classical",
         },
         new GameConfiguration()
         {

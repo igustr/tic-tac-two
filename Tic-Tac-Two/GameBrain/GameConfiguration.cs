@@ -10,7 +10,7 @@ public record struct GameConfiguration()
     public int WinCondition { get; set; } = 3;
 
     // 0 disabled
-    public int MovePieceAfterNMoves { get; set; } = 2;
+    public int MovePieceAfterNMoves { get; set; } = 5;
     public int AmountOfPieces { get; set; } = 4;
     public int GridSizeHeight { get; set; } = 3;
     public int GridSizeWidth { get; set; } = 3;

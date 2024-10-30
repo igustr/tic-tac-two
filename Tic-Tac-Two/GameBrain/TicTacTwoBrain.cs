@@ -125,6 +125,8 @@ public class TicTacTwoBrain
         }
     }
     
+    
+    
     public void GridPlacement()
     {
         GridXCoordinates.Clear();

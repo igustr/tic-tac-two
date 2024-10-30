@@ -12,8 +12,8 @@ public static class GameController
     private static readonly IGameRepository GameRepository = new GameRepositoryJson();
     private static bool _invalidInput = false;
     private static bool _invalidMove = false;
-    private static int _amountOfPiecesX = 0;
-    private static int _amountOfPiecesO = 0;
+    public static int AmountOfPiecesX = 0;
+    public static int AmountOfPiecesO = 0;
     
     
     public static string MainLoop()
@@ -36,7 +36,7 @@ public static class GameController
         }
         
         var gameInstance = new TicTacTwoBrain(chosenConfig);
-        
+
         do
         {
             //Console.Clear();
@@ -51,9 +51,49 @@ public static class GameController
 
             //gameInstance.CheckWin();
             //Console.WriteLine("Win? : " + gameInstance.CheckWin());
+            Console.WriteLine("X " + AmountOfPiecesX);
+            Console.WriteLine("O " + AmountOfPiecesO);
+            
+            Console.WriteLine("MovePieceAfterNMoves " + chosenConfig.MovePieceAfterNMoves);
+            Console.WriteLine("Next Move By " + gameInstance.NextMoveBy);
+
+            // Player X Turn
+            if (gameInstance.NextMoveBy == EGamePiece.X)
+            {
+                if (AmountOfPiecesX < chosenConfig.MovePieceAfterNMoves)
+                {
+                    FirstLevel(gameInstance);
+                }
+                else if (AmountOfPiecesX == chosenConfig.AmountOfPieces)
+                {
+                    ThirdLevel(gameInstance);
+                }
+                else if (AmountOfPiecesX >= chosenConfig.MovePieceAfterNMoves)
+                {
+                    SecondLevel(gameInstance);
+                }
+
+            } 
+            // Player O Turn
+            else if (gameInstance.NextMoveBy == EGamePiece.O)
+            {
+                if (AmountOfPiecesO < chosenConfig.MovePieceAfterNMoves)
+                {
+                    FirstLevel(gameInstance);
+                }
+                else if (AmountOfPiecesO == chosenConfig.AmountOfPieces)
+                {
+                    ThirdLevel(gameInstance);
+                }
+                else if (AmountOfPiecesO >= chosenConfig.MovePieceAfterNMoves)
+                {
+                    SecondLevel(gameInstance);
+                }
+            }
 
             Console.WriteLine(InputCheck());
-            
+
+            /*
             Console.WriteLine();
             Console.WriteLine("1) Type <x,y> - Insert coordinates");
             Console.WriteLine("M) Move Piece");
@@ -61,7 +101,7 @@ public static class GameController
             Console.WriteLine("O) Options: ");
             Console.Write("> ");
             var input = Console.ReadLine()!;
-            
+
             if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
             {
                 Console.Clear();
@@ -81,7 +121,7 @@ public static class GameController
                 if (inputSplit.Length != 2)
                 {
                     _invalidInput = true;
-                    continue; 
+                    continue;
                 }
                 if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
                 {
@@ -90,10 +130,10 @@ public static class GameController
                         gameInstance.MakeAMove(inputX - 1, inputY - 1);
                         if (gameInstance.NextMoveBy == EGamePiece.X)
                         {
-                            _amountOfPiecesX += 1;
+                            AmountOfPiecesX += 1;
                         } else if (gameInstance.NextMoveBy == EGamePiece.O)
                         {
-                            _amountOfPiecesO += 1;
+                            AmountOfPiecesO += 1;
                         }
                     }
                     else
@@ -107,9 +147,131 @@ public static class GameController
                     _invalidInput = true;
                 }
             }
+        */
         } while (true);
     }
 
+    private static void FirstLevel(TicTacTwoBrain gameInstance)
+    {
+        Console.WriteLine();
+        Console.WriteLine("1) Type <x,y> - Insert coordinates");
+        Console.WriteLine("O) Options: ");
+        Console.Write("> ");
+        var input = Console.ReadLine()!;
+
+        if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
+        {
+            GameOptionsMenu(gameInstance);
+        }
+
+        else
+        {
+            var inputSplit = input.Split(",");
+
+            if (inputSplit.Length != 2)
+            {
+                _invalidInput = true;
+                return;
+            }
+
+            if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
+            {
+                if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
+                {
+                    gameInstance.MakeAMove(inputX - 1, inputY - 1);
+                    AmountOfPiecesCounter(gameInstance);
+                }
+                else
+                {
+                    _invalidMove = true;
+                }
+            }
+        }
+    }
+
+    private static void SecondLevel(TicTacTwoBrain gameInstance)
+    {
+        Console.WriteLine();
+        Console.WriteLine("1) Type <x,y> - Insert coordinates");
+        Console.WriteLine("M) Move Piece");
+        Console.WriteLine("G) Move grid: ");
+        Console.WriteLine("O) Options: ");
+        Console.Write("> ");
+        var input = Console.ReadLine()!;
+        
+        if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
+        {
+            Console.Clear();
+            Visualizer.DrawGame(gameInstance);
+            gameInstance.MoveGrid();
+        } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
+        {
+            GameOptionsMenu(gameInstance);
+        } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
+        {
+            gameInstance.MovePiece();
+        }
+        else
+        {
+            var inputSplit = input.Split(",");
+
+            if (inputSplit.Length != 2)
+            {
+                _invalidInput = true;
+                return;
+            }
+
+            if (int.TryParse(inputSplit[0], out var inputX) && int.TryParse(inputSplit[1], out var inputY))
+            {
+                if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
+                {
+                    gameInstance.MakeAMove(inputX - 1, inputY - 1);
+                    AmountOfPiecesCounter(gameInstance);
+                }
+                else
+                {
+                    _invalidMove = true;
+                }
+            }
+        }
+    }
+
+    private static void ThirdLevel(TicTacTwoBrain gameInstance)
+    {
+        Console.WriteLine();
+        Console.WriteLine("M) Move Piece");
+        Console.WriteLine("G) Move grid: ");
+        Console.WriteLine("O) Options: ");
+        Console.Write("> ");
+        
+        var input = Console.ReadLine()!;
+        
+        if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
+        {
+            Console.Clear();
+            Visualizer.DrawGame(gameInstance);
+            gameInstance.MoveGrid();
+        } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
+        {
+            GameOptionsMenu(gameInstance);
+        } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
+        {
+            gameInstance.MovePiece();
+        }
+    }
+
+
+    private static void AmountOfPiecesCounter(TicTacTwoBrain gameInstance)
+    {
+        if (gameInstance.NextMoveBy == EGamePiece.O)
+        {
+            AmountOfPiecesX += 1;
+        } else if (gameInstance.NextMoveBy == EGamePiece.X)
+        {
+            AmountOfPiecesO += 1;
+        }
+    }
+    
     private static string InputCheck()
     {
         if (_invalidInput)
@@ -163,8 +325,6 @@ public static class GameController
                 break;
         }
     }
-
-    
     
     private static string ChooseConfiguration()
     {
