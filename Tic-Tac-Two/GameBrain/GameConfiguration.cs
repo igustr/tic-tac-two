@@ -15,7 +15,7 @@ public record struct GameConfiguration()
     public int GridSizeHeight { get; set; } = 3;
     public int GridSizeWidth { get; set; } = 3;
     
-    private int _size;
+    private int _boardSize;
     private int _gridSize;
 
     
@@ -29,12 +29,12 @@ public record struct GameConfiguration()
             while (!isValidBoardSize)
             {
                 Console.WriteLine("Board size: ");
-                _size = int.Parse(Console.ReadLine());
+                _boardSize = int.Parse(Console.ReadLine());
 
-                if (_size >= 5)
+                if (_boardSize >= 5)
                 {
-                    BoardSizeHeight = _size;
-                    BoardSizeWidth = _size;
+                    BoardSizeHeight = _boardSize;
+                    BoardSizeWidth = _boardSize;
                     isValidBoardSize = true;
                 }
                 else
@@ -43,14 +43,14 @@ public record struct GameConfiguration()
                 }
             }
 
-            // Min grid size 3x3
+            // Min grid size 3x3, grid smaller than board at least 2.
             bool isValidGridSize = false;
             while (!isValidGridSize)
             {
                 Console.WriteLine("Grid Size: ");
                 _gridSize = int.Parse(Console.ReadLine());
 
-                if (_gridSize >= 3)
+                if (_gridSize >= 3 && _gridSize < _boardSize)
                 {
                     GridSizeHeight = _gridSize;
                     GridSizeWidth = _gridSize;
@@ -58,7 +58,7 @@ public record struct GameConfiguration()
                 }
                 else
                 {
-                    Console.WriteLine("Invalid grid size! The grid size must be at least 3.");
+                    Console.WriteLine("Invalid grid size! The grid size must be at least 3 and smaller than board size.");
                 }
             }
 
@@ -87,14 +87,15 @@ public record struct GameConfiguration()
                 Console.WriteLine("Amount of Pieces to Win: ");
                 WinCondition = int.Parse(Console.ReadLine());
 
-                if (WinCondition <= AmountOfPieces && WinCondition > 0)
+                if (WinCondition <= AmountOfPieces && WinCondition > 0 && WinCondition <= _gridSize)
                 {
                     isValidWinCondition = true;
                 }
                 else
                 {
                     Console.WriteLine(
-                        "Invalid input! Amount of Pieces to Win should be less than or equal to the Amount of Pieces and greater than 0.");
+                        "Invalid input! Pieces to Win should be less than or equal to the Amount of Pieces, " +
+                        "greater than 0 and less than or equal to grid Size - " + _gridSize);
                 }
             }
         }

@@ -153,20 +153,17 @@ public class TicTacTwoBrain
         var rangeX = (int)Math.Ceiling((GridX - 1) / 2.0); // Determines how many cells to add left and right
         var rangeY = (int)Math.Ceiling((GridY - 1) / 2.0); // Determines how many cells to add up and down
 
+        /*
         Console.WriteLine("range X: " + rangeX);
         Console.WriteLine("range Y: " + rangeY);
         Console.WriteLine();
         Console.WriteLine("Grid start X: " + _gridXCentre);
         Console.WriteLine("Grid start Y: " + _gridYCentre);
         Console.WriteLine();
-        
-        
+        */
         
         for (int i = 0; i < rangeY; i++)
         {
-            Console.WriteLine("Grid Y: " + GridY);
-            Console.WriteLine("Y +: " + (_gridYCentre + (i + 1)));
-            Console.WriteLine("Y -: " + (_gridYCentre - (i + 1)));
             if (GridY % 2 == 0)
             {
                 GridYCoordinates.Add(_gridYCentre + (i + 1));
@@ -183,10 +180,6 @@ public class TicTacTwoBrain
             }
         }
         for (int i = 0; i < rangeX; i++) {
-            Console.WriteLine("Grid X: " + GridX);
-            Console.WriteLine("X +: " + (_gridXCentre + (i + 1)));
-            Console.WriteLine("X -: " + (_gridXCentre - (i + 1)));
-            Console.WriteLine("i : " + i);
             if (GridX % 2 == 0)
             {
                 GridXCoordinates.Add(_gridXCentre + (i + 1));
@@ -201,14 +194,12 @@ public class TicTacTwoBrain
             }
         }
         
-
+        /*
         Console.WriteLine("grid x coords: " + string.Join(", ", GridXCoordinates));
         Console.WriteLine("grid y coords: " + string.Join(", ", GridYCoordinates));
         Console.WriteLine("------------------------------------------------------");
         Console.WriteLine();
-
-
-
+        */
         MoveGridCheck();
     }
 
