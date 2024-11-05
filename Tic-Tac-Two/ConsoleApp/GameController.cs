@@ -36,18 +36,16 @@ public static class GameController
             chosenConfig.CustomGameCheck();
             _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
         } 
-
-        
-        
         
         var gameInstance = new TicTacTwoBrain(chosenConfig);
 
         do
         {
             //Console.Clear();
-            Console.WriteLine();
             Visualizer.DrawGame(gameInstance); 
             Console.WriteLine(InputCheck());
+            _invalidInput = false;
+            _invalidMove = false;
             if (gameInstance.CheckWin())
             {
                 //Todo return to menu where you can choose to continue or return
