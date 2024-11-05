@@ -24,25 +24,82 @@ public record struct GameConfiguration()
     {
         if (Name == "Custom")
         {
-            Console.WriteLine("Board size: ");
-            _size = int.Parse(Console.ReadLine());
-            BoardSizeHeight = _size; 
-            BoardSizeWidth = _size;
-            
-            Console.WriteLine("Grid Size: ");
-            _gridSize = int.Parse(Console.ReadLine());
-            GridSizeHeight = _gridSize;
-            GridSizeWidth = _gridSize;
-            
-            Console.WriteLine("Amount of Pieces: ");
-            AmountOfPieces = int.Parse(Console.ReadLine());
-            MovePieceAfterNMoves = AmountOfPieces / 2;
-            
-            Console.WriteLine("Amount of Pieces to Win: ");
-            // if wrong input write: ""Amount of Pieces to Win (Should be less or equal to amount of pieces): ""
-            WinCondition = int.Parse(Console.ReadLine());
+            // Min board size 5x5
+            bool isValidBoardSize = false;
+            while (!isValidBoardSize)
+            {
+                Console.WriteLine("Board size: ");
+                _size = int.Parse(Console.ReadLine());
+
+                if (_size >= 5)
+                {
+                    BoardSizeHeight = _size;
+                    BoardSizeWidth = _size;
+                    isValidBoardSize = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid board size! The board size must be at least 5.");
+                }
+            }
+
+            // Min grid size 3x3
+            bool isValidGridSize = false;
+            while (!isValidGridSize)
+            {
+                Console.WriteLine("Grid Size: ");
+                _gridSize = int.Parse(Console.ReadLine());
+
+                if (_gridSize >= 3)
+                {
+                    GridSizeHeight = _gridSize;
+                    GridSizeWidth = _gridSize;
+                    isValidGridSize = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid grid size! The grid size must be at least 3.");
+                }
+            }
+
+            // Min amount of pieces 3
+            bool isValidAmountOfPieces = false;
+            while (!isValidAmountOfPieces)
+            {
+                Console.WriteLine("Amount of Pieces: ");
+                AmountOfPieces = int.Parse(Console.ReadLine());
+
+                if (AmountOfPieces >= 3)
+                {
+                    MovePieceAfterNMoves = AmountOfPieces / 2;
+                    isValidAmountOfPieces = true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid amount of pieces! The amount must be at least 3.");
+                }
+            }
+
+            // Must be less than or equal to Amount of Pieces
+            bool isValidWinCondition = false;
+            while (!isValidWinCondition)
+            {
+                Console.WriteLine("Amount of Pieces to Win: ");
+                WinCondition = int.Parse(Console.ReadLine());
+
+                if (WinCondition <= AmountOfPieces && WinCondition > 0)
+                {
+                    isValidWinCondition = true;
+                }
+                else
+                {
+                    Console.WriteLine(
+                        "Invalid input! Amount of Pieces to Win should be less than or equal to the Amount of Pieces and greater than 0.");
+                }
+            }
         }
     }
+
 
     public override string ToString() =>
         $"Board {BoardSizeWidth}x{BoardSizeHeight}, " +
