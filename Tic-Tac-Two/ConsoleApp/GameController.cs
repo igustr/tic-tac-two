@@ -10,8 +10,8 @@ public static class GameController
 {
     private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
     private static readonly IGameRepository GameRepository = new GameRepositoryJson();
-    private static bool _invalidInput = false;
-    private static bool _invalidMove = false;
+    private static bool _invalidInput;
+    private static bool _invalidMove;
     public static int AmountOfPiecesX = 0;
     public static int AmountOfPiecesO = 0;
     private static int _movePieceAfterNMoves = 2;
@@ -59,8 +59,6 @@ public static class GameController
             //Console.WriteLine("O " + AmountOfPiecesO);
             //Console.WriteLine("MovePieceAfterNMoves " + _movePieceAfterNMoves);
             //Console.WriteLine("Next Move By " + gameInstance.NextMoveBy);
-
-           
             
             // Player X Turn
             if (gameInstance.NextMoveBy == EGamePiece.X)
@@ -210,8 +208,7 @@ public static class GameController
             }
         }
     }
-
-
+    
     private static void AmountOfPiecesCounter(TicTacTwoBrain gameInstance)
     {
         if (gameInstance.NextMoveBy == EGamePiece.O)
@@ -252,7 +249,7 @@ public static class GameController
         Console.WriteLine("E) Exit");
         
         Console.Write("> ");
-        var input = Console.ReadLine()!;
+        var input = Console.ReadLine()!.ToUpper();
 
         switch (input)
         {
@@ -262,7 +259,10 @@ public static class GameController
                 gameInstance.ResetGame();
                 break;
             case "S":
-                GameRepository.SaveGame(gameInstance.GetGameStateJson(), gameInstance.GetGameConfigName());
+                Console.WriteLine("Insert game name: ");
+                var gameName = Console.ReadLine() ?? "";
+                GameRepository.SaveGame(gameInstance.GetGameStateJson(), gameInstance.GetGameConfigName(), gameName);
+                Console.WriteLine("\u001b[32mGame Saved!\u001b[0m");
                 break;
             case "E":
                 gameInstance.ExitGame();

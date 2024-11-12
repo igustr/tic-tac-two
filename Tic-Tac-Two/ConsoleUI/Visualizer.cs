@@ -9,7 +9,7 @@ public static class Visualizer
     
     public static void DrawGame(TicTacTwoBrain gameInstance)
     {
-        Console.Clear();
+        //Console.Clear();
         Console.WriteLine("==================================");
         Console.WriteLine("Player: " + gameInstance.NextMoveBy);
         Console.WriteLine();
@@ -79,8 +79,6 @@ public static class Visualizer
             }
 
             Console.WriteLine();
-            
-                // TODO: Pieces amount should also variety on size of board.  
         }
     }
 

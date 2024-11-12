@@ -22,7 +22,7 @@ public class ConfigRepositoryJson : IConfigRepository
         }
         return res;
     }
-
+    
     public GameConfiguration GetConfigurationByName(string name)
     {
         var configJsonStr = System.IO.File.ReadAllText(
