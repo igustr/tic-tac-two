@@ -22,7 +22,17 @@ public class ConfigRepositoryJson : IConfigRepository
         }
         return res;
     }
+    
 
+    public GameConfiguration GetConfigurationByName(string name)
+    {
+        var configJsonStr = System.IO.File.ReadAllText(
+            FileHandler.BasePath + name + FileHandler.ConfigExtension);
+        var config = System.Text.Json.JsonSerializer.Deserialize<GameConfiguration>(configJsonStr);
+        return config;
+
+    }
+    
     public List<string> GetSavedGamesNames()
     {
         var res = new List<string>();
@@ -35,14 +45,13 @@ public class ConfigRepositoryJson : IConfigRepository
         }
         return res;
     }
-
-    public GameConfiguration GetConfigurationByName(string name)
+    
+    public GameConfiguration GetSavedConfigurationByName(string name)
     {
         var configJsonStr = System.IO.File.ReadAllText(
-            FileHandler.BasePath + name + FileHandler.ConfigExtension);
+            FileHandler.BasePath + name + FileHandler.GameExtension);
         var config = System.Text.Json.JsonSerializer.Deserialize<GameConfiguration>(configJsonStr);
         return config;
-
     }
 
     private void _checkAndCreatInitialConfig()

@@ -40,7 +40,7 @@ public static class Menus
             {
                 Shortcut = "N",
                 Title = "New game",
-                MenuItemAction = GameController.MainLoop
+                MenuItemAction = GameController.ChooseConfigurationNewGame
             },
             new MenuItem()
             {
@@ -57,28 +57,6 @@ public static class Menus
         ]);
     
     
-    public static Menu LoadGameMenu = new Menu(
-        EMenuLevel.Main,
-        "OPTIONS MENU", [
-            new MenuItem()
-            {
-                Shortcut = "B",
-                Title = "Back",
-                MenuItemAction = GameController.MainLoop
-            },
-            new MenuItem()
-            {
-                Shortcut = "S",
-                Title = "Save",
-                MenuItemAction = OptionsMenu.Run
-            },            
-            new MenuItem()
-            {
-                Shortcut = "E",
-                Title = "Exit",
-                MenuItemAction = OptionsMenu.Run
-            },
-        ]);
 
     private static string DummyMethod()
     {

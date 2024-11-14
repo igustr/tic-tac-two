@@ -17,19 +17,28 @@ public static class GameController
     private static int _movePieceAfterNMoves = 2;
     
     
-    public static string MainLoop()
+    public static string MainLoop(string chosenConfigShortcut, string gameType)
     {
-        var chosenConfigShortcut = ChooseConfiguration();
-        
-
         if (!int.TryParse(chosenConfigShortcut, out var configNo))
         {
             return chosenConfigShortcut;
         }
 
-        var chosenConfig = ConfigRepository.GetConfigurationByName(
-            ConfigRepository.GetConfigurationNames()[configNo]
-        );
+        GameConfiguration chosenConfig;
+        
+        if (gameType == "new")
+        {
+            chosenConfig = ConfigRepository.GetConfigurationByName(
+                ConfigRepository.GetConfigurationNames()[configNo]
+            );
+        } else 
+        {
+            chosenConfig = ConfigRepository.GetSavedConfigurationByName(
+                ConfigRepository.GetSavedGamesNames()[configNo]
+            );
+            Console.WriteLine("CHOSEN CONFIG: " + chosenConfig);
+        }
+
 
         if (chosenConfig.Name == "Custom")
         {
@@ -38,7 +47,6 @@ public static class GameController
         } 
         
         var gameInstance = new TicTacTwoBrain(chosenConfig);
-
         do
         {
             //Console.Clear();
@@ -277,7 +285,7 @@ public static class GameController
         }
     }
     
-    private static string ChooseConfiguration()
+    public static string ChooseConfigurationNewGame()
     {
         var configMenuItems = new List<MenuItem>();
 
@@ -298,7 +306,10 @@ public static class GameController
             isCustomMenu: true
         );
 
-        return configMenu.Run();
+        var chosenConfig = configMenu.Run();
+
+        MainLoop(chosenConfig, "new");
+        return "new";
     }
     
     public static string ChooseConfigurationLoadGame()
@@ -324,6 +335,9 @@ public static class GameController
             isCustomMenu: true
         );
 
-       return configMenu.Run();
+        var chosenConfig = configMenu.Run();
+
+        MainLoop(chosenConfig, "load");
+        return "load";
     }
 }
