@@ -5,7 +5,6 @@ public class TicTacTwoBrain
     
     public static HashSet<int> GridXCoordinates = new();
     public static HashSet<int> GridYCoordinates = new();
-    
     private readonly GameState _gameState;
     private int _gridXCentre;
     private int _gridYCentre;
@@ -14,7 +13,6 @@ public class TicTacTwoBrain
     
     public TicTacTwoBrain(GameConfiguration gameConfiguration)
     {
-        
         var gameBoard = new EGamePiece[gameConfiguration.BoardSizeWidth][];
         for (var x = 0; x < gameBoard.Length; x++)
         {
@@ -33,7 +31,12 @@ public class TicTacTwoBrain
             grid
         );
     }
-    
+
+    public TicTacTwoBrain(GameState gameState)
+    {
+        _gameState = gameState;
+    }
+
     public string GetGameStateJson() => _gameState.ToString();
     public string GetGameConfigName() => _gameState.GameConfiguration.Name;
     public EGamePiece[][] GameBoard => GetBoard();
@@ -374,5 +377,31 @@ public class TicTacTwoBrain
     public static HashSet<int> GetGridYCoordinates()
     {
         return GridYCoordinates;
+    }
+    
+    public void LoadGame(GameState gameState)
+    {
+        /*
+        _gameState.GameBoard = gameState.GameBoard;
+        _gameState.Grid = gameState.Grid;
+        _gameState.NextMoveBy = gameState.NextMoveBy;
+        _gameState.GridXMove = gameState.GridXMove;
+        _gameState.GridYMove = gameState.GridYMove;
+
+        // Update dimensions based on the loaded game state
+        var gameConfig = gameState.GameConfiguration;
+        DimX = gameConfig.BoardSizeWidth;  // or use _gameState.GameBoard.Length
+        DimY = gameConfig.BoardSizeHeight; // or use _gameState.GameBoard[0].Length
+    
+        GridX = gameState.Grid.Length;
+        GridY = gameState.Grid[0].Length;
+    
+        // You might also need to update GridXCoordinates and GridYCoordinates if they are part of the saved state
+        GridXCoordinates = new HashSet<int>(gameState.GridXCoordinates);
+        GridYCoordinates = new HashSet<int>(gameState.GridYCoordinates);
+
+        // Optionally, you may need to perform additional checks or setup after loading the game
+        GridPlacement();
+        */
     }
 }

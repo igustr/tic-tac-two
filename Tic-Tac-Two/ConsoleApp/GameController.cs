@@ -25,15 +25,18 @@ public static class GameController
         }
 
         GameConfiguration chosenConfig;
-        GameState gameState;
+        TicTacTwoBrain gameInstance;
         
         if (gameType == "load")
         {
-            gameState = ConfigRepository.GetSavedConfigurationByName(
+            var gameState = ConfigRepository.GetSavedConfigurationByName(
                 ConfigRepository.GetSavedGamesNames()[configNo]
             );
             chosenConfig = gameState.GameConfiguration;
+    
+            gameInstance = new TicTacTwoBrain(gameState);
 
+            gameInstance.LoadGame(gameState);
         } else 
         {
             chosenConfig = ConfigRepository.GetConfigurationByName(
@@ -44,10 +47,12 @@ public static class GameController
                 chosenConfig.CustomGameCheck();
                 _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
             } 
+            
+            gameInstance = new TicTacTwoBrain(chosenConfig);
         }
         
         
-        var gameInstance = new TicTacTwoBrain(chosenConfig);
+        //var gameInstance = new TicTacTwoBrain(chosenConfig);
         
         do
         {
