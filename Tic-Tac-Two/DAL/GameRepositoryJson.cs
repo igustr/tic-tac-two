@@ -12,9 +12,9 @@ public class GameRepositoryJson : IGameRepository
         }
         
         var filename = FileHandler.BasePath 
-                       + gameConfigName + "_" + gameName + " " + DateTime.Now.ToString("yyyy.MM.dd - (HH:mm)") 
+                       + gameConfigName + "_" + gameName + " " + DateTime.Now.ToString("yyyy.MM.dd.T.HH.mm.ss") 
                        + FileHandler.GameExtension;
-
+        
         System.IO.File.WriteAllText(filename, jsonStateString);
     }
 }

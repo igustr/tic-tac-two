@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameBrain", "GameBrain\Game
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuSystem", "MenuSystem\MenuSystem.csproj", "{8EF1B410-0579-40C0-AE10-320BE60AE213}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{4ABF94F2-120E-43CE-80FD-A54578F01D04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{8EF1B410-0579-40C0-AE10-320BE60AE213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EF1B410-0579-40C0-AE10-320BE60AE213}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EF1B410-0579-40C0-AE10-320BE60AE213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ABF94F2-120E-43CE-80FD-A54578F01D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ABF94F2-120E-43CE-80FD-A54578F01D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ABF94F2-120E-43CE-80FD-A54578F01D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ABF94F2-120E-43CE-80FD-A54578F01D04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
