@@ -5,6 +5,8 @@ namespace DAL;
 public class ConfigRepositoryHardcoded : IConfigRepository
 {
 
+    private const string Filter = "*";
+    
     private List<GameConfiguration> _gameConfigurations = new List<GameConfiguration>()
     {
         new GameConfiguration()
@@ -23,6 +25,19 @@ public class ConfigRepositoryHardcoded : IConfigRepository
             .OrderBy(x => x.Name)
             .Select(config => config.Name)
             .ToList();
+    }
+    
+    public List<string> GetSavedGamesNames()
+    {
+        var res = new List<string>();
+        foreach (var fullFileName in System.IO.Directory.GetFiles(
+                     FileHandler.BasePath, Filter + FileHandler.GameExtension))
+        {
+            var filenameParts = System.IO.Path.GetFileNameWithoutExtension(fullFileName);
+            var primaryName = System.IO.Path.GetFileNameWithoutExtension(filenameParts);
+            res.Add(primaryName);
+        }
+        return res;
     }
 
     public GameConfiguration GetConfigurationByName(string name)

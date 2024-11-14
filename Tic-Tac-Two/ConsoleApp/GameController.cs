@@ -300,4 +300,30 @@ public static class GameController
 
         return configMenu.Run();
     }
+    
+    public static string ChooseConfigurationLoadGame()
+    {
+        var configMenuItems = new List<MenuItem>();
+
+        for (var i = 0; i < ConfigRepository.GetSavedGamesNames().Count; i++)
+        {
+            var titleString = ConfigRepository.GetSavedGamesNames()[i];
+            var title = titleString.Split(" ");
+            var returnValue = i.ToString();
+            configMenuItems.Add(new MenuItem()
+            {
+                Title = title[0],
+                Shortcut = (i + 1).ToString(),
+                MenuItemAction = () => returnValue
+            });
+        }
+        
+        var configMenu = new Menu(EMenuLevel.Secondary,
+            "TIC-TAC-TOE - choose game config",
+            configMenuItems,
+            isCustomMenu: true
+        );
+
+       return configMenu.Run();
+    }
 }

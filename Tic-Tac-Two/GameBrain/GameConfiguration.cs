@@ -101,6 +101,17 @@ public record struct GameConfiguration()
         }
     }
 
+    /*
+    public void LoadGameConfig()
+    {
+        var gameStateJson = GameRepository.LoadGame(gameName);
+
+        // Optionally set game-specific data if needed
+        MovePieceAfterNMoves = gameInstance.MovePieceAfterNMoves;
+        AmountOfPieces = gameInstance.GetAmountOfPieces(EGamePiece.X);
+        AmountOfPiecesO = gameInstance.GetAmountOfPieces(EGamePiece.O);
+    }
+    */
 
     public override string ToString() =>
         $"Board {BoardSizeWidth}x{BoardSizeHeight}, " +
