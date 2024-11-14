@@ -40,12 +40,14 @@ public class ConfigRepositoryHardcoded : IConfigRepository
         return res;
     }
     
-    public GameConfiguration GetSavedConfigurationByName(string name)
+    public GameState GetSavedConfigurationByName(string name)
     {
+        Console.WriteLine("name: " + name);
         var configJsonStr = System.IO.File.ReadAllText(
-            FileHandler.BasePath + name + FileHandler.ConfigExtension);
-        var config = System.Text.Json.JsonSerializer.Deserialize<GameConfiguration>(configJsonStr);
-        return config;
+            FileHandler.BasePath + name + FileHandler.GameExtension);
+        var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(configJsonStr);
+        
+        return gameState;
     }
 
     public GameConfiguration GetConfigurationByName(string name)

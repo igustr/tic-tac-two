@@ -25,28 +25,30 @@ public static class GameController
         }
 
         GameConfiguration chosenConfig;
+        GameState gameState;
         
-        if (gameType == "new")
+        if (gameType == "load")
+        {
+            gameState = ConfigRepository.GetSavedConfigurationByName(
+                ConfigRepository.GetSavedGamesNames()[configNo]
+            );
+            chosenConfig = gameState.GameConfiguration;
+
+        } else 
         {
             chosenConfig = ConfigRepository.GetConfigurationByName(
                 ConfigRepository.GetConfigurationNames()[configNo]
             );
-        } else 
-        {
-            chosenConfig = ConfigRepository.GetSavedConfigurationByName(
-                ConfigRepository.GetSavedGamesNames()[configNo]
-            );
-            Console.WriteLine("CHOSEN CONFIG: " + chosenConfig);
+            if (chosenConfig.Name == "Custom")
+            {
+                chosenConfig.CustomGameCheck();
+                _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
+            } 
         }
-
-
-        if (chosenConfig.Name == "Custom")
-        {
-            chosenConfig.CustomGameCheck();
-            _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
-        } 
+        
         
         var gameInstance = new TicTacTwoBrain(chosenConfig);
+        
         do
         {
             //Console.Clear();

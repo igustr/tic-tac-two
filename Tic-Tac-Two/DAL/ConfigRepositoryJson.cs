@@ -46,12 +46,14 @@ public class ConfigRepositoryJson : IConfigRepository
         return res;
     }
     
-    public GameConfiguration GetSavedConfigurationByName(string name)
+    public GameState GetSavedConfigurationByName(string name)
     {
+        Console.WriteLine("name: " + name);
         var configJsonStr = System.IO.File.ReadAllText(
             FileHandler.BasePath + name + FileHandler.GameExtension);
-        var config = System.Text.Json.JsonSerializer.Deserialize<GameConfiguration>(configJsonStr);
-        return config;
+        var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(configJsonStr);
+        
+        return gameState;
     }
 
     private void _checkAndCreatInitialConfig()

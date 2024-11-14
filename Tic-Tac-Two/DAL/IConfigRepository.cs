@@ -7,5 +7,5 @@ public interface IConfigRepository
     List<string> GetConfigurationNames();
     GameConfiguration GetConfigurationByName(string name);
     public List<string> GetSavedGamesNames();
-    public GameConfiguration GetSavedConfigurationByName(string name);
+    public GameState GetSavedConfigurationByName(string name);
 }
