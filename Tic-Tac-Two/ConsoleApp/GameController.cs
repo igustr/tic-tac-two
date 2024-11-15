@@ -12,8 +12,8 @@ public static class GameController
     private static readonly IGameRepository GameRepository = new GameRepositoryJson();
     private static bool _invalidInput;
     private static bool _invalidMove;
-    public static int AmountOfPiecesX = 0;
-    public static int AmountOfPiecesO = 0;
+   // public static int AmountOfPiecesXOnBoard = 0;
+   // public static int AmountOfPiecesOOnBoard = 0;
     private static int _movePieceAfterNMoves = 2;
     
     
@@ -78,15 +78,17 @@ public static class GameController
             // Player X Turn
             if (gameInstance.NextMoveBy == EGamePiece.X)
             {
-                if (AmountOfPiecesX < _movePieceAfterNMoves)
+                var amountOfPiecesXOnBoard = gameInstance.GetPieceCounts().Item1;
+                
+                if (amountOfPiecesXOnBoard < _movePieceAfterNMoves)
                 {
                     FirstLevel(gameInstance);
                 }
-                else if (AmountOfPiecesX == chosenConfig.AmountOfPieces)
+                else if (amountOfPiecesXOnBoard == chosenConfig.AmountOfPieces)
                 {
                     ThirdLevel(gameInstance);
                 }
-                else if (AmountOfPiecesX >= _movePieceAfterNMoves)
+                else if (amountOfPiecesXOnBoard >= _movePieceAfterNMoves)
                 {
                     SecondLevel(gameInstance);
                 }
@@ -95,15 +97,17 @@ public static class GameController
             // Player O Turn
             else if (gameInstance.NextMoveBy == EGamePiece.O)
             {
-                if (AmountOfPiecesO < _movePieceAfterNMoves)
+                var amountOfPiecesOOnBoard = gameInstance.GetPieceCounts().Item2;
+                
+                if (amountOfPiecesOOnBoard < _movePieceAfterNMoves)
                 {
                     FirstLevel(gameInstance);
                 }
-                else if (AmountOfPiecesO == chosenConfig.AmountOfPieces)
+                else if (amountOfPiecesOOnBoard == chosenConfig.AmountOfPieces)
                 {
                     ThirdLevel(gameInstance);
                 }
-                else if (AmountOfPiecesO >= _movePieceAfterNMoves)
+                else if (amountOfPiecesOOnBoard >= _movePieceAfterNMoves)
                 {
                     SecondLevel(gameInstance);
                 }
@@ -215,7 +219,6 @@ public static class GameController
             if (gameInstance.MakeAMoveCheck(inputX - 1, inputY - 1))
             {
                 gameInstance.MakeAMove(inputX - 1, inputY - 1);
-                AmountOfPiecesCounter(gameInstance);
             }
             else
             {
@@ -224,16 +227,6 @@ public static class GameController
         }
     }
     
-    private static void AmountOfPiecesCounter(TicTacTwoBrain gameInstance)
-    {
-        if (gameInstance.NextMoveBy == EGamePiece.O)
-        {
-            AmountOfPiecesX += 1;
-        } else if (gameInstance.NextMoveBy == EGamePiece.X)
-        {
-            AmountOfPiecesO += 1;
-        }
-    }
     
     private static string InputCheck()
     {

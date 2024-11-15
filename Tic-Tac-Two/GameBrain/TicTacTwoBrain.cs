@@ -199,12 +199,12 @@ public class TicTacTwoBrain
             }
         }
         
-        /*
+
         Console.WriteLine("grid x coords: " + string.Join(", ", GridXCoordinates));
         Console.WriteLine("grid y coords: " + string.Join(", ", GridYCoordinates));
         Console.WriteLine("------------------------------------------------------");
         Console.WriteLine();
-        */
+
         MoveGridCheck();
     }
 
@@ -377,6 +377,25 @@ public class TicTacTwoBrain
     public static HashSet<int> GetGridYCoordinates()
     {
         return GridYCoordinates;
+    }
+    
+    public (int xCount, int oCount) GetPieceCounts()
+    {
+        var xCount = 0;
+        var oCount = 0;
+
+        foreach (var row in _gameState.GameBoard)
+        {
+            foreach (var piece in row)
+            {
+                if (piece == EGamePiece.X)
+                    xCount++;
+                else if (piece == EGamePiece.O)
+                    oCount++;
+            }
+        }
+
+        return (xCount, oCount);
     }
     
     public void LoadGame(GameState gameState)
