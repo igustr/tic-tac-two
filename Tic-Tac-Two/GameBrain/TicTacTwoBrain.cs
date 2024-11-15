@@ -148,8 +148,8 @@ public class TicTacTwoBrain
         _gridYCentre = (DimY % 2 == 0) ? DimY / 2 : DimY / 2 + 1;
         
         
-        _gridXCentre += _gameState.GridXMove;
-        _gridYCentre += _gameState.GridYMove;
+        _gridXCentre += _gameState.GridXPosition;
+        _gridYCentre += _gameState.GridYPosition;
         
         GridYCoordinates.Add(_gridYCentre);
         GridXCoordinates.Add(_gridXCentre);
@@ -220,46 +220,46 @@ public class TicTacTwoBrain
         Console.Write("> ");
         var directionInput = Console.ReadLine()!.ToUpper();
 
-        _previousGridYMove = _gameState.GridYMove;
-        _previousGridXMove = _gameState.GridXMove;
+        _previousGridYMove = _gameState.GridYPosition;
+        _previousGridXMove = _gameState.GridXPosition;
 
         switch (directionInput)
         {
             case "U":
                 Console.WriteLine("Moving grid Up.");
-                _gameState.GridYMove -= 1;
+                _gameState.GridYPosition -= 1;
                 break;
             case "D":
                 Console.WriteLine("Moving grid Down.");
-                _gameState.GridYMove += 1;
+                _gameState.GridYPosition += 1;
                 break;
             case "L":
                 Console.WriteLine("Moving grid Left.");
-                _gameState.GridXMove -= 1;
+                _gameState.GridXPosition -= 1;
                 break;
             case "R":
                 Console.WriteLine("Moving grid Right.");
-                _gameState.GridXMove += 1;
+                _gameState.GridXPosition += 1;
                 break;
             case "UL":
                 Console.WriteLine("Moving grid Up-Left.");
-                _gameState.GridYMove -= 1;
-                _gameState.GridXMove -= 1;
+                _gameState.GridYPosition -= 1;
+                _gameState.GridXPosition -= 1;
                 break;
             case "UR":
                 Console.WriteLine("Moving grid Up-Right.");
-                _gameState.GridYMove -= 1;
-                _gameState.GridXMove += 1;
+                _gameState.GridYPosition -= 1;
+                _gameState.GridXPosition += 1;
                 break;
             case "DL":
                 Console.WriteLine("Moving grid Down-Left.");
-                _gameState.GridYMove += 1;
-                _gameState.GridXMove -= 1;
+                _gameState.GridYPosition += 1;
+                _gameState.GridXPosition -= 1;
                 break;
             case "DR":
                 Console.WriteLine("Moving grid Down-Right.");
-                _gameState.GridYMove += 1;
-                _gameState.GridXMove += 1;
+                _gameState.GridYPosition += 1;
+                _gameState.GridXPosition += 1;
                 break;
             case "B":
                 Console.WriteLine("Going Back");
@@ -285,8 +285,8 @@ public class TicTacTwoBrain
             Console.WriteLine("You can't make move in this direction. Choose different!");
             Console.WriteLine();
 
-            _gameState.GridYMove = _previousGridYMove;
-            _gameState.GridXMove = _previousGridXMove;
+            _gameState.GridYPosition = _previousGridYMove;
+            _gameState.GridXPosition = _previousGridXMove;
             
             MoveGrid();
             GridPlacement();
