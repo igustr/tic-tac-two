@@ -93,16 +93,18 @@ public class TicTacTwoBrain
 
     public bool MakeAMoveCheck(int x, int y)
     {
-        /*
-        Console.WriteLine("X COORDS: " + string.Join(", ", GridXCoordinates));
-        Console.WriteLine("Y COORDS: " + string.Join(", ", GridYCoordinates));
-        */
+
+        Console.WriteLine("X COORDS: " + x);
+        Console.WriteLine("Y COORDS: " + y);
+        Console.WriteLine("position key: " + _gameState.GameBoard[x][y]);
+        
         if (_gameState.GameBoard[x][y] != EGamePiece.Empty 
-            || !GridXCoordinates.Contains(y + 1) 
-            || !GridYCoordinates.Contains(x + 1))
+            || !GridXCoordinates.Contains(x + 1) 
+            || !GridYCoordinates.Contains(y + 1))
         {
             return false;
         }
+
         return true;
     }
 

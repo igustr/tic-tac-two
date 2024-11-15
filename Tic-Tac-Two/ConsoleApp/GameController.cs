@@ -12,10 +12,7 @@ public static class GameController
     private static readonly IGameRepository GameRepository = new GameRepositoryJson();
     private static bool _invalidInput;
     private static bool _invalidMove;
-   // public static int AmountOfPiecesXOnBoard = 0;
-   // public static int AmountOfPiecesOOnBoard = 0;
     private static int _movePieceAfterNMoves = 2;
-    
     
     public static string MainLoop(string chosenConfigShortcut, string gameType)
     {
