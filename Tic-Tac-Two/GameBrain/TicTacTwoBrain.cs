@@ -321,7 +321,6 @@ public class TicTacTwoBrain
                     return true;
             }
         }
-
         return false;
     }
     

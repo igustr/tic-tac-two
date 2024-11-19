@@ -89,8 +89,8 @@ public static class GameController
                 {
                     SecondLevel(gameInstance);
                 }
-
             } 
+            
             // Player O Turn
             else if (gameInstance.NextMoveBy == EGamePiece.O)
             {
@@ -109,11 +109,8 @@ public static class GameController
                     SecondLevel(gameInstance);
                 }
             }
-            
-            
         } while (true);
     }
-    
     
     private static void FirstLevel(TicTacTwoBrain gameInstance)
     {
