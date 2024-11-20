@@ -7,7 +7,6 @@ public static class FileHandler
                                     + Path.DirectorySeparatorChar + "Tic-Tac-Two" + Path.DirectorySeparatorChar;
     
     public static string ConfigExtension = ".config.json";
-    
     public static string GameExtension = ".game.json";
 
     

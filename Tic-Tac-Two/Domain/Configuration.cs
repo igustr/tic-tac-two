@@ -18,4 +18,10 @@ public class Configuration
     public int BoardHeight { get; set; }    
     
     public ICollection<SaveGame> SaveGames { get; set; }
+
+    public override string ToString()
+    {
+        return "Id: " + Id + ", " + Name + " (" + BoardWidth + "x" + BoardHeight + "), Games: " 
+               + (SaveGames?.Count.ToString() ?? "not joined");
+    }
 }
