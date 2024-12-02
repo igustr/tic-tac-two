@@ -8,4 +8,5 @@ public interface IConfigRepository
     GameConfiguration GetConfigurationByName(string name);
     public List<string> GetSavedGamesNames();
     public GameState GetSavedConfigurationByName(string name);
+    public void SaveConfig(string jsonConfigString);
 }

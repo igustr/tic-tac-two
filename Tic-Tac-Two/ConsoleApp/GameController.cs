@@ -43,13 +43,16 @@ public static class GameController
             {
                 chosenConfig.CustomGameCheck();
                 _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
+                Console.WriteLine("Do you want to save this configuration?(Y/N): ");
+                Console.Write("> ");
+                var input = Console.ReadLine()!;
+                if (input.ToUpper().Equals("Y"))
+                {
+                   ConfigRepository.SaveConfig(chosenConfig.ToJsonString());
+                }
             } 
-            
             gameInstance = new TicTacTwoBrain(chosenConfig);
         }
-        
-        
-        //var gameInstance = new TicTacTwoBrain(chosenConfig);
         
         do
         {

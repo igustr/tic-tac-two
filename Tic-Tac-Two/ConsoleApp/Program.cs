@@ -3,6 +3,7 @@
 using DAL;
 using Domain;
 using GameBrain;
+using ConsoleApp;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -29,4 +30,8 @@ foreach (var conf in ctx.Configurations
 {
     Console.WriteLine(conf);
 }
+
+Menus.MainMenu.Run();
+
+
 

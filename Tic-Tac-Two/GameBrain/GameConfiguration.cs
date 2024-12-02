@@ -101,17 +101,10 @@ public record struct GameConfiguration()
         }
     }
 
-    /*
-    public void LoadGameConfig()
+    public string ToJsonString()
     {
-        var gameStateJson = GameRepository.LoadGame(gameName);
-
-        // Optionally set game-specific data if needed
-        MovePieceAfterNMoves = gameInstance.MovePieceAfterNMoves;
-        AmountOfPieces = gameInstance.GetAmountOfPieces(EGamePiece.X);
-        AmountOfPiecesO = gameInstance.GetAmountOfPieces(EGamePiece.O);
+        return System.Text.Json.JsonSerializer.Serialize(this);
     }
-    */
 
     public override string ToString() =>
         $"Board {BoardSizeWidth}x{BoardSizeHeight}, " +

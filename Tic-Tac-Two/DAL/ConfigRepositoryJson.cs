@@ -51,8 +51,27 @@ public class ConfigRepositoryJson : IConfigRepository
         var configJsonStr = System.IO.File.ReadAllText(
             FileHandler.BasePath + name + FileHandler.GameExtension);
         var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(configJsonStr);
-        Console.WriteLine("game state: " + gameState);
+       // Console.WriteLine("game state: " + gameState);
         return gameState;
+    }
+    
+        
+    public void SaveConfig(string jsonConfigString)
+    {
+        Console.WriteLine("Type configuration name: ");
+        Console.Write("> ");
+        var userConfigName = Console.ReadLine()!;
+        
+        if (!Directory.Exists(FileHandler.BasePath))
+        {
+            Directory.CreateDirectory(FileHandler.BasePath);
+        }
+        
+        var filename = FileHandler.BasePath 
+                       + userConfigName + ".config" + FileHandler.GameExtension;
+        
+        System.IO.File.WriteAllText(filename, jsonConfigString);
+        Console.WriteLine("Configuration Saved!");
     }
 
     private void _checkAndCreatInitialConfig()

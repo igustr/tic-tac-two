@@ -40,6 +40,21 @@ public class ConfigRepositoryHardcoded : IConfigRepository
         return res;
     }
     
+    public void SaveConfig(string jsonConfigString)
+    {
+        var userConfigName = "";
+        
+        if (!Directory.Exists(FileHandler.BasePath))
+        {
+            Directory.CreateDirectory(FileHandler.BasePath);
+        }
+        
+        var filename = FileHandler.BasePath 
+                       + userConfigName + ".config" + FileHandler.GameExtension;
+        
+        System.IO.File.WriteAllText(filename, jsonConfigString);
+    }
+    
     public GameState GetSavedConfigurationByName(string name)
     {
         Console.WriteLine("name: " + name);
