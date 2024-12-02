@@ -26,8 +26,8 @@ public static class GameController
         
         if (gameType == "load")
         {
-            var gameState = ConfigRepository.GetSavedConfigurationByName(
-                ConfigRepository.GetSavedGamesNames()[configNo]
+            var gameState = GameRepository.GetSavedGame(
+                GameRepository.GetSavedGamesNames()[configNo]
             );
             chosenConfig = gameState.GameConfiguration;
     
@@ -313,9 +313,9 @@ public static class GameController
     {
         var configMenuItems = new List<MenuItem>();
 
-        for (var i = 0; i < ConfigRepository.GetSavedGamesNames().Count; i++)
+        for (var i = 0; i < GameRepository.GetSavedGamesNames().Count; i++)
         {
-            var titleString = ConfigRepository.GetSavedGamesNames()[i];
+            var titleString = GameRepository.GetSavedGamesNames()[i];
             var title = titleString.Split(" ");
             var returnValue = i.ToString();
             configMenuItems.Add(new MenuItem()

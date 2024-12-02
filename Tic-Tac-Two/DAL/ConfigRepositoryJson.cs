@@ -23,7 +23,6 @@ public class ConfigRepositoryJson : IConfigRepository
         return res;
     }
     
-
     public GameConfiguration GetConfigurationByName(string name)
     {
         var configJsonStr = System.IO.File.ReadAllText(
@@ -33,29 +32,6 @@ public class ConfigRepositoryJson : IConfigRepository
 
     }
     
-    public List<string> GetSavedGamesNames()
-    {
-        var res = new List<string>();
-        foreach (var fullFileName in System.IO.Directory.GetFiles(
-                     FileHandler.BasePath, Filter + FileHandler.GameExtension))
-        {
-            var filenameParts = System.IO.Path.GetFileNameWithoutExtension(fullFileName);
-            var primaryName = System.IO.Path.GetFileNameWithoutExtension(filenameParts);
-            res.Add(primaryName);
-        }
-        return res;
-    }
-    
-    public GameState GetSavedConfigurationByName(string name)
-    {
-        var configJsonStr = System.IO.File.ReadAllText(
-            FileHandler.BasePath + name + FileHandler.GameExtension);
-        var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(configJsonStr);
-       // Console.WriteLine("game state: " + gameState);
-        return gameState;
-    }
-    
-        
     public void SaveConfig(string jsonConfigString)
     {
         Console.WriteLine("Type configuration name: ");
