@@ -3,9 +3,7 @@
 using DAL;
 using Microsoft.EntityFrameworkCore;
 
-
 var connectionString = $"Data Source={FileHandler.BasePath}app.db";
-
 
 var contextOptions = new DbContextOptionsBuilder<AppDbContext>()
     .UseSqlite(connectionString)
@@ -20,8 +18,6 @@ using var ctx = new AppDbContext(contextOptions);
 Console.WriteLine("here2");
 
 ctx.Database.Migrate();
-
-Console.WriteLine("here3");
 
 Console.WriteLine($"Games in db {ctx.Games.Count()}");
 Console.WriteLine($"Configs in db {ctx.Configurations.Count()}");
