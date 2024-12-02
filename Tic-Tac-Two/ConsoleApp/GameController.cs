@@ -47,8 +47,9 @@ public static class GameController
                 Console.Write("> ");
                 var input = Console.ReadLine()!;
                 if (input.ToUpper().Equals("Y"))
-                {
-                   ConfigRepository.SaveConfig(chosenConfig.ToJsonString());
+                { 
+                    chosenConfig.Name = "User Custom"; 
+                    ConfigRepository.SaveConfig(chosenConfig.ToJsonString());
                 }
             } 
             gameInstance = new TicTacTwoBrain(chosenConfig);

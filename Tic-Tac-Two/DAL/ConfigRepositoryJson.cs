@@ -8,8 +8,6 @@ public class ConfigRepositoryJson : IConfigRepository
 
     public List<string> GetConfigurationNames()
     {
-        //Console.WriteLine("PATH: " + FileHandler.BasePath);
-        
         _checkAndCreatInitialConfig();
 
         var res = new List<string>();
@@ -20,6 +18,7 @@ public class ConfigRepositoryJson : IConfigRepository
             var primaryName = System.IO.Path.GetFileNameWithoutExtension(filenameParts);
             res.Add(primaryName);
         }
+        
         return res;
     }
     
@@ -44,7 +43,7 @@ public class ConfigRepositoryJson : IConfigRepository
         }
         
         var filename = FileHandler.BasePath 
-                       + userConfigName + ".config" + FileHandler.GameExtension;
+                       + userConfigName + FileHandler.ConfigExtension;
         
         System.IO.File.WriteAllText(filename, jsonConfigString);
         Console.WriteLine("Configuration Saved!");
@@ -72,7 +71,6 @@ public class ConfigRepositoryJson : IConfigRepository
                     Path.Combine(FileHandler.BasePath, gameOption.Name + FileHandler.ConfigExtension), 
                     optionJsonStr
                 );
-
             }
         }
     }
