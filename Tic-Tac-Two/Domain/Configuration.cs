@@ -2,26 +2,21 @@
 
 namespace Domain;
 
-public class Configuration
+public class Configuration : BaseEntity
 {
     //Primary Key
-    public int Id { get; set; }
-
-    
-    [MaxLength(128)] 
+    [MaxLength(128)]
     public string Name { get; set; } = default!;
+    public int BoardSizeWidth { get; set; }
+    public int BoardSizeHeight { get; set; }
+    // how many pieces in straight to win the game
+    public int WinCondition { get; set; }
+    // 0 disabled
+    public int MovePieceAfterNMoves { get; set; }
+    public int AmountOfPieces { get; set; }
+    public int GridSizeHeight { get; set; }
+    public int GridSizeWidth { get; set; }
 
-    [MaxLength(10240)] 
-    public string State { get; set; }
-    
-    public int BoardWidth { get; set; }
-    public int BoardHeight { get; set; }    
-    
-    public ICollection<SaveGame> SaveGames { get; set; }
+    public ICollection<Game>? Games { get; set; }
 
-    public override string ToString()
-    {
-        return "Id: " + Id + ", " + Name + " (" + BoardWidth + "x" + BoardHeight + "), Games: " 
-               + (SaveGames?.Count.ToString() ?? "not joined");
-    }
 }
