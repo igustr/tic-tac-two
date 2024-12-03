@@ -1,7 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using ConsoleApp;
 using DAL;
 using Microsoft.EntityFrameworkCore;
+
+
+//Menus.MainMenu.Run();
+
 
 var connectionString = $"Data Source={FileHandler.BasePath}app.db";
 
@@ -11,11 +16,7 @@ var contextOptions = new DbContextOptionsBuilder<AppDbContext>()
     .EnableSensitiveDataLogging()
     .Options;
 
-Console.WriteLine("here1");
-
 using var ctx = new AppDbContext(contextOptions);
-
-Console.WriteLine("here2");
 
 ctx.Database.Migrate();
 
@@ -29,4 +30,4 @@ foreach (var conf in ctx.Configurations
     Console.WriteLine(conf);
 }
 
-//Menus.MainMenu.Run();
+Menus.MainMenu.Run();
