@@ -41,7 +41,7 @@ public static class GameController
             );
             if (chosenConfig.Name == "Custom")
             {
-                chosenConfig.CustomGameCheck();
+                chosenConfig = ConfigsController.CustomGameCheck();
                 _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
                 Console.WriteLine("Do you want to save this configuration?(Y/N): ");
                 Console.Write("> ");

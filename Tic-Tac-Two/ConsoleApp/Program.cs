@@ -46,9 +46,6 @@ var gameRepository = new GameRepositoryDB(db);
 var configRepository = new ConfigRepositoryJson();
 var gameRepository = new GameRepositoryJson();
 
-Console.WriteLine("conf repo:" + configRepository);
-Console.WriteLine("game repo:" + gameRepository);
-
 Console.WriteLine($"Games in db {db.Games.Count()}");
 Console.WriteLine($"Configs in db {db.Configurations.Count()}");
 
