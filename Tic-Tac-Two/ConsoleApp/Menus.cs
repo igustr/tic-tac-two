@@ -50,14 +50,14 @@ public static class Menus
             {
                 Shortcut = "D",
                 Title = "Default",
-                MenuItemAction = () => GameController.MainLoop("0","new", 
+                MenuItemAction = () => GameController.MainLoop("1","new", 
                     _configRepository, _gameRepository)
             },
             new MenuItem()
             {
                 Shortcut = "C",
                 Title = "Custom",
-                MenuItemAction = () => GameController.MainLoop("1","new", 
+                MenuItemAction = () => GameController.MainLoop("2","new", 
                     _configRepository, _gameRepository)
             },
         ]);
