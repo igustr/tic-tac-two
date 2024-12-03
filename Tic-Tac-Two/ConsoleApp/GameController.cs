@@ -8,13 +8,13 @@ namespace ConsoleApp;
 
 public static class GameController
 {
-    private static readonly IConfigRepository ConfigRepository = new ConfigRepositoryJson();
-    private static readonly IGameRepository GameRepository = new GameRepositoryJson();
+
     private static bool _invalidInput;
     private static bool _invalidMove;
     private static int _movePieceAfterNMoves = 2;
     
-    public static string MainLoop(string chosenConfigShortcut, string gameType)
+    public static string MainLoop(string chosenConfigShortcut, string gameType,
+        IConfigRepository configRepository, IGameRepository gameRepository)
     {
         if (!int.TryParse(chosenConfigShortcut, out var configNo))
         {
@@ -26,8 +26,8 @@ public static class GameController
         
         if (gameType == "load")
         {
-            var gameState = GameRepository.GetSavedGame(
-                GameRepository.GetSavedGamesNames()[configNo]
+            var gameState = gameRepository.GetSavedGame(
+                gameRepository.GetSavedGamesNames()[configNo]
             );
             chosenConfig = gameState.GameConfiguration;
     
@@ -36,8 +36,8 @@ public static class GameController
             gameInstance.LoadGame(gameState);
         } else 
         {
-            chosenConfig = ConfigRepository.GetConfigurationByName(
-                ConfigRepository.GetConfigurationNames()[configNo]
+            chosenConfig = configRepository.GetConfigurationByName(
+                configRepository.GetConfigurationNames()[configNo]
             );
             if (chosenConfig.Name == "Custom")
             {
@@ -49,7 +49,7 @@ public static class GameController
                 if (input.ToUpper().Equals("Y"))
                 { 
                     chosenConfig.Name = "User Custom"; 
-                    ConfigRepository.SaveConfig(chosenConfig.ToJsonString());
+                    configRepository.SaveConfig(chosenConfig.ToJsonString());
                 }
             } 
             gameInstance = new TicTacTwoBrain(chosenConfig);
@@ -83,15 +83,15 @@ public static class GameController
                 
                 if (amountOfPiecesXOnBoard < _movePieceAfterNMoves)
                 {
-                    FirstLevel(gameInstance);
+                    FirstLevel(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesXOnBoard == chosenConfig.AmountOfPieces)
                 {
-                    ThirdLevel(gameInstance);
+                    ThirdLevel(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesXOnBoard >= _movePieceAfterNMoves)
                 {
-                    SecondLevel(gameInstance);
+                    SecondLevel(gameInstance, gameRepository);
                 }
             } 
             
@@ -102,21 +102,21 @@ public static class GameController
                 
                 if (amountOfPiecesOOnBoard < _movePieceAfterNMoves)
                 {
-                    FirstLevel(gameInstance);
+                    FirstLevel(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesOOnBoard == chosenConfig.AmountOfPieces)
                 {
-                    ThirdLevel(gameInstance);
+                    ThirdLevel(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesOOnBoard >= _movePieceAfterNMoves)
                 {
-                    SecondLevel(gameInstance);
+                    SecondLevel(gameInstance, gameRepository);
                 }
             }
         } while (true);
     }
     
-    private static void FirstLevel(TicTacTwoBrain gameInstance)
+    private static void FirstLevel(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
     {
         Console.WriteLine();
         Console.WriteLine("1) Type <x,y> - Insert coordinates");
@@ -126,7 +126,7 @@ public static class GameController
 
         if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
         {
-            GameOptionsMenu(gameInstance);
+            GameOptionsMenu(gameInstance, gameRepository);
         }
         else
         {
@@ -134,7 +134,7 @@ public static class GameController
         }
     }
 
-    private static void SecondLevel(TicTacTwoBrain gameInstance)
+    private static void SecondLevel(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
     {
         Console.WriteLine();
         Console.WriteLine("1) Type <x,y> - Insert coordinates");
@@ -151,7 +151,7 @@ public static class GameController
             gameInstance.MoveGrid();
         } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
         {
-            GameOptionsMenu(gameInstance);
+            GameOptionsMenu(gameInstance, gameRepository);
         } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
         {
             bool moveSuccessful;
@@ -170,7 +170,7 @@ public static class GameController
         }
     }
 
-    private static void ThirdLevel(TicTacTwoBrain gameInstance)
+    private static void ThirdLevel(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
     {
         Console.WriteLine();
         Console.WriteLine("M) Move Piece");
@@ -187,7 +187,7 @@ public static class GameController
             gameInstance.MoveGrid();
         } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
         {
-            GameOptionsMenu(gameInstance);
+            GameOptionsMenu(gameInstance, gameRepository);
         } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
         {
             bool moveSuccessful;
@@ -225,7 +225,6 @@ public static class GameController
         }
     }
     
-    
     private static string InputCheck()
     {
         if (_invalidInput)
@@ -244,7 +243,7 @@ public static class GameController
         return "";
     }
 
-    private static void GameOptionsMenu(TicTacTwoBrain gameInstance)
+    private static void GameOptionsMenu(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
     {
         Console.Clear();
         Console.WriteLine("GAME OPTIONS");
@@ -267,7 +266,7 @@ public static class GameController
             case "S":
                 Console.WriteLine("Insert game name: ");
                 var gameName = Console.ReadLine() ?? "";
-                GameRepository.SaveGame(gameInstance.GetGameStateJson(), gameInstance.GetGameConfigName(), gameName);
+                gameRepository.SaveGame(gameInstance.GetGameStateJson(), gameInstance.GetGameConfigName(), gameName);
                 Console.WriteLine("\u001b[32mGame Saved!\u001b[0m");
                 break;
             case "E":
@@ -281,61 +280,5 @@ public static class GameController
                 Console.WriteLine("E) Exit");
                 break;
         }
-    }
-    
-    public static string ChooseConfigurationNewGame()
-    {
-        var configMenuItems = new List<MenuItem>();
-
-        for (var i = 0; i < ConfigRepository.GetConfigurationNames().Count; i++)
-        {
-            var returnValue = i.ToString();
-            configMenuItems.Add(new MenuItem()
-            {
-                Title = ConfigRepository.GetConfigurationNames()[i],
-                Shortcut = (i + 1).ToString(),
-                MenuItemAction = () => returnValue
-            });
-        }
-        
-        var configMenu = new Menu(EMenuLevel.Secondary,
-            "TIC-TAC-TOE - choose game config",
-            configMenuItems,
-            isCustomMenu: true
-        );
-
-        var chosenConfig = configMenu.Run();
-
-        MainLoop(chosenConfig, "new");
-        return "new";
-    }
-    
-    public static string ChooseConfigurationLoadGame()
-    {
-        var configMenuItems = new List<MenuItem>();
-
-        for (var i = 0; i < GameRepository.GetSavedGamesNames().Count; i++)
-        {
-            var titleString = GameRepository.GetSavedGamesNames()[i];
-            var title = titleString.Split(" ");
-            var returnValue = i.ToString();
-            configMenuItems.Add(new MenuItem()
-            {
-                Title = title[0],
-                Shortcut = (i + 1).ToString(),
-                MenuItemAction = () => returnValue
-            });
-        }
-        
-        var configMenu = new Menu(EMenuLevel.Secondary,
-            "TIC-TAC-TOE - choose game config",
-            configMenuItems,
-            isCustomMenu: true
-        );
-
-        var chosenConfig = configMenu.Run();
-
-        MainLoop(chosenConfig, "load");
-        return "load";
     }
 }

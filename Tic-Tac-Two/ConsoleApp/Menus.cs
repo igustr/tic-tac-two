@@ -1,9 +1,19 @@
 ﻿using MenuSystem;
+using DAL;
 
 namespace ConsoleApp;
 
 public static class Menus
 {
+    private static IConfigRepository _configRepository = default!;
+    private static IGameRepository _gameRepository = default!;
+
+    public static void Init(IConfigRepository configRepository, IGameRepository gameRepository)
+    {
+        _configRepository = configRepository;
+        _gameRepository = gameRepository;
+    }
+    
     public static readonly Menu DeepMenu = new Menu(
         EMenuLevel.Deep,
         "TIC-TAC-TOE DEEP", [
@@ -33,6 +43,25 @@ public static class Menus
                 },
             ]);
 
+    public static readonly Menu NewGameMenu = new Menu(
+        EMenuLevel.Secondary,
+        "TIC-TAC-TOE Games", [
+            new MenuItem()
+            {
+                Shortcut = "D",
+                Title = "Default",
+                MenuItemAction = () => GameController.MainLoop("0","new", 
+                    _configRepository, _gameRepository)
+            },
+            new MenuItem()
+            {
+                Shortcut = "C",
+                Title = "Custom",
+                MenuItemAction = () => GameController.MainLoop("1","new", 
+                    _configRepository, _gameRepository)
+            },
+        ]);
+    
     public static Menu MainMenu = new Menu(
         EMenuLevel.Main,
         "TIC-TAC-TOE", [
@@ -40,24 +69,29 @@ public static class Menus
             {
                 Shortcut = "N",
                 Title = "New game",
-                MenuItemAction = GameController.ChooseConfigurationNewGame
+                MenuItemAction = NewGameMenu.Run
             },
             new MenuItem()
             {
                 Shortcut = "L",
                 Title = "Load game",
-                MenuItemAction = GameController.ChooseConfigurationLoadGame
+                MenuItemAction = () => LoadGameController.ChooseConfigurationLoadGame(_configRepository, _gameRepository)
             },
             new MenuItem()
             {
-            Shortcut = "O",
-            Title = "Options",
-            MenuItemAction = OptionsMenu.Run
+                Shortcut = "C",
+                Title = "Configurations",
+                MenuItemAction = () => ConfigsController.ChooseSavedConfiguration(_configRepository, _gameRepository)
+            },
+            new MenuItem()
+            {
+                Shortcut = "O",
+                Title = "Options",
+                MenuItemAction = OptionsMenu.Run
             },
         ]);
-    
-    
 
+    
     private static string DummyMethod()
     {
         Console.Write("Just press any key to get out from here! (Any key - as a random choice from keyboard....)");
