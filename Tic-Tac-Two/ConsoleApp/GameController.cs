@@ -27,7 +27,7 @@ public static class GameController
         if (gameType == "load")
         {
             Console.WriteLine("configNo: " + configNo);
-            var gameState = gameRepository.GetSavedGame(
+            var gameState = gameRepository.GetSavedGameByName(
                 gameRepository.GetSavedGamesNames()[configNo]
             );
             chosenConfig = gameState.GameConfiguration;

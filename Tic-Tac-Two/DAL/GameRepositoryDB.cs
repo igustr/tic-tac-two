@@ -11,16 +11,16 @@ public class GameRepositoryDB : IGameRepository
     {
         _context = context;
     }
-
     
     public void SaveGame(string jsonStateString, string gameConfigName, string gameName)
     {
-        var config = _context.Configurations.First(c => c.Name == gameConfigName);
+
+       //var config = _context.Configurations.First(c => c.Name == gameConfigName);
+
         var game = new Game()
         {
-            GameState = jsonStateString,
-            NextMoveBy = 1, //TODO: CHANGE
-            ConfigId = config.Id
+            GameName = gameName,
+            GameState = jsonStateString
         };
         _context.Games.Add(game);
         _context.SaveChanges();
@@ -29,11 +29,25 @@ public class GameRepositoryDB : IGameRepository
 
     public List<string> GetSavedGamesNames()
     {
-        throw new NotImplementedException();
+        var savedGamesNames = _context.Configurations
+            .OrderBy(c => c.Name)
+            .Select(c => c.Name)
+            .ToList();
+
+        return savedGamesNames;
     }
 
-    public GameState GetSavedGame(string name)
+    public GameState GetSavedGameByName(string name)
     {
-        throw new NotImplementedException();
+        var data = _context.Configurations.First(c => c.Name == name);
+        
+        if (data == null)
+        {
+            // Log or throw a custom exception if needed
+            throw new KeyNotFoundException($"Game with name '{name}' not found.");
+        }
+        
+       // var config = System.Text.Json.JsonSerializer.Deserialize<GameConfiguration>(configJsonStr);
+        return null;
     }
 }

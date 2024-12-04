@@ -33,7 +33,7 @@ public class GameRepositoryJson : IGameRepository
         return res;
     }
     
-    public GameState GetSavedGame(string name)
+    public GameState GetSavedGameByName(string name)
     {
         var configJsonStr = System.IO.File.ReadAllText(
             FileHandler.BasePath + name + FileHandler.GameExtension);
