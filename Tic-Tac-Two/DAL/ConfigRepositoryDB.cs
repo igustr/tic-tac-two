@@ -38,7 +38,7 @@ public class ConfigRepositoryDB : IConfigRepository
             Name = data.Name,
             BoardSizeWidth = data.BoardSizeWidth,
             BoardSizeHeight = data.BoardSizeHeight,
-            GridSizeHeight = data.BoardSizeHeight,
+            GridSizeHeight = data.GridSizeHeight,
             GridSizeWidth = data.GridSizeWidth,
             WinCondition = data.WinCondition,
             MovePieceAfterNMoves = data.MovePieceAfterNMoves,

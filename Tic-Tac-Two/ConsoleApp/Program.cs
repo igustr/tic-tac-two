@@ -39,12 +39,12 @@ optionsBuilder.UseSqlite(connectionString);
 using var db = new AppDbContext(optionsBuilder.Options);
   
 
-//var configRepository = new ConfigRepositoryDB(db);
-//var gameRepository = new GameRepositoryDB(db);
+var configRepository = new ConfigRepositoryDB(db);
+var gameRepository = new GameRepositoryDB(db);
 
 
-var configRepository = new ConfigRepositoryJson();
-var gameRepository = new GameRepositoryJson();
+//var configRepository = new ConfigRepositoryJson();
+//var gameRepository = new GameRepositoryJson();
 
 Console.WriteLine($"Games in db {db.Games.Count()}");
 Console.WriteLine($"Configs in db {db.Configurations.Count()}");
