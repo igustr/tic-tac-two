@@ -201,11 +201,12 @@ public class TicTacTwoBrain
             }
         }
         
-
+        /*
         Console.WriteLine("grid x coords: " + string.Join(", ", GridXCoordinates));
         Console.WriteLine("grid y coords: " + string.Join(", ", GridYCoordinates));
         Console.WriteLine("------------------------------------------------------");
         Console.WriteLine();
+        */
 
         MoveGridCheck();
     }

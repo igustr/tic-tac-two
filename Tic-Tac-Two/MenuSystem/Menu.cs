@@ -41,10 +41,12 @@ public class Menu
 
         MenuHeader = menuHeader;
 
+        /*
         if (menuItems == null || menuItems.Count == 0)
         {
             throw new ApplicationException("Menu items cannot be empty.");
         }
+        */
 
         MenuItems = menuItems;
         _isCustomMenu = isCustomMenu;

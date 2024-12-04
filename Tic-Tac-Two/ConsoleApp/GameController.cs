@@ -26,6 +26,7 @@ public static class GameController
         
         if (gameType == "load")
         {
+            Console.WriteLine("configNo: " + configNo);
             var gameState = gameRepository.GetSavedGame(
                 gameRepository.GetSavedGamesNames()[configNo]
             );
@@ -34,12 +35,18 @@ public static class GameController
             gameInstance = new TicTacTwoBrain(gameState);
 
             gameInstance.LoadGame(gameState);
-        } else 
+        } 
+        else 
         {
-            chosenConfig = configRepository.GetConfigurationByName(
-                configRepository.GetConfigurationNames()[configNo]
-            );
-            if (chosenConfig.Name == "Custom")
+            // load config and start new game
+            if (gameType == "loadConfig")
+            {
+                var allConfigs = configRepository.GetConfigurationNames();
+                chosenConfig = configRepository.GetConfigurationByName(allConfigs[configNo]);
+                
+            } 
+            // custom game
+            else if (chosenConfigShortcut == "2")
             {
                 chosenConfig = ConfigsController.CustomGameCheck();
                 _movePieceAfterNMoves = chosenConfig.MovePieceAfterNMoves;
@@ -51,7 +58,12 @@ public static class GameController
                     chosenConfig.Name = "User Custom"; 
                     configRepository.SaveConfig(chosenConfig.ToJsonString());
                 }
-            } 
+            }
+            // new game
+            else
+            {
+                chosenConfig = new GameConfiguration();
+            }
             gameInstance = new TicTacTwoBrain(chosenConfig);
         }
         

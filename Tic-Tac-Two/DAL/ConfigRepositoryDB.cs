@@ -1,4 +1,6 @@
-﻿using GameBrain;
+﻿using System.Text.Json;
+using Domain;
+using GameBrain;
 
 namespace DAL;
 
@@ -13,15 +15,24 @@ public class ConfigRepositoryDB : IConfigRepository
     
     public List<string> GetConfigurationNames()
     {
-        return _context.Configurations
+        var configNames = _context.Configurations
             .OrderBy(c => c.Name)
             .Select(c => c.Name)
             .ToList();
+
+        return configNames;
     }
 
     public GameConfiguration GetConfigurationByName(string name)
     {
         var data = _context.Configurations.First(c => c.Name == name);
+        
+        if (data == null)
+        {
+            // Log or throw a custom exception if needed
+            throw new KeyNotFoundException($"Configuration with name '{name}' not found.");
+        }
+        
         var res = new GameConfiguration()
         {
             Name = data.Name,
@@ -38,6 +49,33 @@ public class ConfigRepositoryDB : IConfigRepository
 
     public void SaveConfig(string jsonConfigString)
     {
-        throw new NotImplementedException();
+        // Deserialize the JSON string to a GameConfiguration object
+        var config = JsonSerializer.Deserialize<GameConfiguration>(jsonConfigString);
+
+        if (config == null)
+        {
+            throw new InvalidOperationException("Failed to deserialize configuration.");
+        }
+        
+        Console.WriteLine("Type configuration name: ");
+        Console.Write("> ");
+        var userConfigName = Console.ReadLine()!;
+
+        // Create a new ConfigEntity from GameConfiguration
+        var configEntity = new Configuration
+        {
+            Name = userConfigName,
+            BoardSizeWidth = config.BoardSizeWidth,
+            BoardSizeHeight = config.BoardSizeHeight,
+            GridSizeWidth = config.GridSizeWidth,
+            GridSizeHeight = config.GridSizeHeight,
+            WinCondition = config.WinCondition,
+            MovePieceAfterNMoves = config.MovePieceAfterNMoves,
+            AmountOfPieces = config.AmountOfPieces
+        };
+        
+        _context.Configurations.Add(configEntity);
+        
+        _context.SaveChanges();
     }
 }

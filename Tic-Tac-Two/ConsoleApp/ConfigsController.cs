@@ -33,7 +33,7 @@ public static class ConfigsController
 
         var chosenConfig = configMenu.Run();
 
-        GameController.MainLoop(chosenConfig, "new", configRepository, gameRepository);
+        GameController.MainLoop(chosenConfig, "loadConfig", configRepository, gameRepository);
         return "new";
     }
 
