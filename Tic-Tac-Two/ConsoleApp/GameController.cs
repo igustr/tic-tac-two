@@ -33,8 +33,6 @@ public static class GameController
             chosenConfig = gameState.GameConfiguration;
     
             gameInstance = new TicTacTwoBrain(gameState);
-
-            gameInstance.LoadGame(gameState);
         } 
         else 
         {

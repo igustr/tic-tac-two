@@ -82,7 +82,7 @@ public static class Visualizer
         }
     }
 
-    private static string DrawGamePiece(EGamePiece piece) =>
+    public static string DrawGamePiece(EGamePiece piece) =>
         piece switch
         {
             EGamePiece.O => "O",

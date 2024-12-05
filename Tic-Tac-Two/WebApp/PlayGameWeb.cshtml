@@ -1,0 +1,21 @@
+﻿@page
+@model WebApp.PlayGameWeb
+
+<h1>@Model.TicTacTwoBrain.GetGameConfigName()</h1>
+@{
+    
+}
+
+<table class="table">
+    @foreach (var row in Model.TicTacTwoBrain.GameBoard)
+    {
+        <tr>
+            @foreach (var piece in row)
+            {
+                <td>
+                    @ConsoleUI.Visualizer.DrawGamePiece(piece)
+                </td>
+            }
+        </tr>  
+    }
+</table>

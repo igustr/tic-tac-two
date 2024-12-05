@@ -400,29 +400,4 @@ public class TicTacTwoBrain
         return (xCount, oCount);
     }
     
-    public void LoadGame(GameState gameState)
-    {
-        /*
-        _gameState.GameBoard = gameState.GameBoard;
-        _gameState.Grid = gameState.Grid;
-        _gameState.NextMoveBy = gameState.NextMoveBy;
-        _gameState.GridXMove = gameState.GridXMove;
-        _gameState.GridYMove = gameState.GridYMove;
-
-        // Update dimensions based on the loaded game state
-        var gameConfig = gameState.GameConfiguration;
-        DimX = gameConfig.BoardSizeWidth;  // or use _gameState.GameBoard.Length
-        DimY = gameConfig.BoardSizeHeight; // or use _gameState.GameBoard[0].Length
-    
-        GridX = gameState.Grid.Length;
-        GridY = gameState.Grid[0].Length;
-    
-        // You might also need to update GridXCoordinates and GridYCoordinates if they are part of the saved state
-        GridXCoordinates = new HashSet<int>(gameState.GridXCoordinates);
-        GridYCoordinates = new HashSet<int>(gameState.GridYCoordinates);
-
-        // Optionally, you may need to perform additional checks or setup after loading the game
-        GridPlacement();
-        */
-    }
 }
