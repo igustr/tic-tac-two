@@ -1,41 +1,39 @@
-﻿using Azure.Identity;
-using DAL;
-using Domain;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace WebApp.Pages;
 
 public class Home : PageModel
 {
-    private readonly IConfigRepository _configRepository;
+    private readonly ILogger<Home> _logger;
 
-    public Home(IConfigRepository configRepository)
+    public Home(ILogger<Home> logger)
     {
-        _configRepository = configRepository;
+        _logger = logger;
     }
 
-
     [BindProperty(SupportsGet = true)]
-    public string UserName { get; set; } = default!;
-
-    public SelectList ConfigSelectList { get; set; } = default!;
+    public string? Error { get; set; }
 
     [BindProperty]
-    public int ConfigId { get; set; }
-    
-    public IActionResult OnGet()
+    public string? Password { get; set; }
+
+    public void OnGet()
     {
-        if (string.IsNullOrEmpty(UserName)) return RedirectToPage("./Index", new { error = "No username provided." });
-
-        ViewData["UserName"] = UserName;
-
-        var selectListData = _configRepository.GetConfigurationNames()
-            .Select(name => new {id = name, value = name})
-            .ToList();
+    }
+    
+    public IActionResult OnPost()
+    {
+        Password = Password?.Trim();
         
-        ConfigSelectList = new SelectList(selectListData, "id", "value");
+        if (!string.IsNullOrWhiteSpace(Password)) //TODO: and check if game with this password exists 
+        {
+            return RedirectToPage("./PlayGameWeb", new { password = Password });
+        }
+        
+        Error = "Please enter a password.";
         
         return Page();
     }

@@ -16,20 +16,13 @@
 </div>
 }
 
-<div class="row">
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control"/>
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
-            </div>
-        </form>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6 text-center">
+        <div class="btn-group-vertical" role="group" style="width: 100%;">
+            <a asp-page="/NewGame" class="btn btn-info btn-lg mb-2">New Game</a>
+            <a asp-page="/Load" class="btn btn-info btn-lg mb-2">Load Game</a>
+            <a asp-page="/ChooseConfig" class="btn btn-info btn-lg mb-2">Configurations</a>
+            <a asp-page="/Home" class="btn btn-success btn-lg">Connect to Existing Game</a>
+        </div>
     </div>
 </div>

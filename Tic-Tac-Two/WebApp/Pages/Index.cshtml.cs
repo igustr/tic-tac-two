@@ -14,27 +14,30 @@ public class IndexModel : PageModel
 
     [BindProperty(SupportsGet = true)]
     public string? Error { get; set; }
-
-    [BindProperty]
-    public string? UserName { get; set; }
+    
 
     public void OnGet()
     {
     }
     
-    public IActionResult OnPost()
+    public IActionResult OnPostNewGame()
     {
-        UserName = UserName?.Trim();
-        
-        if (!string.IsNullOrWhiteSpace(UserName))
-        {
-            return RedirectToPage("./Home", new { userName = UserName });
-        }
-        
-        Error = "Please enter a username.";
-        
-        return Page();
+        return RedirectToPage("./PlayGameWeb");
     }
-    
-    
+
+    public IActionResult OnPostLoadGame()
+    {
+        return RedirectToPage("./Load");
+    }
+
+    public IActionResult OnPostConfigurations()
+    {
+        return RedirectToPage("./ChooseConfig");
+    }
+
+    public IActionResult OnPostConnectToGame()
+    {
+        return RedirectToPage("./Home");
+    }
+   
 }
