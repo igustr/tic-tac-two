@@ -1,4 +1,6 @@
 ﻿using DAL;
+using Domain;
+using GameBrain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,11 +15,9 @@ public class ChooseConfig : PageModel
     {
         _configRepository = configRepository;
     }
-
     [BindProperty]
-    public string? GameName { get; set; }
+    public string? ConfigName { get; set; } 
     public SelectList ConfigSelectList { get; set; } = default!;
-
 
     
     public IActionResult OnGet()
@@ -40,7 +40,7 @@ public class ChooseConfig : PageModel
                 .ToList();
 
             ConfigSelectList = new SelectList(selectListData, "id", "value");
-            return RedirectToPage("./PlayGameWeb", new { gameName = GameName, gameType = "loadConfig" });
+            return RedirectToPage("./PlayGameWeb", new { configName = ConfigName, gameType = "loadConfig" });
         }
         
         return Page();

@@ -1,0 +1,28 @@
+﻿@page
+@model WebApp.Pages.Custom
+
+<h1>New Custom Game</h1>
+
+<!DOCTYPE html>
+
+
+//TODO: MAKE CHECKS
+<form method="post">
+    <label for="customString">Board size: </label>
+    <input type="text" id="boardSize" name="customString" required />
+    <br />
+
+    <label for="customString">Grid Size: </label>
+    <input type="text" id="gridSize" name="customString" required />
+    <br />
+
+    <label for="customString">Amount of Pieces: </label>
+    <input type="text" id="piecesAmount" name="customString" required />
+    <br />
+
+    <label for="customString">Amount of Pieces to Win: </label>
+    <input type="text" id="piecesToWin" name="customString" required />
+    <br />
+
+    <button type="submit">Submit</button>
+</form>

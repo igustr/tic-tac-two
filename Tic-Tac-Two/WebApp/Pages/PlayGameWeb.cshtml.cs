@@ -1,6 +1,7 @@
 ﻿using DAL;
 using GameBrain;
 using ConsoleUI;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -18,7 +19,7 @@ public class PlayGameWeb : PageModel
     }
 
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
-    [BindProperty(SupportsGet = true)] public int ConfigNo { get; set; } = default!;
+    [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
@@ -33,7 +34,7 @@ public class PlayGameWeb : PageModel
         }
         else if (gameType == "loadConfig")
         {
-            var chosenConfig = _configRepository.GetConfigurationByName(GameName);
+            var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
             TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
         }
         else
