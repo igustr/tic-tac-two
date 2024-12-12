@@ -25,6 +25,7 @@ public class ConfigRepositoryDB : IConfigRepository
 
     public GameConfiguration GetConfigurationByName(string name)
     {
+        //Console.WriteLine("name: " + name);
         var data = _context.Configurations.First(c => c.Name == name);
         
         if (data == null)

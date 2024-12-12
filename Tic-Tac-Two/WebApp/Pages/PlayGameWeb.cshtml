@@ -1,24 +1,26 @@
 ﻿@page
 @using GameBrain
+@using ConsoleUI
 @model WebApp.Pages.PlayGameWeb
 
+<h2>Tic-Tac-Two</h2>
 
-Next move by: @Model.TicTacToeBrain.NextMoveBy
+<p>Next move by: @Model.TicTacTwoBrain.NextMoveBy</p>
 
 <table class="" border="1">
-    @for (int y = 0; y < Model.TicTacToeBrain.DimY; y++)
+    @for (int y = 0; y < Model.TicTacTwoBrain.DimY; y++)
     {
     <tr>
-        @for (int x = 0; x < Model.TicTacToeBrain.DimX; x++)
+        @for (int x = 0; x < Model.TicTacTwoBrain.DimX; x++)
         {
         <td>
-            @if (Model.TicTacToeBrain.GameBoard[x][y] == EGamePiece.Empty)
+            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
             {
-            <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">XYZ</a>
+            <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameName">XYZ</a>
             }
             else
             {
-            @(Model.TicTacToeBrain.GameBoard[x][y])
+            @(Model.TicTacTwoBrain.GameBoard[x][y])
             }
         </td>
         }
@@ -26,3 +28,71 @@ Next move by: @Model.TicTacToeBrain.NextMoveBy
     }
 
 </table>
+
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+    .title {
+        font-size: 2rem;
+        margin-top: 20px;
+        color: #333;
+    }
+    .next-move {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+    .game-board {
+        display: inline-block;
+        border: 4px solid #333;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+    }
+    .row {
+        display: flex;
+    }
+    .cell {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid #333;
+    }
+    .cell.red-border {
+        border-color: red;
+    }
+    .move-button {
+        width: 100%;
+        height: 100%;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+    .move-button:hover {
+        background-color: #f0f0f0;
+    }
+    .game-piece {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+</style>
+
+@functions {
+    private bool IsRedGridLine(int x, int y)
+    {
+        // Determine if the cell should have a red border based on central grid logic
+        var gridX = Model.TicTacTwoBrain.gridXCoordinates;
+        var gridY = Model.TicTacTwoBrain.gridYCoordinates;
+        Console.WriteLine("x: " + gridX + ", y: " + gridY) ;
+
+        return gridX.Contains(x + 1) && gridY.Contains(y + 1);
+    }
+}

@@ -22,7 +22,7 @@ public class IndexModel : PageModel
     
     public IActionResult OnPostNewGame()
     {
-        return RedirectToPage("./PlayGameWeb");
+        return RedirectToPage("./NewGame");
     }
 
     public IActionResult OnPostLoadGame()

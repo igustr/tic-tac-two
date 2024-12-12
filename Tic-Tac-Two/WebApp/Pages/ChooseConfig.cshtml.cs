@@ -14,21 +14,35 @@ public class ChooseConfig : PageModel
         _configRepository = configRepository;
     }
 
+    [BindProperty]
+    public string? GameName { get; set; }
     public SelectList ConfigSelectList { get; set; } = default!;
 
-    [BindProperty]
-    public int ConfigId { get; set; }
+
     
     public IActionResult OnGet()
     {
-
         var selectListData = _configRepository.GetConfigurationNames()
             .Select(name => new {id = name, value = name})
             .ToList();
         
         ConfigSelectList = new SelectList(selectListData, "id", "value");
-        
         return Page();
     }
 
+    public IActionResult OnPost()
+    { 
+        if (ModelState.IsValid)
+        {
+            // Reload the GamesSelectList in case of validation errors
+            var selectListData = _configRepository.GetConfigurationNames()
+                .Select(name => new SelectListItem { Value = name, Text = name })
+                .ToList();
+
+            ConfigSelectList = new SelectList(selectListData, "id", "value");
+            return RedirectToPage("./PlayGameWeb", new { gameName = GameName, gameType = "loadConfig" });
+        }
+        
+        return Page();
+    }
 }

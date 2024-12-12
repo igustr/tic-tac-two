@@ -1,5 +1,6 @@
 ﻿using DAL;
 using GameBrain;
+using ConsoleUI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -16,31 +17,55 @@ public class PlayGameWeb : PageModel
         _gameRepository = gameRepository;
     }
 
-
-    [BindProperty(SupportsGet = true)] public int GameId { get; set; } = default!;
-
+    [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
+    [BindProperty(SupportsGet = true)] public int ConfigNo { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
-    public TicTacTwoBrain TicTacToeBrain { get; set; } = default!;
+    public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
-    /*
-    public void OnGet(int? x, int? y)
+    public void OnGet(int? x, int? y, string gameType)
     {
-        var dbGame = _gameRepository.LoadGame(GameId);
-        TicTacToeBrain = new TicTacTwoBrain(new GameConfiguration()
+        // Load the game state based on the game type
+        if (gameType == "load")
         {
-            Name = "Classical"
-        });
-
-        TicTacToeBrain.SetGameStateJson(dbGame.GameState);
-
-        if (x != null && y != null)
+            var gameState = _gameRepository.GetSavedGameByName(GameName);
+            TicTacTwoBrain = new TicTacTwoBrain(gameState);
+        }
+        else if (gameType == "loadConfig")
         {
-            var userGameName = "Game1 (ChangeThat)";
-            TicTacToeBrain.MakeAMove(x.Value, y.Value);
-            GameId = _gameRepository.SaveGame(TicTacToeBrain.GetGameStateJson(),TicTacToeBrain.GetGameConfigName(), userGameName);
+            var chosenConfig = _configRepository.GetConfigurationByName(GameName);
+            TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
+        }
+        else
+        {
+            TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
         }
 
+        // Make a move if coordinates are provided
+        if (x != null && y != null)
+        {
+            TicTacTwoBrain.MakeAMove(x.Value, y.Value);
+        }
+    }
+
+    /*
+    public IActionResult OnPostMakeMove(int x, int y)
+    {
+        // Load the current game state from the repository or session
+        var gameState = _gameRepository.GetSavedGameByName(GameName) ??
+                        TicTacTwoBrain.GetCurrentState(); // Default to in-memory state if not saved
+
+        // Reinitialize the game brain with the current state
+        TicTacTwoBrain = new TicTacTwoBrain(gameState);
+
+        // Make the move
+        TicTacTwoBrain.MakeAMove(x, y);
+
+        // Save the updated state back to the repository
+       // _gameRepository.SaveGame(GameName, TicTacTwoBrain.GetCurrentState());
+
+        // Redirect to refresh the page with the updated game state
+        return RedirectToPage("./PlayGameWeb", new { gameName = GameName, gameType = "load" });
     }
     */
 }

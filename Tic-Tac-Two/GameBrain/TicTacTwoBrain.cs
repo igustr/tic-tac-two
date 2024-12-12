@@ -45,6 +45,8 @@ public class TicTacTwoBrain
     public int GridX => _gameState.Grid.Length;
     public int GridY => _gameState.Grid[0].Length;
     public EGamePiece NextMoveBy => _gameState.NextMoveBy;
+    public HashSet<int> gridYCoordinates = GetGridYCoordinates();
+    public HashSet<int> gridXCoordinates = GetGridXCoordinates();
     
     private EGamePiece[][] GetBoard()
     {

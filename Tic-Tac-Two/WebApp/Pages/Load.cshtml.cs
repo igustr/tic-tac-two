@@ -1,6 +1,4 @@
-﻿using Azure.Identity;
-using DAL;
-using Domain;
+﻿using DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,9 +7,6 @@ namespace WebApp.Pages;
 
 public class Load : PageModel
 {
-    [BindProperty]
-    public string? GameId { get; set; }
-    
     private readonly IGameRepository _gameRepository;
 
     public Load(IGameRepository gameRepository)
@@ -19,39 +14,35 @@ public class Load : PageModel
         _gameRepository = gameRepository;
     }
 
+    [BindProperty]
+    public string GameName { get; set; } = string.Empty;
 
-    [BindProperty(SupportsGet = true)]
-    public string UserName { get; set; } = default!;
+    public SelectList GamesSelectList { get; private set; } = default!;
 
-    public SelectList GamesSelectList { get; set; } = default!;
-    
     public IActionResult OnGet()
     {
-        var selectListData = _gameRepository.GetSavedGamesNames()
-            .Select(name => new SelectListItem { Value = name, Text = name })
-            .ToList();
-
-        GamesSelectList = new SelectList(selectListData, "Value", "Text");
+        LoadGamesList();
         return Page();
     }
 
-
     public IActionResult OnPost()
     {
-        if (!ModelState.IsValid)
+        if (string.IsNullOrWhiteSpace(GameName))
         {
-            // Reload the GamesSelectList in case of validation errors
-            var selectListData = _gameRepository.GetSavedGamesNames()
-                .Select(name => new SelectListItem { Value = name, Text = name })
-                .ToList();
-
-            GamesSelectList = new SelectList(selectListData, "Value", "Text");
+            ModelState.AddModelError(nameof(GameName), "Please select a valid game.");
+            LoadGamesList();
             return Page();
         }
 
-        // TODO: Add logic to load the selected game based on GameId
-        return RedirectToPage("./PlayGameWeb", new { gameId = GameId });
+        return RedirectToPage("./PlayGameWeb", new { gameName = GameName, gameType = "load" });
     }
 
-
+    private void LoadGamesList()
+    {
+        var savedGames = _gameRepository.GetSavedGamesNames();
+        GamesSelectList = new SelectList(
+            savedGames.Select(name => new SelectListItem { Value = name, Text = name }),
+            "Value", "Text"
+        );
     }
+}
