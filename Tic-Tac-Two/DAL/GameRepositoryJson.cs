@@ -7,7 +7,7 @@ public class GameRepositoryJson : IGameRepository
 {
     private const string Filter = "*";
     
-    public int SaveGame(string jsonStateString, string userGameName)
+    public int SaveGame(string jsonStateString, int gameId, string userGameName)
     {
         if (!Directory.Exists(FileHandler.BasePath))
         {

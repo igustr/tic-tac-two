@@ -12,17 +12,28 @@ public class GameRepositoryDB : IGameRepository
         _context = context;
     }
     
-    public int SaveGame(string jsonStateString, string gameName)
+    public int SaveGame(string jsonStateString, int gameId, string gameName)
     {
-        var game = new Game()
+        // Check if the game already exists
+        var existingGame = _context.Games.FirstOrDefault(g => g.Id == gameId);
+        if (existingGame != null)
         {
+            // Update the existing game's state
+            existingGame.GameState = jsonStateString;
+            _context.Games.Update(existingGame);
+            _context.SaveChanges();
+            return gameId;
+        }
+
+        // Insert a new game
+        var newGame = new Game
+        {
+            GameState = jsonStateString,
             GameName = gameName,
-            GameState = jsonStateString
         };
-        _context.Games.Add(game);
+        _context.Games.Add(newGame);
         _context.SaveChanges();
-        Console.WriteLine("here");
-        return game.Id;
+        return newGame.Id;
     }
 
     public List<string> GetSavedGamesNames()

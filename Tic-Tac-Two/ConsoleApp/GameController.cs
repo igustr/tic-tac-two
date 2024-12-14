@@ -276,7 +276,7 @@ public static class GameController
             case "S":
                 Console.WriteLine("Insert game name: ");
                 var gameName = Console.ReadLine() ?? "";
-                gameRepository.SaveGame(gameInstance.GetGameStateJson(), gameName);
+                gameRepository.SaveGame(gameInstance.GetGameStateJson(), -1, gameName);
                 Console.WriteLine("\u001b[32mGame Saved!\u001b[0m");
                 break;
             case "E":

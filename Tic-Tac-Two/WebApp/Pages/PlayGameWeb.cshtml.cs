@@ -32,18 +32,18 @@ public class PlayGameWeb : PageModel
         {
             var gameState = _gameRepository.GetSavedGameByName(GameName);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
         else if (gameType == "loadConfig")
         {
             var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
             TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         } 
         else if (gameType == "new")
         {
             TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
         else
         {
@@ -55,9 +55,12 @@ public class PlayGameWeb : PageModel
         // Make a move if coordinates are provided
         if (x != null && y != null)
         {
+            Console.WriteLine("coordinates are provided");
+            Console.WriteLine($"x: {x}, y: {y}");
             TicTacTwoBrain.MakeAMoveCheck(x.Value - 1, y.Value - 1);
             TicTacTwoBrain.MakeAMove(x.Value - 1, y.Value - 1);
-            _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            Console.WriteLine("saved game id: " + GameId);
         }
 
         TicTacTwoBrain.GridPlacement();
