@@ -14,16 +14,26 @@
         text-align: center;
     }
 
+    /* Regular cells */
     .board td {
         width: 50px;
         height: 50px;
-        border: 2px solid #4d5154;
+        border: 2px solid #4CAF50;
         font-size: 24px;
         font-weight: bold;
         background-color: #f8f8f8;
         cursor: pointer;
     }
 
+    /* Center 3x3 grid */
+    .board td.red-cell {
+        width: 50px;
+        height: 50px;
+        border: 3px solid red;
+        background-color: #ffebee;
+    }
+
+    /* Anchor link style */
     .board td a {
         text-decoration: none;
         color: #4CAF50;
@@ -43,49 +53,45 @@
         line-height: 1.5;
         display: inline-block;
     }
-
-    .divider-v {
-        width: 10px;
-        height: 50px;
-        background-color: #c8e6c9;
-    }
-
-    .divider-h {
-        height: 10px;
-        background-color: #c8e6c9;
-    }
 </style>
 
 <table class="board">
-    @for (int y = 0; y < Model.TicTacTwoBrain.DimY; y++)
+    @for (var y = 0; y < Model.TicTacTwoBrain.DimY; y++)
     {
         <tr>
-            @for (int x = 0; x < Model.TicTacTwoBrain.DimX; x++)
+            @for (var x = 0; x < Model.TicTacTwoBrain.DimX; x++)
             {
-                <td>
-                    @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
-                    {
-                        <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameName">&nbsp;</a>
-                    }
-                    else
-                    {
-                        @(Model.TicTacTwoBrain.GameBoard[x][y])
-                    }
-                </td>
-                @if (x < Model.TicTacTwoBrain.DimX - 1 && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1))
+                <!-- Hardcode sizes for 3x3 center cells -->
+                @if (x < Model.TicTacTwoBrain.DimX - 1 
+                      && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1)
+                      && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1)
+                      && x != Model.TicTacTwoBrain.gridXCoordinates.Max() - 1)
                 {
-                    <td class="divider-v"></td>
+                    <td class="red-cell" style="width: 50px; height: 50px;">
+                        @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                        {
+                            <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameName">&nbsp;</a>
+                        }
+                        else
+                        {
+                            @(Model.TicTacTwoBrain.GameBoard[x][y])
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td style="width: 50px; height: 50px;">
+                        @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                        {
+                            <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameName">&nbsp;</a>
+                        }
+                        else
+                        {
+                            @(Model.TicTacTwoBrain.GameBoard[x][y])
+                        }
+                    </td>
                 }
             }
         </tr>
-        @if (y < Model.TicTacTwoBrain.DimY - 1 && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1))
-        {
-            <tr>
-                @for (var x = 0; x < Model.TicTacTwoBrain.DimX; x++)
-                {
-                    <td class="divider-h" colspan="2"></td>
-                }
-            </tr>
-        }
     }
 </table>
