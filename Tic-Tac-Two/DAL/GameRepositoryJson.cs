@@ -1,4 +1,5 @@
-﻿using GameBrain;
+﻿using Domain;
+using GameBrain;
 
 namespace DAL;
 
@@ -6,7 +7,7 @@ public class GameRepositoryJson : IGameRepository
 {
     private const string Filter = "*";
     
-    public void SaveGame(string jsonStateString, string gameConfigName, string userGameName)
+    public int SaveGame(string jsonStateString, string gameConfigName, string userGameName)
     {
         if (!Directory.Exists(FileHandler.BasePath))
         {
@@ -18,6 +19,7 @@ public class GameRepositoryJson : IGameRepository
                        + FileHandler.GameExtension;
         
         System.IO.File.WriteAllText(filename, jsonStateString);
+        return -1;
     }
     
     public List<string> GetSavedGamesNames()
@@ -41,5 +43,11 @@ public class GameRepositoryJson : IGameRepository
         // Console.WriteLine("game state: " + gameState);
         return gameState;
     }
+    
+    public GameState LoadGame(int gameId)
+    {
+        throw new NotImplementedException();
+    }
+
     
 }

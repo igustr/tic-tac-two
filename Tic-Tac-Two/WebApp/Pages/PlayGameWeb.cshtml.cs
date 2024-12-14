@@ -20,11 +20,12 @@ public class PlayGameWeb : PageModel
 
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
+    [BindProperty(SupportsGet = true)] public int GameId { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
-    public void OnGet(int? x, int? y, string gameType)
+    public void OnGet(int? x, int? y, string? gameType)
     {
         // Load the game state based on the game type
         if (gameType == "load")
@@ -36,16 +37,22 @@ public class PlayGameWeb : PageModel
         {
             var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
             TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
+        } 
+        else if (gameType == "new")
+        {
+            TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
         }
         else
         {
-            TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
+            var gameState = _gameRepository.LoadGame(GameId);
+            TicTacTwoBrain = new TicTacTwoBrain(gameState);
         }
 
         // Make a move if coordinates are provided
         if (x != null && y != null)
         {
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(),TicTacTwoBrain.GetGameConfigName(), "gamename");
         }
 
         TicTacTwoBrain.GridPlacement();
@@ -55,12 +62,11 @@ public class PlayGameWeb : PageModel
 
     }
 
-    /*
-    public IActionResult OnPostMakeMove(int x, int y)
+
+
+    public IActionResult OnPost(int x, int y, GameState gameState)
     {
         // Load the current game state from the repository or session
-        var gameState = _gameRepository.GetSavedGameByName(GameName) ??
-                        TicTacTwoBrain.GetCurrentState(); // Default to in-memory state if not saved
 
         // Reinitialize the game brain with the current state
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
@@ -68,11 +74,6 @@ public class PlayGameWeb : PageModel
         // Make the move
         TicTacTwoBrain.MakeAMove(x, y);
 
-        // Save the updated state back to the repository
-       // _gameRepository.SaveGame(GameName, TicTacTwoBrain.GetCurrentState());
-
-        // Redirect to refresh the page with the updated game state
-        return RedirectToPage("./PlayGameWeb", new { gameName = GameName, gameType = "load" });
+        return RedirectToPage("./PlayGameWeb", new { currentGameState = gameState, gameType = "continue" });
     }
-    */
 }

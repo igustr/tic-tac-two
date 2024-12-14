@@ -12,7 +12,7 @@ public class GameRepositoryDB : IGameRepository
         _context = context;
     }
     
-    public void SaveGame(string jsonStateString, string gameConfigName, string gameName)
+    public int SaveGame(string jsonStateString, string gameConfigName, string gameName)
     {
         var game = new Game()
         {
@@ -21,6 +21,7 @@ public class GameRepositoryDB : IGameRepository
         };
         _context.Games.Add(game);
         _context.SaveChanges();
+        return game.Id;
     }
 
     public List<string> GetSavedGamesNames()
@@ -43,6 +44,13 @@ public class GameRepositoryDB : IGameRepository
             throw new KeyNotFoundException($"Game with name '{name}' not found.");
         }
         
+        var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(data.GameState);
+        return gameState;
+    }
+    
+    public GameState LoadGame(int gameId)
+    {
+        var data = _context.Games.First(g => g.Id == gameId);
         var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(data.GameState);
         return gameState;
     }

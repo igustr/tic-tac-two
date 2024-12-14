@@ -15,7 +15,7 @@ public class IndexModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string? Error { get; set; }
     
-
+    /*
     public void OnGet()
     {
     }
@@ -39,5 +39,6 @@ public class IndexModel : PageModel
     {
         return RedirectToPage("./Home");
     }
+    */
    
 }
