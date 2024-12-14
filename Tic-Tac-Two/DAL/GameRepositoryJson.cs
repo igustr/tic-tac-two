@@ -7,7 +7,7 @@ public class GameRepositoryJson : IGameRepository
 {
     private const string Filter = "*";
     
-    public int SaveGame(string jsonStateString, string gameConfigName, string userGameName)
+    public int SaveGame(string jsonStateString, string userGameName)
     {
         if (!Directory.Exists(FileHandler.BasePath))
         {
@@ -15,7 +15,7 @@ public class GameRepositoryJson : IGameRepository
         }
         
         var filename = FileHandler.BasePath 
-                       + gameConfigName + "_" + userGameName + " " + DateTime.Now.ToString("yyyy.MM.dd.T.HH.mm.ss") 
+                       + userGameName + " " + DateTime.Now.ToString("yyyy.MM.dd.T.HH.mm.ss") 
                        + FileHandler.GameExtension;
         
         System.IO.File.WriteAllText(filename, jsonStateString);

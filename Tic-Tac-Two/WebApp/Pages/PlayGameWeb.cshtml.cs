@@ -32,38 +32,45 @@ public class PlayGameWeb : PageModel
         {
             var gameState = _gameRepository.GetSavedGameByName(GameName);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
         }
         else if (gameType == "loadConfig")
         {
             var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
             TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
         } 
         else if (gameType == "new")
         {
             TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
         }
         else
         {
+            Console.WriteLine("game id: " + GameId);
             var gameState = _gameRepository.LoadGame(GameId);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
         }
-
+        
         // Make a move if coordinates are provided
         if (x != null && y != null)
         {
-            TicTacTwoBrain.MakeAMove(x.Value, y.Value);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(),TicTacTwoBrain.GetGameConfigName(), "gamename");
+            TicTacTwoBrain.MakeAMoveCheck(x.Value - 1, y.Value - 1);
+            TicTacTwoBrain.MakeAMove(x.Value - 1, y.Value - 1);
+            _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), "gameName");
         }
 
         TicTacTwoBrain.GridPlacement();
         
+        /*
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
+        */
 
     }
 
 
-
+    /*
     public IActionResult OnPost(int x, int y, GameState gameState)
     {
         // Load the current game state from the repository or session
@@ -76,4 +83,5 @@ public class PlayGameWeb : PageModel
 
         return RedirectToPage("./PlayGameWeb", new { currentGameState = gameState, gameType = "continue" });
     }
+    */
 }

@@ -5,7 +5,7 @@ namespace DAL;
 
 public interface IGameRepository
 {
-    public int SaveGame(string jsonStateString, string gameConfigName, string gameName);
+    public int SaveGame(string jsonStateString, string gameName);
     public List<string> GetSavedGamesNames();
     public GameState GetSavedGameByName(string name);
     public GameState LoadGame(int gameId);
