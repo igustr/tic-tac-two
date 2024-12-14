@@ -4,95 +4,88 @@
 @model WebApp.Pages.PlayGameWeb
 
 <h2>Tic-Tac-Two</h2>
-
-<p>Next move by: @Model.TicTacTwoBrain.NextMoveBy</p>
-
-<table class="" border="1">
-    @for (int y = 0; y < Model.TicTacTwoBrain.DimY; y++)
-    {
-    <tr>
-        @for (int x = 0; x < Model.TicTacTwoBrain.DimX; x++)
-        {
-        <td>
-            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
-            {
-            <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameName">XYZ</a>
-            }
-            else
-            {
-            @(Model.TicTacTwoBrain.GameBoard[x][y])
-            }
-        </td>
-        }
-    </tr>
-    }
-
-</table>
-
-
+<p>Next move by: <strong>@Model.TicTacTwoBrain.NextMoveBy</strong></p>
 
 <style>
-    body {
+    .board {
+        border-collapse: collapse;
+        margin: 20px auto;
         font-family: Arial, sans-serif;
         text-align: center;
-        background-color: #f4f4f9;
-        margin: 0;
-        padding: 0;
     }
-    .title {
-        font-size: 2rem;
-        margin-top: 20px;
-        color: #333;
-    }
-    .next-move {
-        font-size: 1.2rem;
-        margin-bottom: 20px;
-    }
-    .game-board {
-        display: inline-block;
-        border: 4px solid #333;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #fff;
-    }
-    .row {
-        display: flex;
-    }
-    .cell {
-        width: 60px;
-        height: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 2px solid #333;
-    }
-    .cell.red-border {
-        border-color: red;
-    }
-    .move-button {
-        width: 100%;
-        height: 100%;
-        background: none;
-        border: none;
+
+    .board td {
+        width: 50px;
+        height: 50px;
+        border: 2px solid #4d5154;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #f8f8f8;
         cursor: pointer;
     }
-    .move-button:hover {
-        background-color: #f0f0f0;
+
+    .board td a {
+        text-decoration: none;
+        color: #4CAF50;
+        display: block;
+        width: 100%;
+        height: 100%;
+        line-height: 50px;
     }
-    .game-piece {
-        font-size: 1.5rem;
-        font-weight: bold;
+
+    .board td a:hover {
+        background-color: #e8f5e9;
+    }
+
+    .board span {
+        color: #777;
+        font-size: 14px;
+        line-height: 1.5;
+        display: inline-block;
+    }
+
+    .divider-v {
+        width: 10px;
+        height: 50px;
+        background-color: #c8e6c9;
+    }
+
+    .divider-h {
+        height: 10px;
+        background-color: #c8e6c9;
     }
 </style>
 
-@functions {
-    private bool IsRedGridLine(int x, int y)
+<table class="board">
+    @for (int y = 0; y < Model.TicTacTwoBrain.DimY; y++)
     {
-        // Determine if the cell should have a red border based on central grid logic
-        var gridX = Model.TicTacTwoBrain.gridXCoordinates;
-        var gridY = Model.TicTacTwoBrain.gridYCoordinates;
-        Console.WriteLine("x: " + gridX + ", y: " + gridY) ;
-
-        return gridX.Contains(x + 1) && gridY.Contains(y + 1);
+        <tr>
+            @for (int x = 0; x < Model.TicTacTwoBrain.DimX; x++)
+            {
+                <td>
+                    @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                    {
+                        <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameName">&nbsp;</a>
+                    }
+                    else
+                    {
+                        @(Model.TicTacTwoBrain.GameBoard[x][y])
+                    }
+                </td>
+                @if (x < Model.TicTacTwoBrain.DimX - 1 && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1))
+                {
+                    <td class="divider-v"></td>
+                }
+            }
+        </tr>
+        @if (y < Model.TicTacTwoBrain.DimY - 1 && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1))
+        {
+            <tr>
+                @for (var x = 0; x < Model.TicTacTwoBrain.DimX; x++)
+                {
+                    <td class="divider-h" colspan="2"></td>
+                }
+            </tr>
+        }
     }
-}
+</table>
