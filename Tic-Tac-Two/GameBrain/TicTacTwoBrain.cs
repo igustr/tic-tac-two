@@ -8,8 +8,8 @@ public class TicTacTwoBrain
     private readonly GameState _gameState;
     private int _gridXCentre;
     private int _gridYCentre;
-    private int _previousGridXMove;
-    private int _previousGridYMove;
+    private int _previousGridXShift;
+    private int _previousGridYShift;
     
     public TicTacTwoBrain(GameConfiguration gameConfiguration)
     {
@@ -45,8 +45,8 @@ public class TicTacTwoBrain
     public int GridX => _gameState.Grid.Length;
     public int GridY => _gameState.Grid[0].Length;
     public EGamePiece NextMoveBy => _gameState.NextMoveBy;
-    public HashSet<int> gridYCoordinates = GetGridYCoordinates();
     public HashSet<int> gridXCoordinates = GetGridXCoordinates();
+    public HashSet<int> gridYCoordinates = GetGridYCoordinates();
     
     private EGamePiece[][] GetBoard()
     {
@@ -225,8 +225,8 @@ public class TicTacTwoBrain
         Console.Write("> ");
         var directionInput = Console.ReadLine()!.ToUpper();
 
-        _previousGridYMove = _gameState.GridYPosition;
-        _previousGridXMove = _gameState.GridXPosition;
+        _previousGridYShift = _gameState.GridYPosition;
+        _previousGridXShift = _gameState.GridXPosition;
 
         switch (directionInput)
         {
@@ -290,8 +290,8 @@ public class TicTacTwoBrain
             Console.WriteLine("You can't make move in this direction. Choose different!");
             Console.WriteLine();
 
-            _gameState.GridYPosition = _previousGridYMove;
-            _gameState.GridXPosition = _previousGridXMove;
+            _gameState.GridYPosition = _previousGridYShift;
+            _gameState.GridXPosition = _previousGridXShift;
             
             MoveGrid();
             GridPlacement();

@@ -47,6 +47,12 @@ public class PlayGameWeb : PageModel
         {
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
         }
+
+        TicTacTwoBrain.GridPlacement();
+        
+        Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
+        Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
+
     }
 
     /*
