@@ -57,8 +57,8 @@ public class PlayGameWeb : PageModel
         {
             Console.WriteLine("coordinates are provided");
             Console.WriteLine($"x: {x}, y: {y}");
-            TicTacTwoBrain.MakeAMoveCheck(x.Value - 1, y.Value - 1);
-            TicTacTwoBrain.MakeAMove(x.Value - 1, y.Value - 1);
+            TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value);
+            TicTacTwoBrain.MakeAMove(x.Value, y.Value);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
             Console.WriteLine("saved game id: " + GameId);
         }
