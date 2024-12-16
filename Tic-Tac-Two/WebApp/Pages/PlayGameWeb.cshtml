@@ -6,6 +6,21 @@
 <h2>Tic-Tac-Two</h2>
 <p>Next move by: <strong>@Model.TicTacTwoBrain.NextMoveBy</strong></p>
 
+<div class="markers-container">
+    <div class="markers-left">
+        @for (var x = 0; x < Model.TicTacTwoBrain.AmountOfPieces - Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item1; x++)
+        {
+        <div class="marker marker-x">x</div>
+        }
+    </div>
+    <div class="markers-right">
+        @for (var o = 0; o < Model.TicTacTwoBrain.AmountOfPieces - Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2; o++)
+        {
+        <div class="marker marker-o">o</div>
+        }
+    </div>
+</div>
+
 <table class="board">
     @for (var y = 0; y < Model.TicTacTwoBrain.DimY; y++)
     {
@@ -13,9 +28,9 @@
             @for (var x = 0; x < Model.TicTacTwoBrain.DimX; x++)
             {
                 @if (x < Model.TicTacTwoBrain.DimX - 1 
-                      && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1)
-                      && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1))
-                      //&& x != Model.TicTacTwoBrain.gridXCoordinates.Max() - 1)
+                     && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1)
+                     && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1))
+                    //&& x != Model.TicTacTwoBrain.gridXCoordinates.Max() - 1)
                 {
                     //Console.WriteLine("here1 " + x + "," + y + " -red");
                     
@@ -48,6 +63,16 @@
         </tr>
     }
 </table>
+
+
+
+<form method="post">
+    <h3>Select Action</h3>
+    <div class="btn-group-horizontal" role="group" style="width: 100%; margin-top: 20px;">
+        <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="default">Move Grid</button>
+        <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="custom">Move Piece</button>
+    </div>
+</form>
 
 
 <style>
@@ -96,5 +121,61 @@
         font-size: 14px;
         line-height: 1.5;
         display: inline-block;
+    }
+
+    /* Container for markers */
+    .markers-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 20px 0;
+    }
+
+    /* Left and right marker columns */
+    .markers-left, .markers-right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    /* Marker container */
+    .marker {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    /* X marker style */
+    .marker-x {
+        color: #ffffff;
+        background-color: #007BFF; /* Blue */
+        border: 2px solid #0056b3;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* O marker style */
+    .marker-o {
+        color: #ffffff;
+        background-color: #ff5722; /* Orange */
+        border: 2px solid #e64a19;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Add spacing and alignment */
+    .markers-left {
+        justify-content: flex-start;
+    }
+
+    .markers-right {
+        justify-content: flex-end;
+    }
+
+    .marker:hover {
+        transform: scale(1.1);
+        transition: transform 0.2s ease-in-out;
     }
 </style>

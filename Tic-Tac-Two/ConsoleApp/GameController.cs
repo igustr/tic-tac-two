@@ -89,7 +89,7 @@ public static class GameController
             // Player X Turn
             if (gameInstance.NextMoveBy == EGamePiece.X)
             {
-                var amountOfPiecesXOnBoard = gameInstance.GetPieceCounts().Item1;
+                var amountOfPiecesXOnBoard = gameInstance.GetPiecesOnBoardCount().Item1;
                 
                 if (amountOfPiecesXOnBoard < _movePieceAfterNMoves)
                 {
@@ -108,7 +108,7 @@ public static class GameController
             // Player O Turn
             else if (gameInstance.NextMoveBy == EGamePiece.O)
             {
-                var amountOfPiecesOOnBoard = gameInstance.GetPieceCounts().Item2;
+                var amountOfPiecesOOnBoard = gameInstance.GetPiecesOnBoardCount().Item2;
                 
                 if (amountOfPiecesOOnBoard < _movePieceAfterNMoves)
                 {

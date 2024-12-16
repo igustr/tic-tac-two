@@ -10,6 +10,7 @@ public class NewGame : PageModel
 
     public IActionResult OnPost()
     {
+        Console.WriteLine("NewGame: " + GameType);
         // Ensure that both GameMode and GameType have been provided before continuing.
         if (string.IsNullOrEmpty(GameMode) || string.IsNullOrEmpty(GameType))
         {
