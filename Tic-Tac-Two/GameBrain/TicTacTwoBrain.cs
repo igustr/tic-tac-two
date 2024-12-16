@@ -38,7 +38,6 @@ public class TicTacTwoBrain
     }
 
     public string GetGameStateJson() => _gameState.ToString();
-    public string GetGameConfigName() => _gameState.GameConfiguration.Name;
     public EGamePiece[][] GameBoard => GetBoard();
     public int DimX => _gameState.GameBoard.Length;
     public int DimY => _gameState.GameBoard[0].Length;
@@ -98,9 +97,11 @@ public class TicTacTwoBrain
     public bool MakeAMoveCheck(int x, int y)
     {
 
+        /*
         Console.WriteLine("X COORDS: " + x);
         Console.WriteLine("Y COORDS: " + y);
         Console.WriteLine("position key: " + _gameState.GameBoard[x][y]);
+        */
         
         if (_gameState.GameBoard[x][y] != EGamePiece.Empty 
             || !GridXCoordinates.Contains(x + 1) 
@@ -162,6 +163,9 @@ public class TicTacTwoBrain
         var rangeX = (int)Math.Ceiling((GridX - 1) / 2.0); // Determines how many cells to add left and right
         var rangeY = (int)Math.Ceiling((GridY - 1) / 2.0); // Determines how many cells to add up and down
 
+        Console.WriteLine("Grid shift X: " + _gameState.GridXPosition);
+        Console.WriteLine("Grid shift Y: " + _gameState.GridYPosition);
+
         /*
         Console.WriteLine("range X: " + rangeX);
         Console.WriteLine("range Y: " + rangeY);
@@ -206,7 +210,6 @@ public class TicTacTwoBrain
         /*
         Console.WriteLine("grid x coords: " + string.Join(", ", GridXCoordinates));
         Console.WriteLine("grid y coords: " + string.Join(", ", GridYCoordinates));
-        Console.WriteLine("------------------------------------------------------");
         Console.WriteLine();
         */
 

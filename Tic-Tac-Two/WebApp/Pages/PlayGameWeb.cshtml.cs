@@ -21,7 +21,7 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
     public string CurrentAction { get; set; }
-    [BindProperty(SupportsGet = true)] public int GameId { get; set; } = default!;
+    [BindProperty(SupportsGet = true)] public int GameId { get; set; }
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
@@ -89,6 +89,7 @@ public class PlayGameWeb : PageModel
             {
                 TicTacTwoBrain.MoveGrid(CurrentAction);
                 CurrentAction = "SelectAction";
+                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
             }
             else if (CurrentAction == "MovePiece")
             {
