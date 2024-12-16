@@ -38,7 +38,9 @@ public class GamePhase
         {
             Console.Clear();
             Visualizer.DrawGame(gameInstance);
-            gameInstance.MoveGrid();
+            var directionInput = GridDirectionMenu();
+            gameInstance.MoveGrid(directionInput);
+            
         } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
         {
             GameOptionsMenu(gameInstance, gameRepository);
@@ -74,7 +76,8 @@ public class GamePhase
         {
             Console.Clear();
             Visualizer.DrawGame(gameInstance);
-            gameInstance.MoveGrid();
+            var directionInput = GridDirectionMenu();
+            gameInstance.MoveGrid(directionInput);
         } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
         {
             GameOptionsMenu(gameInstance, gameRepository);
@@ -129,5 +132,17 @@ public class GamePhase
                 Console.WriteLine("E) Exit");
                 break;
         }
+    }
+
+    private static string GridDirectionMenu()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Choose grid movement direction");
+        Console.WriteLine("-------------------------------");
+        Console.WriteLine("Use one of the following directions:");
+        Console.WriteLine("'U' for Up, 'D' for Down, 'L' for Left, 'R' for Right, 'UL' for Up-Left, 'UR' for Up-Right, 'DL' for Down-Left, 'DR' for Down-Right, 'B' to go back!");
+        Console.Write("> ");
+        var directionInput = Console.ReadLine()!.ToUpper();
+        return directionInput;
     }
 }

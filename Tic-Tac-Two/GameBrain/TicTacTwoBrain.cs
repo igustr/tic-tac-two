@@ -153,14 +153,12 @@ public class TicTacTwoBrain
         _gridXCentre = (DimX % 2 == 0) ? DimX / 2 : DimX / 2 + 1;
         _gridYCentre = (DimY % 2 == 0) ? DimY / 2 : DimY / 2 + 1;
         
-        
         _gridXCentre += _gameState.GridXPosition;
         _gridYCentre += _gameState.GridYPosition;
         
         GridYCoordinates.Add(_gridYCentre);
         GridXCoordinates.Add(_gridXCentre);
         
-
         var rangeX = (int)Math.Ceiling((GridX - 1) / 2.0); // Determines how many cells to add left and right
         var rangeY = (int)Math.Ceiling((GridY - 1) / 2.0); // Determines how many cells to add up and down
 
@@ -173,7 +171,7 @@ public class TicTacTwoBrain
         Console.WriteLine();
         */
         
-        for (int i = 0; i < rangeY; i++)
+        for (var i = 0; i < rangeY; i++)
         {
             if (GridY % 2 == 0)
             {
@@ -190,7 +188,7 @@ public class TicTacTwoBrain
                 GridYCoordinates.Add(_gridYCentre - (i + 1));
             }
         }
-        for (int i = 0; i < rangeX; i++) {
+        for (var i = 0; i < rangeX; i++) {
             if (GridX % 2 == 0)
             {
                 GridXCoordinates.Add(_gridXCentre + (i + 1));
@@ -215,18 +213,8 @@ public class TicTacTwoBrain
         MoveGridCheck();
     }
 
-    public void MoveGrid()
+    public void MoveGrid(string directionInput)
     {
-        var board = GetBoard();
-        Console.WriteLine();
-        Console.WriteLine("Choose grid movement direction");
-        Console.WriteLine("-------------------------------");
-        Console.WriteLine("Use one of the following directions:");
-        Console.WriteLine(
-            "'U' for Up, 'D' for Down, 'L' for Left, 'R' for Right, 'UL' for Up-Left, 'UR' for Up-Right, 'DL' for Down-Left, 'DR' for Down-Right, 'B' to go back!");
-        Console.Write("> ");
-        var directionInput = Console.ReadLine()!.ToUpper();
-
         _previousGridYShift = _gameState.GridYPosition;
         _previousGridXShift = _gameState.GridXPosition;
 
@@ -272,7 +260,7 @@ public class TicTacTwoBrain
                 Console.WriteLine("Going Back");
                 break;
             default:
-                Console.WriteLine("Invalid direction. Please choose 'U', 'D', 'L', 'R', 'UL', 'UR', 'DL', or 'DR'.");
+                Console.WriteLine("\u001b[31mYou can't make move in this direction. Choose different!\u001b[0m");
                 break;
         }
 
@@ -289,13 +277,10 @@ public class TicTacTwoBrain
                                                      || GridXCoordinates.Min() <= 0 
                                                      || GridYCoordinates.Min() <= 0)
         {
-            Console.WriteLine("You can't make move in this direction. Choose different!");
-            Console.WriteLine();
-
             _gameState.GridYPosition = _previousGridYShift;
             _gameState.GridXPosition = _previousGridXShift;
             
-            MoveGrid();
+            MoveGrid("null");
             GridPlacement();
         }
     }

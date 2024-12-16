@@ -20,7 +20,7 @@ public class PlayGameWeb : PageModel
 
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
-    [BindProperty(SupportsGet = true)] public string Action { get; set; } = default!;
+    public string CurrentAction { get; set; }
     [BindProperty(SupportsGet = true)] public int GameId { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
@@ -28,7 +28,7 @@ public class PlayGameWeb : PageModel
 
     public void OnGet(int? x, int? y, string? gameType)
     {
-        // Load the game state based on the game type
+        // Load game state based on the game type
         if (gameType == "load")
         {
             var gameState = _gameRepository.GetSavedGameByName(GameName);
@@ -66,7 +66,9 @@ public class PlayGameWeb : PageModel
 
         TicTacTwoBrain.GridPlacement();
         
-        Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
+        //CurrentAction = "SelectAction";
+        
+        //Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
         /*
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
@@ -74,19 +76,27 @@ public class PlayGameWeb : PageModel
 
     }
     
-    /*
-    public IActionResult OnPost(int x, int y, GameState gameState)
+
+    public IActionResult OnPost(string action)
     {
-        // Load the current game state from the repository or session
-
-        // Reinitialize the game brain with the current state
+        var gameState = _gameRepository.LoadGame(GameId);
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
-
-        // Make the move
-        TicTacTwoBrain.MakeAMove(x, y);
-
-        return RedirectToPage("./PlayGameWeb", new { currentGameState = gameState, gameType = "continue" });
+        var actionList = new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" };
+        
+        {
+            CurrentAction = action;
+            if (actionList.Contains(CurrentAction))
+            {
+                TicTacTwoBrain.MoveGrid(CurrentAction);
+                CurrentAction = "SelectAction";
+            }
+            else if (CurrentAction == "MovePiece")
+            {
+                // Logic for the Move Piece action
+            }
+        }
+        return Page();
     }
-    */
+
 
 }

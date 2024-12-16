@@ -67,15 +67,47 @@
 
 
 @if (Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2 >= Model.TicTacTwoBrain.MovePieceAfterNMoves)
+{
+    @if (string.IsNullOrEmpty(Model.CurrentAction) || Model.CurrentAction == "SelectAction")
     {
         <form method="post">
             <h3>Select Action</h3>
             <div class="btn-group-horizontal" role="group" style="width: 100%; margin-top: 20px; justify-content: flex-end;">
-                <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="default">Move Grid</button>
-                <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="default">Move Piece</button>
+                <button type="submit" class="btn btn-info btn-lg mb-2" name="Action" value="MoveGrid">Move Grid</button>
+                <button type="submit" class="btn btn-info btn-lg mb-2" name="Action" value="MovePiece">Move Piece</button>
             </div>
         </form>
     }
+    else if (Model.CurrentAction == "MoveGrid")
+    {        <form method="post">
+        <div style="
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            align-items: center;
+            justify-items: center;
+            max-width: 250px;
+            margin: 30px auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            
+            <button type="submit" class="direction-btn" name="Action" value="UL">↖️</button>
+            <button type="submit" class="direction-btn" name="Action" value="U">⬆️</button>
+            <button type="submit" class="direction-btn" name="Action" value="UR">↗️</button>
+            
+            <button type="submit" class="direction-btn" name="Action" value="L">⬅️</button>
+            <span style="width: 50px; height: 50px;"></span> <!-- Empty Space -->
+            <button type="submit" class="direction-btn" name="Action" value="R">➡️</button>
+            
+            <button type="submit" class="direction-btn" name="Action" value="DL">↙️</button>
+            <button type="submit" class="direction-btn" name="Action" value="D">⬇️</button>
+            <button type="submit" class="direction-btn" name="Action" value="DR">↘️</button>
+        </div>
+    </form>
+    }
+}
 
 <div class="row justify-content-center mt-4">
     <div class="col-md-6 text-center">
@@ -188,5 +220,27 @@
     .marker:hover {
         transform: scale(1.1);
         transition: transform 0.2s ease-in-out;
+    }
+
+    .direction-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .direction-btn:hover {
+        transform: scale(1.1);
+        background-color: #218838;
+    }
+
+    .direction-btn:active {
+        transform: scale(0.95);
     }
 </style>
