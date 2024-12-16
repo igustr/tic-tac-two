@@ -20,6 +20,7 @@ public class PlayGameWeb : PageModel
 
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
+    [BindProperty(SupportsGet = true)] public string Action { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public int GameId { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
@@ -55,24 +56,24 @@ public class PlayGameWeb : PageModel
         // Make a move if coordinates are provided
         if (x != null && y != null)
         {
-            Console.WriteLine("coordinates are provided");
-            Console.WriteLine($"x: {x}, y: {y}");
+            //Console.WriteLine("coordinates are provided");
+            //Console.WriteLine($"x: {x}, y: {y}");
             TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value);
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-            Console.WriteLine("saved game id: " + GameId);
+            //Console.WriteLine("saved game id: " + GameId);
         }
 
         TicTacTwoBrain.GridPlacement();
         
+        Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
         /*
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
         */
 
     }
-
-
+    
     /*
     public IActionResult OnPost(int x, int y, GameState gameState)
     {
@@ -87,4 +88,5 @@ public class PlayGameWeb : PageModel
         return RedirectToPage("./PlayGameWeb", new { currentGameState = gameState, gameType = "continue" });
     }
     */
+
 }

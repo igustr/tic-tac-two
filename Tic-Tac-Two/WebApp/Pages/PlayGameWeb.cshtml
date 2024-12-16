@@ -3,8 +3,9 @@
 @using ConsoleUI
 @model WebApp.Pages.PlayGameWeb
 
-<h2>Tic-Tac-Two</h2>
-<p>Next move by: <strong>@Model.TicTacTwoBrain.NextMoveBy</strong></p>
+<h2 style="justify-content: flex-end;">Tic-Tac-Two</h2>
+
+<p style="justify-content: flex-end;">Next move by: <strong>@Model.TicTacTwoBrain.NextMoveBy</strong></p>
 
 <div class="markers-container">
     <div class="markers-left">
@@ -65,14 +66,24 @@
 </table>
 
 
+@if (Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2 >= Model.TicTacTwoBrain.MovePieceAfterNMoves)
+    {
+        <form method="post">
+            <h3>Select Action</h3>
+            <div class="btn-group-horizontal" role="group" style="width: 100%; margin-top: 20px; justify-content: flex-end;">
+                <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="default">Move Grid</button>
+                <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="default">Move Piece</button>
+            </div>
+        </form>
+    }
 
-<form method="post">
-    <h3>Select Action</h3>
-    <div class="btn-group-horizontal" role="group" style="width: 100%; margin-top: 20px;">
-        <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="default">Move Grid</button>
-        <button type="submit" class="btn btn-info btn-lg mb-2" name="GameType" value="custom">Move Piece</button>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6 text-center">
+        <div class="btn-group-vertical" role="group" style="width: 30%; justify-content: right;">
+            <a asp-page="/Options" class="btn btn-info btn-lg mb-2">Options (Not implemented)</a>
+        </div>
     </div>
-</form>
+</div>
 
 
 <style>
