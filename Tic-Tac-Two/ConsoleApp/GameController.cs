@@ -93,15 +93,15 @@ public static class GameController
                 
                 if (amountOfPiecesXOnBoard < _movePieceAfterNMoves)
                 {
-                    FirstLevel(gameInstance, gameRepository);
+                    GamePhase.InitialPlacementPhase(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesXOnBoard == chosenConfig.AmountOfPieces)
                 {
-                    ThirdLevel(gameInstance, gameRepository);
+                    GamePhase.FinalMovementPhase(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesXOnBoard >= _movePieceAfterNMoves)
                 {
-                    SecondLevel(gameInstance, gameRepository);
+                    GamePhase.PlacementAndMovementPhase(gameInstance, gameRepository);
                 }
             } 
             
@@ -112,107 +112,21 @@ public static class GameController
                 
                 if (amountOfPiecesOOnBoard < _movePieceAfterNMoves)
                 {
-                    FirstLevel(gameInstance, gameRepository);
+                    GamePhase.InitialPlacementPhase(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesOOnBoard == chosenConfig.AmountOfPieces)
                 {
-                    ThirdLevel(gameInstance, gameRepository);
+                    GamePhase.FinalMovementPhase(gameInstance, gameRepository);
                 }
                 else if (amountOfPiecesOOnBoard >= _movePieceAfterNMoves)
                 {
-                    SecondLevel(gameInstance, gameRepository);
+                    GamePhase.PlacementAndMovementPhase(gameInstance, gameRepository);
                 }
             }
         } while (true);
     }
     
-    private static void FirstLevel(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
-    {
-        Console.WriteLine();
-        Console.WriteLine("1) Type <x,y> - Insert coordinates");
-        Console.WriteLine("O) Options: ");
-        Console.Write("> ");
-        var input = Console.ReadLine()!;
-
-        if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
-        {
-            GameOptionsMenu(gameInstance, gameRepository);
-        }
-        else
-        {
-            InsertCoordinates(gameInstance, input);
-        }
-    }
-
-    private static void SecondLevel(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
-    {
-        Console.WriteLine();
-        Console.WriteLine("1) Type <x,y> - Insert coordinates");
-        Console.WriteLine("M) Move Piece");
-        Console.WriteLine("G) Move grid");
-        Console.WriteLine("O) Options");
-        Console.Write("> ");
-        var input = Console.ReadLine()!;
-        
-        if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
-        {
-            Console.Clear();
-            Visualizer.DrawGame(gameInstance);
-            gameInstance.MoveGrid();
-        } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
-        {
-            GameOptionsMenu(gameInstance, gameRepository);
-        } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
-        {
-            bool moveSuccessful;
-            do
-            {
-                moveSuccessful = gameInstance.MovePiece();
-            } while (!moveSuccessful);
-            Console.WriteLine("Type <x,y> - Insert new coordinates");
-            Console.Write("> ");
-            var newInput = Console.ReadLine()!;
-            InsertCoordinates(gameInstance, newInput);
-        }
-        else
-        {
-            InsertCoordinates(gameInstance, input);
-        }
-    }
-
-    private static void ThirdLevel(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
-    {
-        Console.WriteLine();
-        Console.WriteLine("M) Move Piece");
-        Console.WriteLine("G) Move grid");
-        Console.WriteLine("O) Options");
-        Console.Write("> ");
-        
-        var input = Console.ReadLine()!;
-        
-        if (input.Equals("G", StringComparison.CurrentCultureIgnoreCase))
-        {
-            Console.Clear();
-            Visualizer.DrawGame(gameInstance);
-            gameInstance.MoveGrid();
-        } else if (input.Equals("O", StringComparison.CurrentCultureIgnoreCase))
-        {
-            GameOptionsMenu(gameInstance, gameRepository);
-        } else if (input.Equals("M", StringComparison.CurrentCultureIgnoreCase))
-        {
-            bool moveSuccessful;
-            do
-            {
-                moveSuccessful = gameInstance.MovePiece();
-            } while (!moveSuccessful);
-            Console.WriteLine("Type <x,y> - Insert new coordinates");
-            Console.Write("> ");
-            var newInput = Console.ReadLine()!;
-            InsertCoordinates(gameInstance, newInput);
-        }
-    }
-    
-    private static void InsertCoordinates(TicTacTwoBrain gameInstance, string input)
+    public static void InsertCoordinates(TicTacTwoBrain gameInstance, string input)
     {
         var inputSplit = input.Split(",");
 
@@ -251,44 +165,5 @@ public static class GameController
         _invalidInput = false;
         _invalidMove = false;
         return "";
-    }
-
-    private static void GameOptionsMenu(TicTacTwoBrain gameInstance, IGameRepository gameRepository)
-    {
-        Console.Clear();
-        Console.WriteLine("GAME OPTIONS");
-        Console.WriteLine("============");
-        Console.WriteLine("B) Back");
-        Console.WriteLine("S) Save");
-        Console.WriteLine("R) Restart");
-        Console.WriteLine("E) Exit");
-        
-        Console.Write("> ");
-        var input = Console.ReadLine()!.ToUpper();
-
-        switch (input)
-        {
-            case "B":
-                break;
-            case "R":
-                gameInstance.ResetGame();
-                break;
-            case "S":
-                Console.WriteLine("Insert game name: ");
-                var gameName = Console.ReadLine() ?? "";
-                gameRepository.SaveGame(gameInstance.GetGameStateJson(), -1, gameName);
-                Console.WriteLine("\u001b[32mGame Saved!\u001b[0m");
-                break;
-            case "E":
-                gameInstance.ExitGame();
-                break;
-            default:
-                Console.WriteLine("\u001b[31mInvalid input!\u001b[0m");
-                Console.WriteLine("B) Back");
-                Console.WriteLine("S) Save");
-                Console.WriteLine("R) Restart");
-                Console.WriteLine("E) Exit");
-                break;
-        }
     }
 }
