@@ -128,7 +128,7 @@ public class TicTacTwoBrain
             return false;
         }
         
-        Console.WriteLine("GameBoard: " + _gameState.GameBoard[x - 1][y - 1]);
+       // Console.WriteLine("GameBoard: " + _gameState.GameBoard[x - 1][y - 1]);
        // Console.WriteLine(x + " " +  y);
         
         // Validate that the chosen piece belongs to the current player and is not empty
@@ -136,7 +136,7 @@ public class TicTacTwoBrain
         {
             // Mark the original location as empty
             _gameState.GameBoard[x - 1][y - 1] = EGamePiece.Empty;
-            Console.WriteLine("GameBoard 2: " + _gameState.GameBoard[x - 1][y - 1]);
+           // Console.WriteLine("GameBoard 2: " + _gameState.GameBoard[x - 1][y - 1]);
             return true;
         }
         else
@@ -392,4 +392,21 @@ public class TicTacTwoBrain
         return (xCount, oCount);
     }
     
+    public bool IsMoveValidWeb(int startX, int startY, int targetX, int targetY)
+    {
+        if (GameBoard[startX][startY] == EGamePiece.Empty || GameBoard[targetX][targetY] != EGamePiece.Empty)
+            return false;
+
+        // Add additional game-specific move rules if needed
+        return true;
+    }
+
+    public void MovePieceWeb(int startX, int startY, int targetX, int targetY)
+    {
+        if (IsMoveValidWeb(startX, startY, targetX, targetY))
+        {
+            GameBoard[targetX][targetY] = GameBoard[startX][startY];
+            GameBoard[startX][startY] = EGamePiece.Empty;
+        }
+    }
 }

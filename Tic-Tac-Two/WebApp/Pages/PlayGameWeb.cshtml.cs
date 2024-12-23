@@ -21,6 +21,7 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
     public string CurrentAction { get; set; }
+    public (int X, int Y)? SelectedPiece { get; set; } = null;
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
@@ -66,6 +67,8 @@ public class PlayGameWeb : PageModel
 
         TicTacTwoBrain.GridPlacement();
         
+        
+        
         //CurrentAction = "SelectAction";
         
         //Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
@@ -77,27 +80,45 @@ public class PlayGameWeb : PageModel
     }
     
 
-    public IActionResult OnPost(string action)
+    public IActionResult OnPost(int? x, int? y, string action)
     {
         var gameState = _gameRepository.LoadGame(GameId);
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         var actionList = new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" };
         
+
+        CurrentAction = action;
+        if (actionList.Contains(CurrentAction))
         {
-            CurrentAction = action;
-            if (actionList.Contains(CurrentAction))
+            TicTacTwoBrain.MoveGrid(CurrentAction);
+            CurrentAction = "SelectAction";
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+        }
+        if (CurrentAction == "SelectPiece" && x != null && y!= null)
+        {
+            // Set the selected piece
+            if (TicTacTwoBrain.GameBoard[x.Value][y.Value] != EGamePiece.Empty)
             {
-                TicTacTwoBrain.MoveGrid(CurrentAction);
-                CurrentAction = "SelectAction";
-                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-            }
-            else if (CurrentAction == "MovePiece")
-            {
-                // Logic for the Move Piece action
+                SelectedPiece = (x.Value, y.Value);
+                CurrentAction = "MovePiece";
             }
         }
+        else if (CurrentAction == "MovePiece" && x != null && y!= null && SelectedPiece != null)
+        {
+            // Validate move
+            var (selectedX, selectedY) = SelectedPiece.Value;
+            if (TicTacTwoBrain.IsMoveValidWeb(selectedX, selectedY, x.Value, y.Value))
+            {
+                // Move the piece and save game
+                TicTacTwoBrain.MovePieceWeb(selectedX, selectedY, x.Value, y.Value);
+                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            }
+
+            // Reset state
+            SelectedPiece = null;
+            CurrentAction = "SelectAction";
+        }
+
         return Page();
     }
-
-
 }
