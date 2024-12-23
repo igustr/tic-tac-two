@@ -52,6 +52,9 @@ else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
                         @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
                         {
                             <a> </a>
+                        } else if (Model.TicTacTwoBrain.NextMoveBy != Model.TicTacTwoBrain.GameBoard[x][y])
+                        {
+                            @(Model.TicTacTwoBrain.GameBoard[x][y])
                         }
                         else
                         {
@@ -92,14 +95,21 @@ else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
                             {
                                 <a> </a>
                                //<a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
+                            } 
+                            else if (Model.TicTacTwoBrain.NextMoveBy != Model.TicTacTwoBrain.GameBoard[x][y])
+                            {
+                                @(Model.TicTacTwoBrain.GameBoard[x][y])
                             }
                             else
                             {
-                                <a asp-route-x="@x" asp-route-y="@y"
-                                   asp-route-Action="MovePiece"
-                                   asp-route-GameId="@Model.GameId">
-                                    @(Model.TicTacTwoBrain.GameBoard[x][y])
-                                </a>
+                                <form method="post" asp-route-GameId="@Model.GameId">
+                                    <input type="hidden" name="x" value="@x" />
+                                    <input type="hidden" name="y" value="@y" />
+                                    <input type="hidden" name="Action" value="ChoosePiece" />
+                                    <button type="submit" style="border: none; background: none; padding: 0;">
+                                        @(Model.TicTacTwoBrain.GameBoard[x][y])
+                                    </button>
+                                </form>
                             }
                             </td>
                     }

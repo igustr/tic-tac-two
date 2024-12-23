@@ -91,9 +91,6 @@ public class PlayGameWeb : PageModel
         
         CurrentAction = action;
         
-        Console.WriteLine("action: " + CurrentAction);
-        Console.WriteLine("x: " + x + " ,y: " + y);
-        
         if (actionList.Contains(CurrentAction))
         {
             TicTacTwoBrain.MoveGrid(CurrentAction);
@@ -111,20 +108,14 @@ public class PlayGameWeb : PageModel
         }
         if (CurrentAction == "MovePiece" && x != null && y != null && SelectedPiece != null)
         {
-            Console.WriteLine("HERE in MovePiece");
-            
-            // Process the move only if selected piece is defined
 
             var (selectedX, selectedY) = SelectedPiece.Value;
             
-            // Check if the move is valid
             if (TicTacTwoBrain.IsMoveValidWeb(selectedX, selectedY, x.Value, y.Value))
             {
-                // Make the move
                 TicTacTwoBrain.MovePieceWeb(selectedX, selectedY, x.Value, y.Value);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-
-                // After the move, reset selection and action
+                
                 SelectedPiece = null;
                 CurrentAction = "SelectAction";
             }
