@@ -76,7 +76,9 @@ else if (Model.CurrentAction == "MovePiece")
                             {
                                 if (Model.CurrentAction == "MovePiece")
                                 {
-                                    <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece">&nbsp;</a>
+                                    <a asp-route-x="@x" asp-route-y="@y"
+                                    asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece"
+                                    asp-rout-SelectedX="@Model.SelectedX" asp-rout-SelectedY="@Model.SelectedY">&nbsp;</a>
                                 }
                                 else
                                 {
@@ -127,7 +129,9 @@ else if (Model.CurrentAction == "MovePiece")
                             {
                                 if (Model.CurrentAction == "MovePiece")
                                 {
-                                <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece">&nbsp;</a>
+                                    <a asp-route-x="@x" asp-route-y="@y" 
+                                       asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece"
+                                       asp-rout-SelectedX="@Model.SelectedX" asp-rout-SelectedY="@Model.SelectedY">&nbsp;</a>
                                 }
                                 else
                                 {
