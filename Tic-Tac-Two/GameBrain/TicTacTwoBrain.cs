@@ -163,10 +163,11 @@ public class TicTacTwoBrain
         var rangeX = (int)Math.Ceiling((GridX - 1) / 2.0); // Determines how many cells to add left and right
         var rangeY = (int)Math.Ceiling((GridY - 1) / 2.0); // Determines how many cells to add up and down
 
-        Console.WriteLine("Grid shift X: " + _gameState.GridXPosition);
-        Console.WriteLine("Grid shift Y: " + _gameState.GridYPosition);
+
 
         /*
+        Console.WriteLine("Grid shift X: " + _gameState.GridXPosition);
+        Console.WriteLine("Grid shift Y: " + _gameState.GridYPosition);
         Console.WriteLine("range X: " + rangeX);
         Console.WriteLine("range Y: " + rangeY);
         Console.WriteLine();

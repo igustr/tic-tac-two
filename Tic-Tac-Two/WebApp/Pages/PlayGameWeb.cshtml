@@ -25,14 +25,12 @@
 <!-- Display Game State Based on Current Action -->
 @if (Model.CurrentAction == "SelectPiece")
 {
-<p style="text-align: center;">Select a piece to move:</p>
+    <p>Select a piece to move</p>
 }
 else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
 {
-<p style="text-align: center;">
-    Selected Piece: (@Model.SelectedPiece.Value.X, @Model.SelectedPiece.Value.Y)<br>
-    Select a target cell for the piece.
-</p>
+    var selectedPiece = Model.SelectedPiece.Value;
+    <p>Selected piece: (@selectedPiece.X, @selectedPiece.Y). Choose a target.</p>
 }
 
 <!-- Game Board -->
@@ -53,16 +51,18 @@ else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
                     <td class="red-cell" style="width: 50px; height: 50px;">
                         @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
                         {
-                            @(Model.TicTacTwoBrain.GameBoard[x][y])
+                            <a> </a>
                         }
                         else
                         {
-                        <a asp-route-x="@x" asp-route-y="@y"
-                           asp-route-Action="@Model.CurrentAction"
-                           asp-route-GameId="@Model.GameId">
-                            @(Model.TicTacTwoBrain.GameBoard[x][y])
-                            &nbsp;
-                        </a>
+                            <form method="post" asp-route-GameId="@Model.GameId">
+                                <input type="hidden" name="x" value="@x" />
+                                <input type="hidden" name="y" value="@y" />
+                                <input type="hidden" name="Action" value="ChoosePiece" />
+                                <button type="submit" style="border: none; background: none; padding: 0;">
+                                    @(Model.TicTacTwoBrain.GameBoard[x][y])
+                                </button>
+                            </form>
                         }
                     </td>
                     }
@@ -86,21 +86,20 @@ else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
                 {
                     if (Model.CurrentAction == "SelectPiece")
                     {
-
+                        //Console.WriteLine("here2 " + x + "," + y);
                         <td style="width: 50px; height: 50px;">
                             @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
                             {
-                                @(Model.TicTacTwoBrain.GameBoard[x][y])
-                                <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
+                                <a> </a>
+                               //<a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
                             }
                             else
                             {
                                 <a asp-route-x="@x" asp-route-y="@y"
-                                   asp-route-Action="@Model.CurrentAction"
+                                   asp-route-Action="MovePiece"
                                    asp-route-GameId="@Model.GameId">
                                     @(Model.TicTacTwoBrain.GameBoard[x][y])
-                                    &nbsp;
-                                    </a>
+                                </a>
                             }
                             </td>
                     }

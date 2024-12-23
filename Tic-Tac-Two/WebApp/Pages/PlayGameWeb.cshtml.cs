@@ -21,7 +21,7 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
     public string CurrentAction { get; set; }
-    public (int X, int Y)? SelectedPiece { get; set; } = null;
+    public (int X, int Y)? SelectedPiece { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
@@ -55,7 +55,7 @@ public class PlayGameWeb : PageModel
         }
         
         // Make a move if coordinates are provided
-        if (x != null && y != null)
+        if (x != null && y != null && CurrentAction != "SelectPiece")
         {
             //Console.WriteLine("coordinates are provided");
             //Console.WriteLine($"x: {x}, y: {y}");
@@ -63,16 +63,19 @@ public class PlayGameWeb : PageModel
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
             //Console.WriteLine("saved game id: " + GameId);
+            // Clear the values after use
         }
 
         TicTacTwoBrain.GridPlacement();
-        
         
         
         //CurrentAction = "SelectAction";
         
         //Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
         /*
+                 SelectedPiece = null;
+        x = null;
+        y = null;
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
         */
@@ -86,37 +89,45 @@ public class PlayGameWeb : PageModel
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         var actionList = new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" };
         
-
         CurrentAction = action;
+        
+        Console.WriteLine("action: " + CurrentAction);
+        Console.WriteLine("x: " + x + " ,y: " + y);
+        
         if (actionList.Contains(CurrentAction))
         {
             TicTacTwoBrain.MoveGrid(CurrentAction);
+            SelectedPiece = null;
             CurrentAction = "SelectAction";
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-        }
-        if (CurrentAction == "SelectPiece" && x != null && y!= null)
+        } 
+        else if (CurrentAction == "ChoosePiece" && x != null && y != null)
         {
-            // Set the selected piece
             if (TicTacTwoBrain.GameBoard[x.Value][y.Value] != EGamePiece.Empty)
             {
                 SelectedPiece = (x.Value, y.Value);
                 CurrentAction = "MovePiece";
             }
         }
-        else if (CurrentAction == "MovePiece" && x != null && y!= null && SelectedPiece != null)
+        if (CurrentAction == "MovePiece" && x != null && y != null && SelectedPiece != null)
         {
-            // Validate move
+            Console.WriteLine("HERE in MovePiece");
+            
+            // Process the move only if selected piece is defined
+
             var (selectedX, selectedY) = SelectedPiece.Value;
+            
+            // Check if the move is valid
             if (TicTacTwoBrain.IsMoveValidWeb(selectedX, selectedY, x.Value, y.Value))
             {
-                // Move the piece and save game
+                // Make the move
                 TicTacTwoBrain.MovePieceWeb(selectedX, selectedY, x.Value, y.Value);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-            }
 
-            // Reset state
-            SelectedPiece = null;
-            CurrentAction = "SelectAction";
+                // After the move, reset selection and action
+                SelectedPiece = null;
+                CurrentAction = "SelectAction";
+            }
         }
 
         return Page();
