@@ -393,21 +393,19 @@ public class TicTacTwoBrain
         return (xCount, oCount);
     }
     
-    public bool IsMoveValidWeb(int startX, int startY, int targetX, int targetY)
-    {
-        if (GameBoard[startX][startY] == EGamePiece.Empty || GameBoard[targetX][targetY] != EGamePiece.Empty)
-            return false;
 
-        // Add additional game-specific move rules if needed
-        return true;
-    }
 
     public void MovePieceWeb(int startX, int startY, int targetX, int targetY)
     {
-        if (IsMoveValidWeb(startX, startY, targetX, targetY))
+        Console.WriteLine("in MovePieceWeb");
+        if (_gameState.GameBoard[targetX][targetY] != EGamePiece.Empty)
         {
-            GameBoard[targetX][targetY] = GameBoard[startX][startY];
-            GameBoard[startX][startY] = EGamePiece.Empty;
+            Console.WriteLine($"Error: Target position ({targetX}, {targetY}) is already occupied.");
         }
+
+        _gameState.GameBoard[targetX][targetY] = _gameState.NextMoveBy;
+        _gameState.GameBoard[startX][startY] = EGamePiece.Empty;
+        
+        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
     }
 }

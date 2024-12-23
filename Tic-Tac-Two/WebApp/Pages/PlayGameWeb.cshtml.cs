@@ -21,7 +21,8 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
     public string CurrentAction { get; set; }
-    public (int X, int Y)? SelectedPiece { get; set; } 
+    [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
+    [BindProperty(SupportsGet = true)] public int SelectedY { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
     [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
 
@@ -29,6 +30,9 @@ public class PlayGameWeb : PageModel
 
     public void OnGet(int? x, int? y, string? gameType)
     {
+        Console.WriteLine("currentaction get: " + gameType);
+        Console.WriteLine("selectPiece<x,y> GET: " + SelectedX + "," + SelectedY);
+
         // Load game state based on the game type
         if (gameType == "load")
         {
@@ -47,6 +51,14 @@ public class PlayGameWeb : PageModel
             TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
+        else if (gameType == "MovePiece" && x != null && y != null)
+        {
+            Console.WriteLine("here in MovePiece");
+            
+            TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
+            CurrentAction = "SelectAction";
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+        }
         else
         {
             Console.WriteLine("game id: " + GameId);
@@ -54,8 +66,7 @@ public class PlayGameWeb : PageModel
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
         }
         
-        // Make a move if coordinates are provided
-        if (x != null && y != null && CurrentAction != "SelectPiece")
+        if (x != null && y != null && gameType != "MovePiece")
         {
             //Console.WriteLine("coordinates are provided");
             //Console.WriteLine($"x: {x}, y: {y}");
@@ -64,7 +75,7 @@ public class PlayGameWeb : PageModel
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
             //Console.WriteLine("saved game id: " + GameId);
             // Clear the values after use
-        }
+        } 
 
         TicTacTwoBrain.GridPlacement();
         
@@ -91,35 +102,23 @@ public class PlayGameWeb : PageModel
         
         CurrentAction = action;
         
+        Console.WriteLine("action: " + CurrentAction);
+        
         if (actionList.Contains(CurrentAction))
         {
             TicTacTwoBrain.MoveGrid(CurrentAction);
-            SelectedPiece = null;
             CurrentAction = "SelectAction";
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         } 
         else if (CurrentAction == "ChoosePiece" && x != null && y != null)
         {
-            if (TicTacTwoBrain.GameBoard[x.Value][y.Value] != EGamePiece.Empty)
-            {
-                SelectedPiece = (x.Value, y.Value);
-                CurrentAction = "MovePiece";
-            }
-        }
-        if (CurrentAction == "MovePiece" && x != null && y != null && SelectedPiece != null)
-        {
+            Console.WriteLine("here in ChoosePiece");
 
-            var (selectedX, selectedY) = SelectedPiece.Value;
-            
-            if (TicTacTwoBrain.IsMoveValidWeb(selectedX, selectedY, x.Value, y.Value))
-            {
-                TicTacTwoBrain.MovePieceWeb(selectedX, selectedY, x.Value, y.Value);
-                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-                
-                SelectedPiece = null;
-                CurrentAction = "SelectAction";
-            }
-        }
+            SelectedX = x.Value;
+            SelectedY = y.Value;
+
+            CurrentAction = "MovePiece";
+        } 
 
         return Page();
     }

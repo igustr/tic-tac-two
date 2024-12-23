@@ -6,6 +6,7 @@
 <h2 style="justify-content: flex-end;">Tic-Tac-Two</h2>
 
 <p style="justify-content: flex-end;">Next move by: <strong>@Model.TicTacTwoBrain.NextMoveBy</strong></p>
+<p>Current Action: @Model.CurrentAction</p>
 
 <div class="markers-container">
     <div class="markers-left">
@@ -27,10 +28,9 @@
 {
     <p>Select a piece to move</p>
 }
-else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
+else if (Model.CurrentAction == "MovePiece")
 {
-    var selectedPiece = Model.SelectedPiece.Value;
-    <p>Selected piece: (@selectedPiece.X, @selectedPiece.Y). Choose a target.</p>
+    <p>Selected piece: (@Model.SelectedX, @Model.SelectedY). Choose a target.</p>
 }
 
 <!-- Game Board -->
@@ -74,7 +74,14 @@ else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
                         <td class="red-cell" style="width: 50px; height: 50px;">
                             @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
                             {
-                                <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
+                                if (Model.CurrentAction == "MovePiece")
+                                {
+                                    <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece">&nbsp;</a>
+                                }
+                                else
+                                {
+                                    <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
+                                }
                             }
                             else
                             {
@@ -82,7 +89,6 @@ else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
                             }
                         </td> 
                     }
-
                 }
                 
                 else
@@ -119,7 +125,14 @@ else if (Model.CurrentAction == "MovePiece" && Model.SelectedPiece.HasValue)
                         <td style="width: 50px; height: 50px;">
                             @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
                             {
+                                if (Model.CurrentAction == "MovePiece")
+                                {
+                                <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece">&nbsp;</a>
+                                }
+                                else
+                                {
                                 <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
+                                }
                             }
                             else
                             {
