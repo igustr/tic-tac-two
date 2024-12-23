@@ -51,14 +51,6 @@ public class PlayGameWeb : PageModel
             TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
-        else if (gameType == "MovePiece" && x != null && y != null)
-        {
-            Console.WriteLine("here in MovePiece");
-            
-            TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
-            CurrentAction = "SelectAction";
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-        }
         else
         {
             Console.WriteLine("game id: " + GameId);
@@ -66,7 +58,15 @@ public class PlayGameWeb : PageModel
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
         }
         
-        if (x != null && y != null && gameType != "MovePiece")
+        if (gameType == "MovePiece" && x != null && y != null)
+        {
+            Console.WriteLine("here in MovePiece");
+            
+            TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
+            CurrentAction = "SelectAction";
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+        }
+        else if (x != null && y != null && gameType != "MovePiece")
         {
             //Console.WriteLine("coordinates are provided");
             //Console.WriteLine($"x: {x}, y: {y}");
