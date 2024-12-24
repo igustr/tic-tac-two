@@ -50,6 +50,7 @@ public class ConfigRepositoryDB : IConfigRepository
 
     public int SaveConfig(string jsonConfigString, string userConfigName)
     {
+        Console.WriteLine("in db rep, userConfigName: " + userConfigName);
         // Deserialize the JSON string to a GameConfiguration object
         var config = JsonSerializer.Deserialize<GameConfiguration>(jsonConfigString);
 

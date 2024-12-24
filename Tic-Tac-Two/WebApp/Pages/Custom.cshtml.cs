@@ -1,5 +1,6 @@
 ﻿using DAL;
 using GameBrain;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Pages;
@@ -13,16 +14,16 @@ public class Custom : PageModel
     {
         _configRepository = configRepository;
     }
-    public string ConfName { get; set; } = default!;
-    public int BoardSize { get; set; } = default!;
-    public int GridSize { get; set; } = default!;
-    public int PiecesAmount { get; set; } = default!;
-    public int PiecesToWin { get; set; } = default!;
-    public string? Error { get; set; }
+    [BindProperty] public string ConfName { get; set; } = default!;
+    [BindProperty] public int BoardSize { get; set; } = default!;
+    [BindProperty] public int GridSize { get; set; } = default!;
+    [BindProperty] public int PiecesAmount { get; set; } = default!;
+    [BindProperty] public int PiecesToWin { get; set; } = default!;
+    [BindProperty] public string? Error { get; set; }
     
 
     // Gives loadConfig gameType
-    public void OnPost()
+    public IActionResult OnPost()
     {
         var gameConfiguration = new GameConfiguration()
         {
@@ -35,11 +36,12 @@ public class Custom : PageModel
             MovePieceAfterNMoves = PiecesAmount / 2,
             AmountOfPieces = PiecesAmount
         };
+        Console.WriteLine("in custom, ConfName: " + ConfName);
         
         var jsonConfStr = System.Text.Json.JsonSerializer.Serialize(gameConfiguration);
         var configId = _configRepository.SaveConfig(jsonConfStr, ConfName);  
         
-        RedirectToPage("./PlayGameWeb", new { ConfigId = configId, gameType = "loadConfig" });
+        return RedirectToPage("./PlayGameWeb", new { ConfigId = configId, gameType = "loadConfig" });
     }
 
     /*
