@@ -268,13 +268,13 @@ public class TicTacTwoBrain
                 break;
         }
 
-        /*
+
         // Toggle the next player after each move, if a valid move was made
         if (directionInput != "B" && "UDLRULURDLDR".Contains(directionInput))
         {
             _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
         }
-        */
+
     }
 
     private bool MoveGridCheck()
@@ -290,8 +290,7 @@ public class TicTacTwoBrain
             GridPlacement();
             return false;
         }
-
-        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+        
         return true;
     }
 

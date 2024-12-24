@@ -26,8 +26,6 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedY { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
-    [BindProperty(SupportsGet = true)] public EGamePiece NextMoveBy { get; set; } = default!;
-
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
     public IActionResult OnGet(int? x, int? y, string? gameType)
@@ -35,42 +33,29 @@ public class PlayGameWeb : PageModel
         Console.WriteLine("currentaction get: " + gameType);
         Console.WriteLine("selectPiece<x,y> GET: " + SelectedX + "," + SelectedY);
 
-        // Load game state based on the game type
-        if (gameType == "load")
-        {
-            var gameState = _gameRepository.GetSavedGameByName(GameName);
-            TicTacTwoBrain = new TicTacTwoBrain(gameState);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-        }
-        else if (gameType == "loadConfig")
-        {
-            var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
-            TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-        } 
-        else if (gameType == "new")
-        {
-            TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-        }
-        else
-        {
-            Console.WriteLine("game id: " + GameId);
-            var gameState = _gameRepository.LoadGame(GameId);
-            TicTacTwoBrain = new TicTacTwoBrain(gameState);
-            
+        // Load Game Instance from DB or Create new one
+        OnGetLoadGame(gameType);
+        
 
-            if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
-            {
-                Console.WriteLine("redirecting to final stage");
-                CurrentAction = "SelectPiece";
-                gameType = "SelectPiece";
-            }
+        if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
+        {
+            Console.WriteLine("redirecting to final stage");
+            CurrentAction = "SelectPiece";
+            gameType = "SelectPiece";
         }
+        
+        
+        // Load game state based on the game type
         if (gameType == "MovePiece" && x != null && y != null)
         {
             Console.WriteLine("here in MovePiece");
-            
+            if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
+            {
+                Error = "You can't place piece outside of grid!";
+                CurrentAction = "Select Action";
+                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+                return Page();
+            }
             TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
             CurrentAction = "SelectAction";
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
@@ -93,11 +78,7 @@ public class PlayGameWeb : PageModel
         } 
 
         TicTacTwoBrain.GridPlacement();
-        
-        
-        //CurrentAction = "SelectAction";
-        
-        //Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
+
         
         /*
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
@@ -146,7 +127,34 @@ public class PlayGameWeb : PageModel
         return Page();
     }
 
-    public bool FinalStageCheck(TicTacTwoBrain gameInstance)
+    private void OnGetLoadGame(string? gameType)
+    {
+        if (gameType == "load")
+        {
+            var gameState = _gameRepository.GetSavedGameByName(GameName);
+            TicTacTwoBrain = new TicTacTwoBrain(gameState);
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+        }
+        else if (gameType == "loadConfig")
+        {
+            var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
+            TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+        } 
+        else if (gameType == "new")
+        {
+            TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+        }
+        else
+        {
+            Console.WriteLine("game id: " + GameId);
+            var gameState = _gameRepository.LoadGame(GameId);
+            TicTacTwoBrain = new TicTacTwoBrain(gameState);
+        }
+    }
+
+    private bool FinalStageCheck(TicTacTwoBrain gameInstance)
     {
         if (gameInstance.NextMoveBy == EGamePiece.X && gameInstance.GetPiecesOnBoardCount().Item1 == gameInstance.AmountOfPieces)
         {
