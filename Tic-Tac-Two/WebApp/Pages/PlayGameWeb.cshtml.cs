@@ -28,7 +28,7 @@ public class PlayGameWeb : PageModel
 
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
-    public void OnGet(int? x, int? y, string? gameType)
+    public IActionResult OnGet(int? x, int? y, string? gameType)
     {
         Console.WriteLine("currentaction get: " + gameType);
         Console.WriteLine("selectPiece<x,y> GET: " + SelectedX + "," + SelectedY);
@@ -56,6 +56,15 @@ public class PlayGameWeb : PageModel
             Console.WriteLine("game id: " + GameId);
             var gameState = _gameRepository.LoadGame(GameId);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
+            
+
+            if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
+            {
+                Console.WriteLine("redirecting to final stage");
+                CurrentAction = "SelectPiece";
+                gameType = "SelectPiece";
+            }
+            
         }
         
         if (gameType == "MovePiece" && x != null && y != null)
@@ -66,7 +75,7 @@ public class PlayGameWeb : PageModel
             CurrentAction = "SelectAction";
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
-        else if (x != null && y != null && gameType != "MovePiece")
+        else if (x != null && y != null && gameType != "MovePiece" && gameType != "SelectPiece")
         {
             //Console.WriteLine("coordinates are provided");
             //Console.WriteLine($"x: {x}, y: {y}");
@@ -90,7 +99,7 @@ public class PlayGameWeb : PageModel
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
         */
-
+        return Page();
     }
     
 
@@ -121,5 +130,20 @@ public class PlayGameWeb : PageModel
         } 
 
         return Page();
+    }
+
+    public bool FinalStageCheck(TicTacTwoBrain gameInstance)
+    {
+        if (gameInstance.NextMoveBy == EGamePiece.X && gameInstance.GetPiecesOnBoardCount().Item1 == gameInstance.AmountOfPieces)
+        {
+            return true;
+        }
+            
+        if (gameInstance.NextMoveBy == EGamePiece.O && gameInstance.GetPiecesOnBoardCount().Item2 == gameInstance.AmountOfPieces)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
