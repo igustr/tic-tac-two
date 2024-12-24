@@ -48,14 +48,14 @@ else if (Model.CurrentAction == "MovePiece")
         <tr>
             @for (var x = 0; x < Model.TicTacTwoBrain.DimX; x++)
             {
-                @if (x < Model.TicTacTwoBrain.DimX - 1 
+                @if (x < Model.TicTacTwoBrain.DimX 
                      && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1)
                      && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1))
                     //&& x != Model.TicTacTwoBrain.gridXCoordinates.Max() - 1)
                 {
                     if (Model.CurrentAction == "SelectPiece")
                     {
-                     //Console.WriteLine("here1 " + x + "," + y + " -red");
+                     Console.WriteLine("here1 " + x + "," + y + " -red");
                     <td class="red-cell" style="width: 50px; height: 50px;">
                         @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
                         {
