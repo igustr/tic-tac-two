@@ -162,13 +162,14 @@ else if (Model.CurrentAction == "MovePiece")
 {
     @if (string.IsNullOrEmpty(Model.CurrentAction) || Model.CurrentAction == "SelectAction")
     {
-        <form method="post">
+        <form method="post" class="centered-form">
             <h3>Select Action</h3>
-            <div class="btn-group-horizontal" role="group" style="width: 100%; margin-top: 20px; justify-content: flex-end;">
-                <button type="submit" class="btn btn-info btn-lg mb-2" name="Action" value="MoveGrid">Move Grid</button>
-                <button type="submit" class="btn btn-info btn-lg mb-2" name="Action" value="SelectPiece">Move Piece</button>
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-info" name="Action" value="MoveGrid">Move Grid</button>
+                <button type="submit" class="btn btn-info" name="Action" value="SelectPiece">Move Piece</button>
             </div>
         </form>
+
     }
     else if (Model.CurrentAction == "MoveGrid")
     {        <form method="post">
@@ -350,5 +351,50 @@ else if (Model.CurrentAction == "MovePiece")
     .danger-message strong {
         font-weight: bold;
     }
+
+    /* Ensure that the buttons are placed immediately after the board */
+    .centered-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: 20px; /* Add margin top to create space after the board */
+    }
+
+    /* Adjust the form to fit just below the board */
+    .centered-form h3 {
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 20px;
+    }
+
+    /* Center the buttons */
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .btn {
+        padding: 15px 30px;
+        font-size: 1.3rem;
+        background-color: #fd7e14; /* Yellow background color */
+        border: none;
+        color: black ;
+        border-radius: 5px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+        background-color: #fd7e14; /* Slightly darker yellow on hover */
+        transform: scale(1.05); /* Slight scale effect on hover */
+    }
+
+    .btn:active {
+        background-color: #fd7e14; /* Darker yellow when active */
+        transform: scale(0.95); /* Slight scale effect when button is clicked */
+    }
+
+
 
 </style>
