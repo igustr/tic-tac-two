@@ -146,7 +146,7 @@ public class TicTacTwoBrain
         }
     }
     
-    public void GridPlacement()
+    public bool GridPlacement()
     {
         GridXCoordinates.Clear();
         GridYCoordinates.Clear();
@@ -214,7 +214,7 @@ public class TicTacTwoBrain
         Console.WriteLine();
         */
 
-        MoveGridCheck();
+        return MoveGridCheck();
     }
 
     public void MoveGrid(string directionInput)
@@ -268,14 +268,16 @@ public class TicTacTwoBrain
                 break;
         }
 
+        /*
         // Toggle the next player after each move, if a valid move was made
         if (directionInput != "B" && "UDLRULURDLDR".Contains(directionInput))
         {
             _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
         }
+        */
     }
 
-    public bool MoveGridCheck()
+    private bool MoveGridCheck()
     {
         if (GridXCoordinates.Max() > DimX || GridYCoordinates.Max() > DimY
                                                      || GridXCoordinates.Min() <= 0 
@@ -289,6 +291,7 @@ public class TicTacTwoBrain
             return false;
         }
 
+        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
         return true;
     }
 
