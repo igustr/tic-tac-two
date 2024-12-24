@@ -134,13 +134,7 @@ public class PlayGameWeb : PageModel
 
     private void OnGetLoadGame(string? gameType)
     {
-        if (gameType == "load")
-        {
-            var gameState = _gameRepository.GetSavedGameByName(GameName);
-            TicTacTwoBrain = new TicTacTwoBrain(gameState);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, GameName);
-        }
-        else if (gameType == "loadConfig")
+        if (gameType == "loadConfig")
         {
             var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
             TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
