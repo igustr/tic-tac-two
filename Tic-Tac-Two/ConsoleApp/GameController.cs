@@ -55,7 +55,10 @@ public static class GameController
                 if (input.ToUpper().Equals("Y"))
                 { 
                     chosenConfig.Name = "User Custom"; 
-                    configRepository.SaveConfig(chosenConfig.ToJsonString());
+                    Console.WriteLine("Type configuration name: ");
+                    Console.Write("> ");
+                    var userConfigName = Console.ReadLine()!;
+                    configRepository.SaveConfig(chosenConfig.ToJsonString(), userConfigName);
                 }
             }
             // new game

@@ -18,7 +18,6 @@ public class Custom : PageModel
     public int GridSize { get; set; } = default!;
     public int PiecesAmount { get; set; } = default!;
     public int PiecesToWin { get; set; } = default!;
-    public bool SaveConfig { get; set; } = default!;
     public string? Error { get; set; }
     
 
@@ -36,13 +35,11 @@ public class Custom : PageModel
             MovePieceAfterNMoves = PiecesAmount / 2,
             AmountOfPieces = PiecesAmount
         };
-
-        if (SaveConfig)
-        {
-            var jsonConfStr = System.Text.Json.JsonSerializer.Serialize(gameConfiguration);
-            _configRepository.SaveConfig(jsonConfStr);  
-        }
         
+        var jsonConfStr = System.Text.Json.JsonSerializer.Serialize(gameConfiguration);
+        var configId = _configRepository.SaveConfig(jsonConfStr, ConfName);  
+        
+        RedirectToPage("./PlayGameWeb", new { ConfigId = configId, gameType = "loadConfig" });
     }
 
     /*

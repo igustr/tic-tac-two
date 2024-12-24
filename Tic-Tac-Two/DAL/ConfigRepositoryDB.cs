@@ -48,7 +48,7 @@ public class ConfigRepositoryDB : IConfigRepository
         return res;
     }
 
-    public void SaveConfig(string jsonConfigString)
+    public int SaveConfig(string jsonConfigString, string userConfigName)
     {
         // Deserialize the JSON string to a GameConfiguration object
         var config = JsonSerializer.Deserialize<GameConfiguration>(jsonConfigString);
@@ -57,10 +57,6 @@ public class ConfigRepositoryDB : IConfigRepository
         {
             throw new InvalidOperationException("Failed to deserialize configuration.");
         }
-        
-        Console.WriteLine("Type configuration name: ");
-        Console.Write("> ");
-        var userConfigName = Console.ReadLine()!;
 
         // Create a new ConfigEntity from GameConfiguration
         var configEntity = new Configuration
@@ -78,6 +74,8 @@ public class ConfigRepositoryDB : IConfigRepository
         _context.Configurations.Add(configEntity);
         
         _context.SaveChanges();
+
+        return configEntity.Id;
     }
     
     public GameConfiguration GetConfigById(int configId)

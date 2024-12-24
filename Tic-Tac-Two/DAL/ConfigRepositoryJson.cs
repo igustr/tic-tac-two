@@ -32,12 +32,8 @@ public class ConfigRepositoryJson : IConfigRepository
 
     }
     
-    public void SaveConfig(string jsonConfigString)
+    public int SaveConfig(string jsonConfigString, string userConfigName)
     {
-        Console.WriteLine("Type configuration name: ");
-        Console.Write("> ");
-        var userConfigName = Console.ReadLine()!;
-        
         if (!Directory.Exists(FileHandler.BasePath))
         {
             Directory.CreateDirectory(FileHandler.BasePath);
@@ -48,6 +44,8 @@ public class ConfigRepositoryJson : IConfigRepository
         
         System.IO.File.WriteAllText(filename, jsonConfigString);
         Console.WriteLine("Configuration Saved!");
+
+        return -1;
     }
 
     private void _checkAndCreatInitialConfig()
