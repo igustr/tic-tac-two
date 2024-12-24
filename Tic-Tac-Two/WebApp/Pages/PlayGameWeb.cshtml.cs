@@ -30,20 +30,25 @@ public class PlayGameWeb : PageModel
 
     public IActionResult OnGet(int? x, int? y, string? gameType)
     {
-        Console.WriteLine("currentaction get: " + gameType);
-        Console.WriteLine("selectPiece<x,y> GET: " + SelectedX + "," + SelectedY);
+
 
         // Load Game Instance from DB or Create new one
         OnGetLoadGame(gameType);
-        
+
+        if (TicTacTwoBrain.CheckWin())
+        {
+            return RedirectToPage("./EndPage");
+        }
 
         if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
         {
-            Console.WriteLine("redirecting to final stage");
+            Console.WriteLine("final stage check Success");
             CurrentAction = "SelectPiece";
             gameType = "SelectPiece";
         }
         
+        Console.WriteLine("current Action get: " + gameType);
+        //Console.WriteLine("selectPiece<x,y> GET: " + SelectedX + "," + SelectedY);
         
         // Load game state based on the game type
         if (gameType == "MovePiece" && x != null && y != null)
@@ -97,7 +102,7 @@ public class PlayGameWeb : PageModel
         
         CurrentAction = action;
         
-        Console.WriteLine("action: " + CurrentAction);
+        Console.WriteLine("action POST: " + CurrentAction);
         
         if (actionList.Contains(CurrentAction))
         {

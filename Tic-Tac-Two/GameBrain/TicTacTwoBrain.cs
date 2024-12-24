@@ -411,16 +411,4 @@ public class TicTacTwoBrain
         
         _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
     }
-    
-    public bool MoveGridCheckWeb()
-    {
-        if (GridXCoordinates.Max() > DimX || GridYCoordinates.Max() > DimY
-                                          || GridXCoordinates.Min() <= 0
-                                          || GridYCoordinates.Min() <= 0)
-        {
-            return false;
-        }
-
-        return true;
-    }
 }
