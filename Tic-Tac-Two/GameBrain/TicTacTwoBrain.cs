@@ -366,7 +366,7 @@ public class TicTacTwoBrain
 
     public void ExitGame()
     {
-        //IMPLEMENT
+        Environment.Exit(0);
     }
 
     public static HashSet<int> GetGridXCoordinates()

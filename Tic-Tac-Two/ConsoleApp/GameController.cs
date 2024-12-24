@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using ConsoleUI;
 using DAL;
+using Domain;
 using GameBrain;
 using MenuSystem;
 
@@ -75,8 +76,8 @@ public static class GameController
             if (gameInstance.CheckWin())
             {
                 //Todo return to menu where you can choose to continue or return
-                return "Winner is X";
-                // Implement start new game button
+                Console.WriteLine("Winner is: " + gameInstance.NextMoveBy);
+                GameEndScreen();
             }
 
             //gameInstance.CheckWin();
@@ -165,5 +166,24 @@ public static class GameController
         _invalidInput = false;
         _invalidMove = false;
         return "";
+    }
+
+    private static void GameEndScreen()
+    {
+        Console.WriteLine();
+        Console.WriteLine("B) Back in Menu");
+        Console.WriteLine("E) Exit");
+
+        Console.Write("> ");
+        var input = Console.ReadLine()!;
+
+        if (input.Equals("B", StringComparison.CurrentCultureIgnoreCase))
+        {
+            Menus.MainMenu.Run();
+        }
+        else
+        {
+            Environment.Exit(0);
+        }
     }
 }
