@@ -75,8 +75,14 @@ public static class GameController
             _invalidMove = false;
             if (gameInstance.CheckWin())
             {
-                //Todo return to menu where you can choose to continue or return
-                Console.WriteLine("Winner is: " + gameInstance.NextMoveBy);
+                if (gameInstance.NextMoveBy == EGamePiece.X)
+                {
+                    Console.WriteLine("Winner is: " + EGamePiece.O);
+                }
+                else
+                { 
+                    Console.WriteLine("Winner is: " + EGamePiece.X);
+                }
                 GameEndScreen();
             }
 
