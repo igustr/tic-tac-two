@@ -22,27 +22,33 @@ public class ChooseConfig : PageModel
     
     public IActionResult OnGet()
     {
-        var selectListData = _configRepository.GetConfigurationNames()
-            .Select(name => new {id = name, value = name})
-            .ToList();
         
+        // Retrieve configurations with IDs and Names
+        var selectListData = _configRepository.GetConfigurations()
+            .Select(config => new { id = config.Id, value = config.Name })
+            .ToList();
+
+        // Create the SelectList using ID for "value" and Name for display
         ConfigSelectList = new SelectList(selectListData, "id", "value");
         return Page();
     }
 
     public IActionResult OnPost()
     { 
-        if (ModelState.IsValid)
+        if (ModelState.IsValid && ConfigName != null)
         {
-            // Reload the GamesSelectList in case of validation errors
-            var selectListData = _configRepository.GetConfigurationNames()
-                .Select(name => new SelectListItem { Value = name, Text = name })
-                .ToList();
+            // ConfigName will hold the selected configuration ID
+            int selectedConfigId = int.Parse(ConfigName);
 
-            ConfigSelectList = new SelectList(selectListData, "id", "value");
-            return RedirectToPage("./PlayGameWeb", new { configName = ConfigName, gameType = "loadConfig" });
+            return RedirectToPage("./PlayGameWeb", new { configId = selectedConfigId, gameType = "loadConfig" });
         }
-        
+
+        // Reload SelectList in case of errors
+        var selectListData = _configRepository.GetConfigurations()
+            .Select(config => new { id = config.Id, value = config.Name })
+            .ToList();
+        ConfigSelectList = new SelectList(selectListData, "id", "value");
+
         return Page();
     }
 }

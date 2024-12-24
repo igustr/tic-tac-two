@@ -79,4 +79,37 @@ public class ConfigRepositoryDB : IConfigRepository
         
         _context.SaveChanges();
     }
+    
+    public GameConfiguration GetConfigById(int configId)
+    {
+        var data = _context.Configurations.First(g => g.Id == configId);
+        
+        if (data == null)
+        {
+            // Log or throw a custom exception if needed
+            throw new KeyNotFoundException($"Configuration with id '{configId}' not found.");
+        }
+        var res = new GameConfiguration()
+        {
+            Name = data.Name,
+            BoardSizeWidth = data.BoardSizeWidth,
+            BoardSizeHeight = data.BoardSizeHeight,
+            GridSizeHeight = data.GridSizeHeight,
+            GridSizeWidth = data.GridSizeWidth,
+            WinCondition = data.WinCondition,
+            MovePieceAfterNMoves = data.MovePieceAfterNMoves,
+            AmountOfPieces = data.AmountOfPieces
+        };
+        return res;
+    }
+    
+    public List<Configuration> GetConfigurations()
+    {
+        var configurations = _context.Configurations
+            .OrderBy(c => c.Name)
+            .ToList();
+
+        return configurations;
+    }
+
 }

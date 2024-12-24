@@ -1,4 +1,5 @@
-﻿using GameBrain;
+﻿using Domain;
+using GameBrain;
 
 namespace DAL;
 
@@ -68,5 +69,14 @@ public class ConfigRepositoryHardcoded : IConfigRepository
     public GameConfiguration GetConfigurationByName(string name)
     {
         return _gameConfigurations.Single(c => c.Name == name);
+    }
+    
+    public GameConfiguration GetConfigById(int configId)
+    {
+        throw new NotImplementedException(); 
+    }
+    public List<Configuration> GetConfigurations()
+    {
+        throw new NotImplementedException(); 
     }
 }

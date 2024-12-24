@@ -21,6 +21,7 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)]
     public string? Error { get; set; }
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
+    [BindProperty(SupportsGet = true)] public int ConfigId { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
     public string CurrentAction { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
@@ -136,9 +137,9 @@ public class PlayGameWeb : PageModel
     {
         if (gameType == "loadConfig")
         {
-            var chosenConfig = _configRepository.GetConfigurationByName(ConfigName);
+            var chosenConfig = _configRepository.GetConfigById(ConfigId);
             TicTacTwoBrain = new TicTacTwoBrain(chosenConfig);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, chosenConfig.Name);
         } 
         else if (gameType == "new")
         {
@@ -150,7 +151,7 @@ public class PlayGameWeb : PageModel
             var gameState = _gameRepository.LoadGame(GameId);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
         }
-        Console.WriteLine("game id: " + GameId);
+        //Console.WriteLine("game id: " + GameId);
     }
 
     private bool FinalStageCheck(TicTacTwoBrain gameInstance)

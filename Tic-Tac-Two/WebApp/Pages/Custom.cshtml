@@ -1,28 +1,43 @@
 ﻿@page
 @model WebApp.Pages.Custom
 
-<h1>New Custom Game</h1>
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+<div class="danger-message" role="alert">
+    @Model.Error
+</div>
+}
+
+<h1>Custom Game</h1>
 
 <!DOCTYPE html>
 
 
 //TODO: MAKE CHECKS
 <form method="post">
-    <label for="customString">Board size: </label>
-    <input type="text" id="boardSize" name="customString" required />
+    <label for="ConfName">Config name: </label>
+    <input type="text" id="ConfName" name="ConfName" required />
     <br />
+    
+    <label for="BoardSize">Board size: </label>
+    <input type="text" id="BoardSize" name="BoardSize" required/>
+    <br/>
 
-    <label for="customString">Grid Size: </label>
-    <input type="text" id="gridSize" name="customString" required />
-    <br />
+    <label for="GridSize">Grid Size: </label>
+    <input type="text" id="GridSize" name="GridSize" required/>
+    <br/>
 
-    <label for="customString">Amount of Pieces: </label>
-    <input type="text" id="piecesAmount" name="customString" required />
-    <br />
+    <label for="PiecesAmount">Amount of Pieces: </label>
+    <input type="text" id="PiecesAmount" name="PiecesAmount" required/>
+    <br/>
 
-    <label for="customString">Amount of Pieces to Win: </label>
-    <input type="text" id="piecesToWin" name="customString" required />
-    <br />
-
+    <label for="PiecesToWin">Amount of Pieces to Win: </label>
+    <input type="text" id="PiecesToWin" name="PiecesToWin" required/>
+    <br/>
+    
+    <label for="SaveConfig">Save Config</label>
+    <input type="checkbox" id="SaveConfig" name="SaveConfig" value="true"/>
+    <br/>
+    
     <button type="submit">Submit</button>
 </form>

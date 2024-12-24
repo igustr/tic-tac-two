@@ -1,4 +1,5 @@
-﻿using GameBrain;
+﻿using Domain;
+using GameBrain;
 
 namespace DAL;
 
@@ -73,5 +74,15 @@ public class ConfigRepositoryJson : IConfigRepository
                 );
             }
         }
+    }
+    
+    public GameConfiguration GetConfigById(int configId)
+    {
+        throw new NotImplementedException(); 
+    }
+    
+    public List<Configuration> GetConfigurations()
+    {
+        throw new NotImplementedException(); 
     }
 }
