@@ -79,7 +79,13 @@ public class PlayGameWeb : PageModel
         {
             //Console.WriteLine("coordinates are provided");
             //Console.WriteLine($"x: {x}, y: {y}");
-            TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value);
+            if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
+            {
+                Error = "You can't place piece outside of grid!";
+                CurrentAction = "SelectAction";
+                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+                return Page();
+            }
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
             //Console.WriteLine("saved game id: " + GameId);
@@ -93,8 +99,10 @@ public class PlayGameWeb : PageModel
         
         //Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
         
+        /*
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
+        */
 
         return Page();
     }
