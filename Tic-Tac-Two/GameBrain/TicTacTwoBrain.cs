@@ -275,7 +275,7 @@ public class TicTacTwoBrain
         }
     }
 
-    private void MoveGridCheck()
+    public bool MoveGridCheck()
     {
         if (GridXCoordinates.Max() > DimX || GridYCoordinates.Max() > DimY
                                                      || GridXCoordinates.Min() <= 0 
@@ -286,7 +286,10 @@ public class TicTacTwoBrain
             
             MoveGrid("null");
             GridPlacement();
+            return false;
         }
+
+        return true;
     }
 
     public bool CheckWin()
@@ -392,8 +395,6 @@ public class TicTacTwoBrain
 
         return (xCount, oCount);
     }
-    
-
 
     public void MovePieceWeb(int startX, int startY, int targetX, int targetY)
     {
@@ -407,5 +408,17 @@ public class TicTacTwoBrain
         _gameState.GameBoard[startX][startY] = EGamePiece.Empty;
         
         _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+    }
+    
+    public bool MoveGridCheckWeb()
+    {
+        if (GridXCoordinates.Max() > DimX || GridYCoordinates.Max() > DimY
+                                          || GridXCoordinates.Min() <= 0
+                                          || GridYCoordinates.Min() <= 0)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

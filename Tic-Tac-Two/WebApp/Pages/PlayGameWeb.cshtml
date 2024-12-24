@@ -2,6 +2,14 @@
 @using GameBrain
 @model WebApp.Pages.PlayGameWeb
 
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+<div class="danger-message" role="alert">
+    @Model.Error
+</div>
+}
+
+
 <h2 style="justify-content: flex-end;">Tic-Tac-Two</h2>
 
 
@@ -327,4 +335,20 @@ else if (Model.CurrentAction == "MovePiece")
     .direction-btn:active {
         transform: scale(0.95);
     }
+
+    .danger-message {
+        background-color: #f8d7da;  /* Light red background */
+        color: #721c24;  /* Dark red text */
+        border: 1px solid #f5c6cb;  /* Light red border */
+        border-radius: 5px;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+        margin: 15px 0; /* Space around the message */
+        font-size: 16px;
+    }
+
+    .danger-message strong {
+        font-weight: bold;
+    }
+
 </style>

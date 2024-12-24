@@ -18,6 +18,8 @@ public class PlayGameWeb : PageModel
         _gameRepository = gameRepository;
     }
 
+    [BindProperty(SupportsGet = true)]
+    public string? Error { get; set; }
     [BindProperty(SupportsGet = true)] public string GameName { get; set; } = default!;
     [BindProperty(SupportsGet = true)] public string ConfigName { get; set; } = default!;
     public string CurrentAction { get; set; }
@@ -90,13 +92,10 @@ public class PlayGameWeb : PageModel
         //CurrentAction = "SelectAction";
         
         //Console.WriteLine("MovePieceAfterNMoves " + TicTacTwoBrain.MovePieceAfterNMoves);
-        /*
-                 SelectedPiece = null;
-        x = null;
-        y = null;
+        
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
-        */
+
         return Page();
     }
     
@@ -113,6 +112,12 @@ public class PlayGameWeb : PageModel
         
         if (actionList.Contains(CurrentAction))
         {
+            if (!TicTacTwoBrain.MoveGridCheck())
+            {
+                Console.WriteLine("here in MoveGridCheckWeb");
+                Error = "You can't move grid in this direction!";
+                return Page();
+            }
             TicTacTwoBrain.MoveGrid(CurrentAction);
             CurrentAction = "SelectAction";
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
@@ -145,4 +150,5 @@ public class PlayGameWeb : PageModel
 
         return false;
     }
+    
 }
