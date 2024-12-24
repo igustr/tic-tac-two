@@ -9,4 +9,5 @@ public interface IGameRepository
     public List<string> GetSavedGamesNames();
     public GameState GetSavedGameByName(string name);
     public GameState LoadGame(int gameId);
+    public int GetIdByName(string name);
 }

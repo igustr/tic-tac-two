@@ -49,5 +49,8 @@ public class GameRepositoryJson : IGameRepository
         throw new NotImplementedException();
     }
 
-    
+    public int GetIdByName(string name)
+    {
+        throw new NotImplementedException();
+    }
 }

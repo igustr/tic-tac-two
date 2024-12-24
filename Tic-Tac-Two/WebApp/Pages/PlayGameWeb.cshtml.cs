@@ -138,7 +138,7 @@ public class PlayGameWeb : PageModel
         {
             var gameState = _gameRepository.GetSavedGameByName(GameName);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, GameName);
         }
         else if (gameType == "loadConfig")
         {
@@ -153,10 +153,10 @@ public class PlayGameWeb : PageModel
         }
         else
         {
-            Console.WriteLine("game id: " + GameId);
             var gameState = _gameRepository.LoadGame(GameId);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
         }
+        Console.WriteLine("game id: " + GameId);
     }
 
     private bool FinalStageCheck(TicTacTwoBrain gameInstance)

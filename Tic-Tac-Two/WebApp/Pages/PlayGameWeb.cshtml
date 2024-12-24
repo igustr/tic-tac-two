@@ -34,7 +34,7 @@
 <!-- Display Game State Based on Current Action -->
 @if (Model.CurrentAction == "SelectPiece")
 {
-    <p>Select a piece to move</p>
+    <h4 style="text-align: center;">Select a piece to move</h4>
 }
 else if (Model.CurrentAction == "MovePiece")
 {
@@ -390,7 +390,6 @@ else if (Model.CurrentAction == "MovePiece")
         background-color: #fd7e14; /* Darker yellow when active */
         transform: scale(0.95); /* Slight scale effect when button is clicked */
     }
-
-
+    
 
 </style>

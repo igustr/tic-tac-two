@@ -34,7 +34,8 @@ public class Load : PageModel
             return Page();
         }
 
-        return RedirectToPage("./PlayGameWeb", new { gameName = GameName, gameType = "load" });
+        var gameId = _gameRepository.GetIdByName(GameName);
+        return RedirectToPage("./PlayGameWeb", new { GameId = gameId, gameType = "load" });
     }
 
     private void LoadGamesList()

@@ -60,6 +60,19 @@ public class GameRepositoryDB : IGameRepository
         return gameState;
     }
     
+    public int GetIdByName(string name)
+    {
+        var data = _context.Games.First(c => c.GameName == name);
+        
+        if (data == null)
+        {
+            // Log or throw a custom exception if needed
+            throw new KeyNotFoundException($"Game with name '{name}' not found.");
+        }
+        
+        return data.Id;
+    }
+    
     public GameState LoadGame(int gameId)
     {
         var data = _context.Games.First(g => g.Id == gameId);
