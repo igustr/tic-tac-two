@@ -64,9 +64,7 @@ public class PlayGameWeb : PageModel
                 CurrentAction = "SelectPiece";
                 gameType = "SelectPiece";
             }
-            
         }
-        
         if (gameType == "MovePiece" && x != null && y != null)
         {
             Console.WriteLine("here in MovePiece");
@@ -128,6 +126,7 @@ public class PlayGameWeb : PageModel
 
             CurrentAction = "MovePiece";
         } 
+        TicTacTwoBrain.GridPlacement();
 
         return Page();
     }
