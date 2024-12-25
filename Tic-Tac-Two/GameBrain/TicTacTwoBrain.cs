@@ -267,8 +267,7 @@ public class TicTacTwoBrain
                 Console.WriteLine("\u001b[31mYou can't make move in this direction. Choose different!\u001b[0m");
                 break;
         }
-
-
+        
         // Toggle the next player after each move, if a valid move was made
         if (directionInput != "B" && "UDLRULURDLDR".Contains(directionInput))
         {
@@ -286,11 +285,13 @@ public class TicTacTwoBrain
             _gameState.GridYPosition = _previousGridYShift;
             _gameState.GridXPosition = _previousGridXShift;
             
+            _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+            
             MoveGrid("null");
             GridPlacement();
+
             return false;
         }
-        
         return true;
     }
 
@@ -328,18 +329,15 @@ public class TicTacTwoBrain
         var grid = GetGrid();
         var winCondition = _gameState.GameConfiguration.WinCondition;
         var startSymbol = grid[startX][startY];
-
-        // Проверяем, является ли начальный символ пустым
+        
         if (startSymbol == EGamePiece.Empty)
             return false;
-
-        // Проверка всей линии на совпадение
+        
         for (var i = 1; i < winCondition; i++)
         {
             int newX = startX + i * stepX;
             int newY = startY + i * stepY;
-
-            // Убедимся, что индексы находятся в пределах допустимого диапазона
+            
             if (newX < 0 || newX >= grid.Length || newY < 0 || newY >= grid[newX].Length)
                 return false;
 
@@ -374,18 +372,6 @@ public class TicTacTwoBrain
     {
         Environment.Exit(0);
     }
-
-    /*
-    public static HashSet<int> GetGridXCoordinates()
-    {
-        return GridXCoordinates;
-    }
-    
-    public static HashSet<int> GetGridYCoordinates()
-    {
-        return GridYCoordinates;
-    }
-    */
     
     public (int xCount, int oCount) GetPiecesOnBoardCount()
     {

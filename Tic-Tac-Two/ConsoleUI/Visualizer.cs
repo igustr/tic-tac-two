@@ -9,12 +9,13 @@ public static class Visualizer
     
     public static void DrawGame(TicTacTwoBrain gameInstance)
     {
+        gameInstance.GridPlacement();
+        
         //Console.Clear();
         Console.WriteLine("==================================");
         Console.WriteLine("Player: " + gameInstance.NextMoveBy);
         Console.WriteLine();
         
-        gameInstance.GridPlacement();
         _gridXCoordinates = TicTacTwoBrain.GridXCoordinates;
         _gridYCoordinates = TicTacTwoBrain.GridYCoordinates;
         
