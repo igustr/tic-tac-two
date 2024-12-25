@@ -36,14 +36,18 @@ public class PlayGameWeb : PageModel
         // Load Game Instance from DB or Create new one
         OnGetLoadGame(gameType);
 
+        // WIN CHECK
+        /*
         if (TicTacTwoBrain.CheckWin())
         {
             return RedirectToPage("./EndPage");
         }
+        */
+        
 
         if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
         {
-            Console.WriteLine("final stage check Success");
+           // Console.WriteLine("final stage check Success");
             CurrentAction = "SelectPiece";
             gameType = "SelectPiece";
         }
@@ -54,16 +58,18 @@ public class PlayGameWeb : PageModel
         // Load game state based on the game type
         if (gameType == "MovePiece" && x != null && y != null)
         {
-            Console.WriteLine("here in MovePiece");
+            //Console.WriteLine("here in MovePiece");
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
                 Error = "You can't place piece outside of grid!";
-                CurrentAction = "Select Action";
+                //CurrentAction = "Select Action";\
+                FinalStageCheckAction(TicTacTwoBrain);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
                 return Page();
             }
             TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
-            CurrentAction = "SelectAction";
+            //CurrentAction = "SelectAction";
+            FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
         else if (x != null && y != null && gameType != "MovePiece" && gameType != "SelectPiece")
@@ -73,10 +79,12 @@ public class PlayGameWeb : PageModel
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
                 Error = "You can't place piece outside of grid!";
-                CurrentAction = "SelectAction";
+                //CurrentAction = "SelectAction";
+                FinalStageCheckAction(TicTacTwoBrain);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
                 return Page();
             }
+            FinalStageCheckAction(TicTacTwoBrain);
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
             //Console.WriteLine("saved game id: " + GameId);
@@ -111,18 +119,19 @@ public class PlayGameWeb : PageModel
             TicTacTwoBrain.MoveGrid(CurrentAction);
             if (!TicTacTwoBrain.GridPlacement())
             {
-                Console.WriteLine("here in MoveGridCheckWeb");
+                //Console.WriteLine("here in MoveGridCheckWeb");
                 Error = "You can't move grid in this direction!";
-                CurrentAction = "SelectAction";
+                //CurrentAction = "SelectAction";
+                FinalStageCheckAction(TicTacTwoBrain);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
                 return Page();
             }
-            CurrentAction = "SelectAction";
+            FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         } 
         else if (CurrentAction == "ChoosePiece" && x != null && y != null)
         {
-            Console.WriteLine("here in ChoosePiece");
+            //Console.WriteLine("here in ChoosePiece");
 
             SelectedX = x.Value;
             SelectedY = y.Value;
@@ -154,18 +163,28 @@ public class PlayGameWeb : PageModel
         //Console.WriteLine("game id: " + GameId);
     }
 
-    private bool FinalStageCheck(TicTacTwoBrain gameInstance)
+    public bool FinalStageCheck(TicTacTwoBrain gameInstance)
     {
         if (gameInstance.NextMoveBy == EGamePiece.X && gameInstance.GetPiecesOnBoardCount().Item1 == gameInstance.AmountOfPieces)
         {
             return true;
         }
-            
         if (gameInstance.NextMoveBy == EGamePiece.O && gameInstance.GetPiecesOnBoardCount().Item2 == gameInstance.AmountOfPieces)
         {
             return true;
         }
-
         return false;
+    }
+
+    private void FinalStageCheckAction(TicTacTwoBrain gameInstance)
+    {
+        if (FinalStageCheck(gameInstance))
+        {
+            CurrentAction = "SelectPiece";
+        }
+        else
+        {
+            CurrentAction = "SelectAction";
+        }
     }
 }
