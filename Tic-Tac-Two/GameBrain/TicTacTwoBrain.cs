@@ -301,49 +301,55 @@ public class TicTacTwoBrain
 
         for (var i = 0; i < gridSize; i++)
         {
-            for (var j = 0; j <= gridSize - winCondition; j++)
+            for (var j = 0; j < gridSize; j++)
             {
-                // horizontal
+                // horizontal (горизонтальная линия)
                 if (j <= gridSize - winCondition && CheckLine(i, j, 0, 1))
                     return true;
 
-                // vertical
+                // vertical (вертикальная линия)
                 if (i <= gridSize - winCondition && CheckLine(i, j, 1, 0))
                     return true;
 
-                // diagonal left to right
+                // diagonal left to right (диагональ слева направо)
                 if (i <= gridSize - winCondition && j <= gridSize - winCondition && CheckLine(i, j, 1, 1))
                     return true;
 
-                // diagonal right to left
+                // diagonal right to left (диагональ справа налево)
                 if (i <= gridSize - winCondition && j >= winCondition - 1 && CheckLine(i, j, 1, -1))
                     return true;
             }
         }
         return false;
     }
-    
+
     private bool CheckLine(int startX, int startY, int stepX, int stepY)
     {
         var grid = GetGrid();
-        /*
-        Console.WriteLine("HERE GRID AHAHAHAH 0,0: " + grid[0, 0]);
-        Console.WriteLine("HERE GRID AHAHAHAH: 0,1: " + grid[0, 1]);
-        Console.WriteLine("HERE GRID AHAHAHAH: 2,2: " + grid[2, 2]);
-        */
         var winCondition = _gameState.GameConfiguration.WinCondition;
         var startSymbol = grid[startX][startY];
-        
-        if (startSymbol == EGamePiece.Empty) return false;
 
+        // Проверяем, является ли начальный символ пустым
+        if (startSymbol == EGamePiece.Empty)
+            return false;
+
+        // Проверка всей линии на совпадение
         for (var i = 1; i < winCondition; i++)
         {
-            if (grid[startX + i * stepX][startY + i * stepY] != startSymbol)
+            int newX = startX + i * stepX;
+            int newY = startY + i * stepY;
+
+            // Убедимся, что индексы находятся в пределах допустимого диапазона
+            if (newX < 0 || newX >= grid.Length || newY < 0 || newY >= grid[newX].Length)
+                return false;
+
+            if (grid[newX][newY] != startSymbol)
                 return false;
         }
 
         return true;
     }
+
 
     public void ResetGame()
     {
