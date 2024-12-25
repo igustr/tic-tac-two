@@ -29,3 +29,18 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.danger-message {
+  background-color: #f8d7da;  /* Light red background */
+  color: #721c24;  /* Dark red text */
+  border: 1px solid #f5c6cb;  /* Light red border */
+  border-radius: 5px;
+  padding: 10px;
+  font-family: Calibri, sans-serif;
+  margin: 15px 0; /* Space around the message */
+  font-size: 16px;
+}
+
+.danger-message strong {
+  font-weight: bold;
+}

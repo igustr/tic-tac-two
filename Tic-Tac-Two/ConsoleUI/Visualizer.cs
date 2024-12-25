@@ -15,8 +15,8 @@ public static class Visualizer
         Console.WriteLine();
         
         gameInstance.GridPlacement();
-        _gridXCoordinates = TicTacTwoBrain.GetGridXCoordinates();
-        _gridYCoordinates = TicTacTwoBrain.GetGridYCoordinates();
+        _gridXCoordinates = TicTacTwoBrain.GridXCoordinates;
+        _gridYCoordinates = TicTacTwoBrain.GridYCoordinates;
         
         for (var x = 0; x < gameInstance.DimX; x++)
         {

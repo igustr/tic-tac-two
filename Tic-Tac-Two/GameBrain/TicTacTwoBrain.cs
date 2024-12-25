@@ -2,9 +2,9 @@
 
 public class TicTacTwoBrain
 {
-    
-    public static HashSet<int> GridXCoordinates = new();
-    public static HashSet<int> GridYCoordinates = new();
+
+    public static HashSet<int> GridXCoordinates { get; set; } = new();
+    public static HashSet<int> GridYCoordinates { get; set; } = new();
     private readonly GameState _gameState;
     private int _gridXCentre;
     private int _gridYCentre;
@@ -46,8 +46,8 @@ public class TicTacTwoBrain
     public EGamePiece NextMoveBy => _gameState.NextMoveBy;
     public int AmountOfPieces => _gameState.GameConfiguration.AmountOfPieces;
     public int MovePieceAfterNMoves => _gameState.GameConfiguration.MovePieceAfterNMoves;
-    public HashSet<int> gridXCoordinates = GetGridXCoordinates();
-    public HashSet<int> gridYCoordinates = GetGridYCoordinates();
+    public HashSet<int> gridXCoordinates = GridXCoordinates;
+    public HashSet<int> gridYCoordinates = GridYCoordinates;
     
     private EGamePiece[][] GetBoard()
     {
@@ -369,6 +369,7 @@ public class TicTacTwoBrain
         Environment.Exit(0);
     }
 
+    /*
     public static HashSet<int> GetGridXCoordinates()
     {
         return GridXCoordinates;
@@ -378,6 +379,7 @@ public class TicTacTwoBrain
     {
         return GridYCoordinates;
     }
+    */
     
     public (int xCount, int oCount) GetPiecesOnBoardCount()
     {

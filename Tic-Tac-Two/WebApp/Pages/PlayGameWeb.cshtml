@@ -55,6 +55,7 @@ else if (Model.CurrentAction == "MovePiece")
                 {
                     if (Model.CurrentAction == "SelectPiece")
                     {
+
                      //Console.WriteLine("here1 " + x + "," + y + " -red");
                     <td class="red-cell" style="width: 50px; height: 50px;">
                         @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
@@ -331,21 +332,6 @@ else if (Model.CurrentAction == "MovePiece")
 
     .direction-btn:active {
         transform: scale(0.95);
-    }
-
-    .danger-message {
-        background-color: #f8d7da;  /* Light red background */
-        color: #721c24;  /* Dark red text */
-        border: 1px solid #f5c6cb;  /* Light red border */
-        border-radius: 5px;
-        padding: 10px;
-        font-family: Calibri, sans-serif;
-        margin: 15px 0; /* Space around the message */
-        font-size: 16px;
-    }
-
-    .danger-message strong {
-        font-weight: bold;
     }
 
     /* Ensure that the buttons are placed immediately after the board */
