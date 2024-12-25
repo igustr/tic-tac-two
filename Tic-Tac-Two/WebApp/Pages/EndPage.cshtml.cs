@@ -4,8 +4,10 @@ namespace WebApp.Pages;
 
 public class EndPage : PageModel
 {
-    public void OnGet(string? winner)
+    public string? Winner { get; set; }
+    
+    public void OnGet(string? piece)
     {
-        
+        Winner = piece;
     }
 }

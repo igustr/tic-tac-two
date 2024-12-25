@@ -88,10 +88,10 @@ public class PlayGameWeb : PageModel
         {
             return RedirectToPage("./EndPage");
         }
-        /*
+
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
-        */
+
 
         return Page();
     }
@@ -129,6 +129,11 @@ public class PlayGameWeb : PageModel
 
             CurrentAction = "MovePiece";
         } 
+        
+        if (TicTacTwoBrain.CheckWin())
+        {
+            return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy});
+        }
 
         return Page();
     }
