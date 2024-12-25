@@ -37,12 +37,11 @@ public class PlayGameWeb : PageModel
         OnGetLoadGame(gameType);
 
         // WIN CHECK
-        /*
+
         if (TicTacTwoBrain.CheckWin())
         {
             return RedirectToPage("./EndPage");
         }
-        */
         
 
         if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
@@ -52,7 +51,7 @@ public class PlayGameWeb : PageModel
             gameType = "SelectPiece";
         }
         
-        Console.WriteLine("current Action get: " + gameType);
+       // Console.WriteLine("current Action get: " + gameType);
         //Console.WriteLine("selectPiece<x,y> GET: " + SelectedX + "," + SelectedY);
         
         // Load game state based on the game type
@@ -62,13 +61,11 @@ public class PlayGameWeb : PageModel
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
                 Error = "You can't place piece outside of grid!";
-                //CurrentAction = "Select Action";\
                 FinalStageCheckAction(TicTacTwoBrain);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
                 return Page();
             }
             TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
-            //CurrentAction = "SelectAction";
             FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
@@ -79,13 +76,12 @@ public class PlayGameWeb : PageModel
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
                 Error = "You can't place piece outside of grid!";
-                //CurrentAction = "SelectAction";
                 FinalStageCheckAction(TicTacTwoBrain);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
                 return Page();
             }
-            FinalStageCheckAction(TicTacTwoBrain);
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
+            FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
             //Console.WriteLine("saved game id: " + GameId);
             // Clear the values after use
@@ -121,7 +117,6 @@ public class PlayGameWeb : PageModel
             {
                 //Console.WriteLine("here in MoveGridCheckWeb");
                 Error = "You can't move grid in this direction!";
-                //CurrentAction = "SelectAction";
                 FinalStageCheckAction(TicTacTwoBrain);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
                 return Page();
@@ -131,8 +126,6 @@ public class PlayGameWeb : PageModel
         } 
         else if (CurrentAction == "ChoosePiece" && x != null && y != null)
         {
-            //Console.WriteLine("here in ChoosePiece");
-
             SelectedX = x.Value;
             SelectedY = y.Value;
 
@@ -178,6 +171,7 @@ public class PlayGameWeb : PageModel
 
     private void FinalStageCheckAction(TicTacTwoBrain gameInstance)
     {
+        Console.WriteLine("in FinalStageCheckAction");
         if (FinalStageCheck(gameInstance))
         {
             CurrentAction = "SelectPiece";
