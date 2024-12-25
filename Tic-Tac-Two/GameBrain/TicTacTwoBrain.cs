@@ -304,19 +304,19 @@ public class TicTacTwoBrain
         {
             for (var j = 0; j < gridSize; j++)
             {
-                // horizontal (горизонтальная линия)
+                // horizontal 
                 if (j <= gridSize - winCondition && CheckLine(i, j, 0, 1))
                     return true;
 
-                // vertical (вертикальная линия)
+                // vertical 
                 if (i <= gridSize - winCondition && CheckLine(i, j, 1, 0))
                     return true;
 
-                // diagonal left to right (диагональ слева направо)
+                // diagonal left to right 
                 if (i <= gridSize - winCondition && j <= gridSize - winCondition && CheckLine(i, j, 1, 1))
                     return true;
 
-                // diagonal right to left (диагональ справа налево)
+                // diagonal right to left 
                 if (i <= gridSize - winCondition && j >= winCondition - 1 && CheckLine(i, j, 1, -1))
                     return true;
             }
