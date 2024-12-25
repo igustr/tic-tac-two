@@ -24,12 +24,16 @@ public class GameRepositoryDB : IGameRepository
             _context.SaveChanges();
             return gameId;
         }
-
+        
+        Random random = new Random();
+        var password = random.Next(0, 999999);
+        
         // Insert a new game
         var newGame = new Game
         {
             GameState = jsonStateString,
             GameName = gameName,
+            Password = password.ToString()
         };
         _context.Games.Add(newGame);
         _context.SaveChanges();
