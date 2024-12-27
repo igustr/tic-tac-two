@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Pages;
 
-public class PlayGameWeb : PageModel
+public class PlayGameWebAi : PageModel
 {
     private readonly IConfigRepository _configRepository;
     private readonly IGameRepository _gameRepository;
 
-    public PlayGameWeb(IConfigRepository configRepository, IGameRepository gameRepository)
+    public PlayGameWebAi(IConfigRepository configRepository, IGameRepository gameRepository)
     {
         _configRepository = configRepository;
         _gameRepository = gameRepository;
@@ -24,49 +24,20 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedY { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
-    [BindProperty(SupportsGet = true)] public string GameMode { get; set; }
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
     public IActionResult OnGet(int? x, int? y, string? gameType)
     {
-        
+
+        // Load Game Instance from DB or Create new one
         OnGetLoadGame(gameType);
         
-        if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
+        // If AI turn
+        if (TicTacTwoBrain.NextMoveBy == EGamePiece.O)
         {
-            CurrentAction = "SelectPiece";
-            gameType = "SelectPiece";
+            TicTacTwoBrain.AiMakeAMove();
+            return Page();
         }
-        
-        Console.WriteLine("gamemode: " + GameMode);
-        
-        // Load game state based on the game type
-        if (gameType == "MovePiece" && x != null && y != null)
-        {
-            if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
-            {
-                Error = "You can't place piece outside of grid!";
-                FinalStageCheckAction(TicTacTwoBrain);
-                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-                return Page();
-            }
-            TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
-            FinalStageCheckAction(TicTacTwoBrain);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-        }
-        else if (x != null && y != null && gameType != "MovePiece" && gameType != "SelectPiece")
-        {
-            if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
-            {
-                Error = "You can't place piece outside of grid!";
-                FinalStageCheckAction(TicTacTwoBrain);
-                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-                return Page();
-            }
-            TicTacTwoBrain.MakeAMove(x.Value, y.Value);
-            FinalStageCheckAction(TicTacTwoBrain);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-        } 
 
         TicTacTwoBrain.GridPlacement();
 
@@ -79,26 +50,17 @@ public class PlayGameWeb : PageModel
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
         */
-        
+
+
         return Page();
     }
+    
 
     public IActionResult OnPost(int? x, int? y, string action)
     {
         var gameState = _gameRepository.LoadGame(GameId);
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         var actionList = new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" };
-
-        if (action == "AIMove")
-        {
-            TicTacTwoBrain.AiMakeAMove();
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
-            if (TicTacTwoBrain.CheckWin())
-            {
-                return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
-            }
-            return Page();
-        }
         
         CurrentAction = action;
         
@@ -153,6 +115,7 @@ public class PlayGameWeb : PageModel
             var gameState = _gameRepository.LoadGame(GameId);
             TicTacTwoBrain = new TicTacTwoBrain(gameState);
         }
+        //Console.WriteLine("game id: " + GameId);
     }
 
     public bool FinalStageCheck(TicTacTwoBrain gameInstance)
@@ -178,5 +141,10 @@ public class PlayGameWeb : PageModel
         {
             CurrentAction = "SelectAction";
         }
+    }
+
+    private void AiMove()
+    {
+        
     }
 }

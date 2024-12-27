@@ -1,6 +1,6 @@
 ﻿@page
 @using GameBrain
-@model WebApp.Pages.PlayGameWeb
+@model WebApp.Pages.PlayGameWebAi
 
 @if (!string.IsNullOrWhiteSpace(Model.Error))
 {
@@ -67,7 +67,7 @@ else if (Model.CurrentAction == "MovePiece")
                         }
                         else
                         {
-                            <form method="post" asp-route-GameId="@Model.GameId" asp-route-GameMode="@Model.GameMode">
+                            <form method="post" asp-route-GameId="@Model.GameId">
                                 <input type="hidden" name="x" value="@x" />
                                 <input type="hidden" name="y" value="@y" />
                                 <input type="hidden" name="Action" value="ChoosePiece" />
@@ -86,17 +86,12 @@ else if (Model.CurrentAction == "MovePiece")
                                 if (Model.CurrentAction == "MovePiece")
                                 {
                                     <a asp-route-x="@x" asp-route-y="@y"
-                                       asp-route-GameId="@Model.GameId" 
-                                       asp-route-gameType="MovePiece"
-                                       asp-route-GameMode="@Model.GameMode"
-                                       asp-route-SelectedX="@Model.SelectedX" 
-                                       asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
+                                    asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece"
+                                    asp-route-SelectedX="@Model.SelectedX" asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
                                 }
                                 else
                                 {
-                                    <a asp-route-x="@x" asp-route-y="@y" 
-                                       asp-route-GameId="@Model.GameId" 
-                                       asp-route-GameMode="@Model.GameMode">&nbsp;</a>
+                                    <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
                                 }
                             }
                             else
@@ -124,7 +119,7 @@ else if (Model.CurrentAction == "MovePiece")
                             }
                             else
                             {
-                                <form method="post" asp-route-GameId="@Model.GameId" asp-route-GameMode="@Model.GameMode">
+                                <form method="post" asp-route-GameId="@Model.GameId">
                                     <input type="hidden" name="x" value="@x" />
                                     <input type="hidden" name="y" value="@y" />
                                     <input type="hidden" name="Action" value="ChoosePiece" />
@@ -143,17 +138,12 @@ else if (Model.CurrentAction == "MovePiece")
                                 if (Model.CurrentAction == "MovePiece")
                                 {
                                     <a asp-route-x="@x" asp-route-y="@y" 
-                                       asp-route-GameId="@Model.GameId" 
-                                       asp-route-gameType="MovePiece"
-                                       asp-route-GameMode="@Model.GameMode"
-                                       asp-route-SelectedX="@Model.SelectedX"
-                                       asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
+                                       asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece"
+                                       asp-route-SelectedX="@Model.SelectedX" asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
                                 }
                                 else
                                 {
-                                    <a asp-route-x="@x" asp-route-y="@y" 
-                                       asp-route-GameId="@Model.GameId" 
-                                       asp-route-GameMode="@Model.GameMode">&nbsp;</a>
+                                <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
                                 }
                             }
                             else
@@ -169,31 +159,23 @@ else if (Model.CurrentAction == "MovePiece")
 </table>
 
 
-@if (Model.GameMode == "PlayerVsAI" && Model.TicTacTwoBrain.NextMoveBy == EGamePiece.O)
+
+@if (Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2 >= Model.TicTacTwoBrain.MovePieceAfterNMoves)
 {
-    <form method="post" class="centered-form">
-        <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-info" name="Action" value="AIMove">AI Move</button>
-        </div>
-    </form>
-}
-else
-{
-   if (Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2 >= Model.TicTacTwoBrain.MovePieceAfterNMoves)
+    @if (string.IsNullOrEmpty(Model.CurrentAction) || Model.CurrentAction == "SelectAction")
     {
-        if (string.IsNullOrEmpty(Model.CurrentAction) || Model.CurrentAction == "SelectAction")
-        {
-            <form method="post" class="centered-form">
-                <h3>Select Action</h3>
-                <div class="btn-group" role="group">
-                    <button type="submit" class="btn btn-info" name="Action" value="MoveGrid">Move Grid</button>
-                    <button type="submit" class="btn btn-info" name="Action" value="SelectPiece">Move Piece</button>
-                </div>
-            </form>
-        }
-        else if (Model.CurrentAction == "MoveGrid")
-        {        
-            <form method="post">
+        <form method="post" class="centered-form">
+            <h3>Select Action</h3>
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-info" name="Action" value="MoveGrid">Move Grid</button>
+                <button type="submit" class="btn btn-info" name="Action" value="SelectPiece">Move Piece</button>
+            </div>
+        </form>
+
+    }
+    else if (Model.CurrentAction == "MoveGrid")
+    {        
+        <form method="post">
             <div style="
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -219,7 +201,7 @@ else
                 <button type="submit" class="direction-btn" name="Action" value="D">⬇️</button>
                 <button type="submit" class="direction-btn" name="Action" value="DR">↘️</button>
             </div>
-            </form>
+        </form>
         
         <form method="post">
             @if (!Model.FinalStageCheck(Model.TicTacTwoBrain))
@@ -244,9 +226,7 @@ else
             </div>
         </form>
     }
-    } 
 }
-
 
 
 <!-- OPTIONS HERE -->

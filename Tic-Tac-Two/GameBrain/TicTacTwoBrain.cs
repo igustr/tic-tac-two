@@ -10,6 +10,9 @@ public class TicTacTwoBrain
     private int _gridYCentre;
     private int _previousGridXShift;
     private int _previousGridYShift;
+    private int _randomX = default!;
+    private int _randomY = default!;
+    private static readonly Random RandomGenerator = new Random();
     
     public TicTacTwoBrain(GameConfiguration gameConfiguration)
     {
@@ -402,6 +405,26 @@ public class TicTacTwoBrain
 
         _gameState.GameBoard[targetX][targetY] = _gameState.NextMoveBy;
         _gameState.GameBoard[startX][startY] = EGamePiece.Empty;
+        
+        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+    }
+    
+    public void AiMakeAMove()
+    {
+        var gridXCoordinatesList = GridXCoordinates.ToList();
+        var gridYCoordinatesList = GridYCoordinates.ToList();
+        
+        do
+        {
+            var randomIndexX = RandomGenerator.Next(gridXCoordinatesList.Count);
+            var randomIndexY = RandomGenerator.Next(gridYCoordinatesList.Count);
+            
+            _randomX = gridXCoordinatesList[randomIndexX];
+            _randomY = gridYCoordinatesList[randomIndexY];
+
+        } while (!MakeAMoveCheck(_randomX, _randomY));
+        
+        _gameState.GameBoard[_randomX][_randomY] = _gameState.NextMoveBy;
         
         _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
     }
