@@ -38,8 +38,6 @@ public class PlayGameWeb : PageModel
             gameType = "SelectPiece";
         }
         
-        Console.WriteLine("gamemode: " + GameMode);
-        
         // Load game state based on the game type
         if (gameType == "MovePiece" && x != null && y != null)
         {
@@ -70,10 +68,12 @@ public class PlayGameWeb : PageModel
 
         TicTacTwoBrain.GridPlacement();
 
+
         if (TicTacTwoBrain.CheckWin())
         {
             return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
         }
+
 
         /*
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
@@ -127,10 +127,12 @@ public class PlayGameWeb : PageModel
             CurrentAction = "MovePiece";
         } 
         
+
         if (TicTacTwoBrain.CheckWin())
         {
             return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
         }
+
 
         return Page();
     }

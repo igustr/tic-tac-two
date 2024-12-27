@@ -11,7 +11,7 @@ public class TicTacTwoBrain
     private int _previousGridXShift;
     private int _previousGridYShift;
     private static readonly Random RandomGenerator = new Random();
-    
+
     public TicTacTwoBrain(GameConfiguration gameConfiguration)
     {
         var gameBoard = new EGamePiece[gameConfiguration.BoardSizeWidth][];
@@ -19,7 +19,7 @@ public class TicTacTwoBrain
         {
             gameBoard[x] = new EGamePiece[gameConfiguration.BoardSizeHeight];
         }
-        
+
         var grid = new EGamePiece[gameConfiguration.GridSizeWidth][];
         for (var x = 0; x < grid.Length; x++)
         {
@@ -49,11 +49,11 @@ public class TicTacTwoBrain
     public int MovePieceAfterNMoves => _gameState.GameConfiguration.MovePieceAfterNMoves;
     public HashSet<int> gridXCoordinates = GridXCoordinates;
     public HashSet<int> gridYCoordinates = GridYCoordinates;
-    
+
     private EGamePiece[][] GetBoard()
     {
         var copyOfBoard = new EGamePiece[_gameState.GameBoard.GetLength(0)][];
-            //, _gameState.GameBoard.GetLength(1)];
+        //, _gameState.GameBoard.GetLength(1)];
         for (var x = 0; x < _gameState.GameBoard.Length; x++)
         {
             copyOfBoard[x] = new EGamePiece[_gameState.GameBoard[x].Length];
@@ -62,19 +62,20 @@ public class TicTacTwoBrain
                 copyOfBoard[x][y] = _gameState.GameBoard[x][y];
             }
         }
+
         return copyOfBoard;
     }
-    
+
     private EGamePiece[][] GetGrid()
     {
         List<int> gridXCoordinatesList = GridXCoordinates.ToList();
         List<int> gridYCoordinatesList = GridYCoordinates.ToList();
         gridXCoordinatesList.Sort();
         gridYCoordinatesList.Sort();
-        
+
         var board = GetBoard();
         var grid = new EGamePiece[GridYCoordinates.Count][];
-    
+
         for (var y = 0; y < GridYCoordinates.Count; y++)
         {
             grid[y] = new EGamePiece[GridXCoordinates.Count];
@@ -83,14 +84,15 @@ public class TicTacTwoBrain
                 grid[y][x] = board[gridXCoordinatesList[x] - 1][gridYCoordinatesList[y] - 1];
             }
         }
+
         return grid;
     }
-    
+
     public void MakeAMove(int x, int y)
     {
         _gameState.GameBoard[x][y] = _gameState.NextMoveBy;
-        
-            // flip the next piece
+
+        // flip the next piece
         _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
 
     }
@@ -103,9 +105,9 @@ public class TicTacTwoBrain
         Console.WriteLine("Y COORDS: " + y);
         Console.WriteLine("position key: " + _gameState.GameBoard[x][y]);
         */
-        
-        if (_gameState.GameBoard[x][y] != EGamePiece.Empty 
-            || !GridXCoordinates.Contains(x + 1) 
+
+        if (_gameState.GameBoard[x][y] != EGamePiece.Empty
+            || !GridXCoordinates.Contains(x + 1)
             || !GridYCoordinates.Contains(y + 1))
         {
             return false;
@@ -121,23 +123,23 @@ public class TicTacTwoBrain
         var input = Console.ReadLine()!;
         var inputSplit = input.Split(",");
 
-        if (inputSplit.Length != 2 || 
-            !int.TryParse(inputSplit[0], out var x) || 
+        if (inputSplit.Length != 2 ||
+            !int.TryParse(inputSplit[0], out var x) ||
             !int.TryParse(inputSplit[1], out var y))
         {
             Console.WriteLine("\u001b[31mInvalid coordinates format. Please use <x,y> format.\u001b[0m");
             return false;
         }
-        
-       // Console.WriteLine("GameBoard: " + _gameState.GameBoard[x - 1][y - 1]);
-       // Console.WriteLine(x + " " +  y);
-        
+
+        // Console.WriteLine("GameBoard: " + _gameState.GameBoard[x - 1][y - 1]);
+        // Console.WriteLine(x + " " +  y);
+
         // Validate that the chosen piece belongs to the current player and is not empty
         if (_gameState.GameBoard[x - 1][y - 1] == _gameState.NextMoveBy)
         {
             // Mark the original location as empty
             _gameState.GameBoard[x - 1][y - 1] = EGamePiece.Empty;
-           // Console.WriteLine("GameBoard 2: " + _gameState.GameBoard[x - 1][y - 1]);
+            // Console.WriteLine("GameBoard 2: " + _gameState.GameBoard[x - 1][y - 1]);
             return true;
         }
         else
@@ -146,21 +148,21 @@ public class TicTacTwoBrain
             return false;
         }
     }
-    
+
     public bool GridPlacement()
     {
         GridXCoordinates.Clear();
         GridYCoordinates.Clear();
-        
+
         _gridXCentre = (DimX % 2 == 0) ? DimX / 2 : DimX / 2 + 1;
         _gridYCentre = (DimY % 2 == 0) ? DimY / 2 : DimY / 2 + 1;
-        
+
         _gridXCentre += _gameState.GridXPosition;
         _gridYCentre += _gameState.GridYPosition;
-        
+
         GridYCoordinates.Add(_gridYCentre);
         GridXCoordinates.Add(_gridXCentre);
-        
+
         var rangeX = (int)Math.Ceiling((GridX - 1) / 2.0); // Determines how many cells to add left and right
         var rangeY = (int)Math.Ceiling((GridY - 1) / 2.0); // Determines how many cells to add up and down
 
@@ -176,7 +178,7 @@ public class TicTacTwoBrain
         Console.WriteLine("Grid start Y: " + _gridYCentre);
         Console.WriteLine();
         */
-        
+
         for (var i = 0; i < rangeY; i++)
         {
             if (GridY % 2 == 0)
@@ -186,7 +188,7 @@ public class TicTacTwoBrain
                 {
                     GridYCoordinates.Add(_gridYCentre - (i + 1));
                 }
-                
+
             }
             else
             {
@@ -194,7 +196,9 @@ public class TicTacTwoBrain
                 GridYCoordinates.Add(_gridYCentre - (i + 1));
             }
         }
-        for (var i = 0; i < rangeX; i++) {
+
+        for (var i = 0; i < rangeX; i++)
+        {
             if (GridX % 2 == 0)
             {
                 GridXCoordinates.Add(_gridXCentre + (i + 1));
@@ -202,13 +206,14 @@ public class TicTacTwoBrain
                 {
                     GridXCoordinates.Add(_gridXCentre - (i + 1));
                 }
-            } else
+            }
+            else
             {
                 GridXCoordinates.Add(_gridXCentre + (i + 1));
                 GridXCoordinates.Add(_gridXCentre - (i + 1));
             }
         }
-        
+
         /*
         Console.WriteLine("grid x coords: " + string.Join(", ", GridXCoordinates));
         Console.WriteLine("grid y coords: " + string.Join(", ", GridYCoordinates));
@@ -268,7 +273,7 @@ public class TicTacTwoBrain
                 Console.WriteLine("\u001b[31mYou can't make move in this direction. Choose different!\u001b[0m");
                 break;
         }
-        
+
         // Toggle the next player after each move, if a valid move was made
         if (directionInput != "B" && "UDLRULURDLDR".Contains(directionInput))
         {
@@ -280,19 +285,20 @@ public class TicTacTwoBrain
     private bool MoveGridCheck()
     {
         if (GridXCoordinates.Max() > DimX || GridYCoordinates.Max() > DimY
-                                                     || GridXCoordinates.Min() <= 0 
-                                                     || GridYCoordinates.Min() <= 0)
+                                          || GridXCoordinates.Min() <= 0
+                                          || GridYCoordinates.Min() <= 0)
         {
             _gameState.GridYPosition = _previousGridYShift;
             _gameState.GridXPosition = _previousGridXShift;
-            
+
             _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
-            
+
             MoveGrid("null");
             GridPlacement();
 
             return false;
         }
+
         return true;
     }
 
@@ -322,6 +328,7 @@ public class TicTacTwoBrain
                     return true;
             }
         }
+
         return false;
     }
 
@@ -330,15 +337,15 @@ public class TicTacTwoBrain
         var grid = GetGrid();
         var winCondition = _gameState.GameConfiguration.WinCondition;
         var startSymbol = grid[startX][startY];
-        
+
         if (startSymbol == EGamePiece.Empty)
             return false;
-        
+
         for (var i = 1; i < winCondition; i++)
         {
             int newX = startX + i * stepX;
             int newY = startY + i * stepY;
-            
+
             if (newX < 0 || newX >= grid.Length || newY < 0 || newY >= grid[newX].Length)
                 return false;
 
@@ -357,7 +364,7 @@ public class TicTacTwoBrain
         {
             gameBoard[x] = new EGamePiece[_gameState.GameConfiguration.BoardSizeHeight];
         }
-        
+
         var grid = new EGamePiece[_gameState.GameConfiguration.GridSizeWidth][];
         for (var x = 0; x < grid.Length; x++)
         {
@@ -373,7 +380,7 @@ public class TicTacTwoBrain
     {
         Environment.Exit(0);
     }
-    
+
     public (int xCount, int oCount) GetPiecesOnBoardCount()
     {
         var xCount = 0;
@@ -403,58 +410,59 @@ public class TicTacTwoBrain
 
         _gameState.GameBoard[targetX][targetY] = _gameState.NextMoveBy;
         _gameState.GameBoard[startX][startY] = EGamePiece.Empty;
-        
+
         _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
     }
-    
+
     public void AiMakeAMove()
     {
         (int x, int y) deletedPieceCoords = (-1, -1);
-        
+
         if (GetPiecesOnBoardCount().Item2 >= AmountOfPieces)
         {
             deletedPieceCoords = AiDeletePiece();
         }
 
         var emptySlot = new List<(int x, int y)>();
-        
+
         foreach (var x in GridXCoordinates)
         {
             foreach (var y in GridYCoordinates)
             {
-                if (MakeAMoveCheck(x - 1, y - 1) && deletedPieceCoords != (x - 1, y - 1)) 
+                if (MakeAMoveCheck(x - 1, y - 1) && deletedPieceCoords != (x - 1, y - 1))
                 {
-                    emptySlot.Add((x - 1, y - 1)); 
-                } 
+                    emptySlot.Add((x - 1, y - 1));
+                }
             }
         }
-        
+
         var randomMove = emptySlot[RandomGenerator.Next(emptySlot.Count)];
         var (moveX, moveY) = randomMove;
-        
+
         MakeAMove(moveX, moveY);
     }
 
     private (int x, int y) AiDeletePiece()
     {
         var pieceSlot = new List<(int x, int y)>();
-        
-        foreach (var x in GridXCoordinates)
+
+        for (var y = 0; y < DimY; y++)
         {
-            foreach (var y in GridYCoordinates)
+            for (var x = 0; x < DimX; x++)
             {
-                if (!MakeAMoveCheck(x - 1, y - 1) && GameBoard[x - 1][y - 1] == EGamePiece.O)
+                if (!MakeAMoveCheck(x, y) && GameBoard[x][y] == EGamePiece.O) 
                 {
-                    pieceSlot.Add((x - 1, y - 1));
+                    pieceSlot.Add((x, y)); 
                 }
             }
         }
-        
+
         var randomPiece = pieceSlot[RandomGenerator.Next(pieceSlot.Count)];
         var (randomX, randomY) = randomPiece;
-        
-        Console.WriteLine("random X: " + randomX + ", random Y: " + randomY);
+
+        Console.WriteLine($"Deleting AI piece at ({randomX}, {randomY})");
         _gameState.GameBoard[randomX][randomY] = EGamePiece.Empty;
+
         return (randomX, randomY);
     }
 }
