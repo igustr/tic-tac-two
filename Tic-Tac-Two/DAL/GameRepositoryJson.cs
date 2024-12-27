@@ -53,4 +53,9 @@ public class GameRepositoryJson : IGameRepository
     {
         throw new NotImplementedException();
     }
+
+    public void DeleteGame(int gameId)
+    {
+        throw new NotImplementedException();
+    }
 }

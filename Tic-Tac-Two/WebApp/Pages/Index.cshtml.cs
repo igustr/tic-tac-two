@@ -14,31 +14,5 @@ public class IndexModel : PageModel
 
     [BindProperty(SupportsGet = true)]
     public string? Error { get; set; }
-    
-    /*
-    public void OnGet()
-    {
-    }
-    
-    public IActionResult OnPostNewGame()
-    {
-        return RedirectToPage("./NewGame");
-    }
 
-    public IActionResult OnPostLoadGame()
-    {
-        return RedirectToPage("./Load");
-    }
-
-    public IActionResult OnPostConfigurations()
-    {
-        return RedirectToPage("./ChooseConfig");
-    }
-
-    public IActionResult OnPostConnectToGame()
-    {
-        return RedirectToPage("./Home");
-    }
-    */
-   
 }

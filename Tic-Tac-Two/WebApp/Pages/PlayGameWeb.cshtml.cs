@@ -86,11 +86,13 @@ public class PlayGameWeb : PageModel
 
         if (TicTacTwoBrain.CheckWin())
         {
-            return RedirectToPage("./EndPage");
+            return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
         }
 
+        /*
         Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
         Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
+        */
 
 
         return Page();
@@ -105,7 +107,7 @@ public class PlayGameWeb : PageModel
         
         CurrentAction = action;
         
-        Console.WriteLine("action POST: " + CurrentAction);
+        //Console.WriteLine("action POST: " + CurrentAction);
         
         if (actionList.Contains(CurrentAction))
         {
@@ -132,7 +134,7 @@ public class PlayGameWeb : PageModel
         
         if (TicTacTwoBrain.CheckWin())
         {
-            return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy});
+            return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
         }
 
         return Page();

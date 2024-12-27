@@ -10,4 +10,5 @@ public interface IGameRepository
     public GameState GetSavedGameByName(string name);
     public GameState LoadGame(int gameId);
     public int GetIdByName(string name);
+    public void DeleteGame(int gameId);
 }

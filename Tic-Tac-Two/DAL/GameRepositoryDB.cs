@@ -89,4 +89,14 @@ public class GameRepositoryDB : IGameRepository
         var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(data.GameState);
         return gameState;
     }
+
+    public void DeleteGame(int gameId)
+    {
+        var game = _context.Games.FirstOrDefault(g => g.Id == gameId);
+        if (game != null)
+        {
+            _context.Games.Remove(game);
+            _context.SaveChanges();
+        }
+    }
 }
