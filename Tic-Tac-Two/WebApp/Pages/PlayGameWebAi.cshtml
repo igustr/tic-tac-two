@@ -14,7 +14,6 @@
 
 
 <p style="justify-content: flex-end;">Next move by: <strong>@Model.TicTacTwoBrain.NextMoveBy</strong></p>
-<p>Current Action: @Model.CurrentAction</p>
 
 <div class="markers-container">
     <div class="markers-left">
@@ -31,16 +30,6 @@
     </div>
 </div>
 
-<!-- Display Game State Based on Current Action -->
-@if (Model.CurrentAction == "SelectPiece")
-{
-    <h4 style="text-align: center;">Select a piece to move</h4>
-}
-else if (Model.CurrentAction == "MovePiece")
-{
-    <p>Selected piece: (@Model.SelectedX, @Model.SelectedY). Choose a target.</p>
-}
-
 <!-- Game Board -->
 <table class="board">
     @for (var y = 0; y < Model.TicTacTwoBrain.DimY; y++)
@@ -52,106 +41,30 @@ else if (Model.CurrentAction == "MovePiece")
                      && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1)
                      && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1))
                     //&& x != Model.TicTacTwoBrain.gridXCoordinates.Max() - 1)
-                {
-                    if (Model.CurrentAction == "SelectPiece")
-                    {
-
-                     //Console.WriteLine("here1 " + x + "," + y + " -red");
+                { 
                     <td class="red-cell" style="width: 50px; height: 50px;">
                         @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
-                        {
-                            <a> </a>
-                        } else if (Model.TicTacTwoBrain.NextMoveBy != Model.TicTacTwoBrain.GameBoard[x][y])
-                        {
-                            @(Model.TicTacTwoBrain.GameBoard[x][y])
-                        }
-                        else
-                        {
-                            <form method="post" asp-route-GameId="@Model.GameId">
-                                <input type="hidden" name="x" value="@x" />
-                                <input type="hidden" name="y" value="@y" />
-                                <input type="hidden" name="Action" value="ChoosePiece" />
-                                <button type="submit" style="border: none; background: none; padding: 0;">
-                                    @(Model.TicTacTwoBrain.GameBoard[x][y])
-                                </button>
-                            </form>
-                        }
-                    </td>
-                    }
-                    else
-                    {
-                        <td class="red-cell" style="width: 50px; height: 50px;">
-                            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
                             {
-                                if (Model.CurrentAction == "MovePiece")
-                                {
-                                    <a asp-route-x="@x" asp-route-y="@y"
-                                    asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece"
-                                    asp-route-SelectedX="@Model.SelectedX" asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
-                                }
-                                else
-                                {
-                                    <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
-                                }
+                                <a asp-route-GameId="@Model.GameId"> </a>
                             }
                             else
                             {
                                 @(Model.TicTacTwoBrain.GameBoard[x][y])
                             }
                         </td> 
-                    }
                 }
-                
                 else
                 {
-                    if (Model.CurrentAction == "SelectPiece")
-                    {
-                        //Console.WriteLine("here2 " + x + "," + y);
-                        <td style="width: 50px; height: 50px;">
-                            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
-                            {
-                                <a> </a>
-                               //<a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
-                            } 
-                            else if (Model.TicTacTwoBrain.NextMoveBy != Model.TicTacTwoBrain.GameBoard[x][y])
-                            {
-                                @(Model.TicTacTwoBrain.GameBoard[x][y])
-                            }
-                            else
-                            {
-                                <form method="post" asp-route-GameId="@Model.GameId">
-                                    <input type="hidden" name="x" value="@x" />
-                                    <input type="hidden" name="y" value="@y" />
-                                    <input type="hidden" name="Action" value="ChoosePiece" />
-                                    <button type="submit" style="border: none; background: none; padding: 0;">
-                                        @(Model.TicTacTwoBrain.GameBoard[x][y])
-                                    </button>
-                                </form>
-                            }
-                            </td>
-                    }
-                    else
-                    { 
-                        <td style="width: 50px; height: 50px;">
-                            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
-                            {
-                                if (Model.CurrentAction == "MovePiece")
-                                {
-                                    <a asp-route-x="@x" asp-route-y="@y" 
-                                       asp-route-GameId="@Model.GameId" asp-route-gameType="MovePiece"
-                                       asp-route-SelectedX="@Model.SelectedX" asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
-                                }
-                                else
-                                {
-                                <a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
-                                }
-                            }
-                            else
-                            {
-                                @(Model.TicTacTwoBrain.GameBoard[x][y])
-                            }
-                            </td>
-                    }
+                    <td style="width: 50px; height: 50px;">
+                        @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                        {
+                            <a asp-route-GameId="@Model.GameId"> </a>
+                        }
+                        else
+                        {
+                            @(Model.TicTacTwoBrain.GameBoard[x][y])
+                        }
+                    </td>
                 }
             }
         </tr>
@@ -159,78 +72,16 @@ else if (Model.CurrentAction == "MovePiece")
 </table>
 
 
+<form method="post" class="centered-form">
+    <input type="hidden" name="GameId" value="@Model.GameId" />
+    <div class="btn-group" role="group">
+        <button type="submit" class="btn btn-info" name="Action" value="AIMove">AI Next Move: @Model.TicTacTwoBrain.NextMoveBy</button>
+    </div>
+</form>
 
-@if (Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2 >= Model.TicTacTwoBrain.MovePieceAfterNMoves)
-{
-    @if (string.IsNullOrEmpty(Model.CurrentAction) || Model.CurrentAction == "SelectAction")
-    {
-        <form method="post" class="centered-form">
-            <h3>Select Action</h3>
-            <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-info" name="Action" value="MoveGrid">Move Grid</button>
-                <button type="submit" class="btn btn-info" name="Action" value="SelectPiece">Move Piece</button>
-            </div>
-        </form>
-
-    }
-    else if (Model.CurrentAction == "MoveGrid")
-    {        
-        <form method="post">
-            <div style="
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            align-items: center;
-            justify-items: center;
-            max-width: 250px;
-            margin: 30px auto;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            
-                <button type="submit" class="direction-btn" name="Action" value="UL">↖️</button>
-                <button type="submit" class="direction-btn" name="Action" value="U">⬆️</button>
-                <button type="submit" class="direction-btn" name="Action" value="UR">↗️</button>
-            
-                <button type="submit" class="direction-btn" name="Action" value="L">⬅️</button>
-                <span style="width: 50px; height: 50px;"></span> <!-- Empty Space -->
-                <button type="submit" class="direction-btn" name="Action" value="R">➡️</button>
-            
-                <button type="submit" class="direction-btn" name="Action" value="DL">↙️</button>
-                <button type="submit" class="direction-btn" name="Action" value="D">⬇️</button>
-                <button type="submit" class="direction-btn" name="Action" value="DR">↘️</button>
-            </div>
-        </form>
-        
-        <form method="post">
-            @if (!Model.FinalStageCheck(Model.TicTacTwoBrain))
-            {
-                <button type="submit" class="btn btn-info" name="Action" value="SelectAction">Back</button>
-            }
-            else
-            {
-                <button type="submit" class="btn btn-info" name="Action" value="SelectPiece">Back</button>
-            }
-        </form>
-    } else if (Model.CurrentAction == "SelectPiece")
-    {
-        <form method="post" class="centered-form">
-            <h3>Select Action</h3>
-            <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-info" name="Action" value="MoveGrid">Move Grid</button>
-                @if (!Model.FinalStageCheck(Model.TicTacTwoBrain))
-                {
-                    <button type="submit" class="btn btn-info" name="Action" value="SelectAction">Back</button>
-                }
-            </div>
-        </form>
-    }
-}
 
 
 <!-- OPTIONS HERE -->
-
 
 
 <style>

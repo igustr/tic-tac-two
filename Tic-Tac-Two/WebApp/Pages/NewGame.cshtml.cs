@@ -15,6 +15,11 @@ public class NewGame : PageModel
         {
             return Page();
         }
+
+        if (GameType == "default" && GameMode == "AIvsAI")
+        {
+            return RedirectToPage("./PlayGameWebAi", new { gameType = "new"});   
+        }
         
         if (GameType == "default")
         {

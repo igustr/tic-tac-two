@@ -460,7 +460,7 @@ public class TicTacTwoBrain
         var randomPiece = pieceSlot[RandomGenerator.Next(pieceSlot.Count)];
         var (randomX, randomY) = randomPiece;
 
-        Console.WriteLine($"Deleting AI piece at ({randomX}, {randomY})");
+       // Console.WriteLine($"Deleting AI piece at ({randomX}, {randomY})");
         _gameState.GameBoard[randomX][randomY] = EGamePiece.Empty;
 
         return (randomX, randomY);
