@@ -10,8 +10,6 @@ public class TicTacTwoBrain
     private int _gridYCentre;
     private int _previousGridXShift;
     private int _previousGridYShift;
-    private int _randomX = default!;
-    private int _randomY = default!;
     private static readonly Random RandomGenerator = new Random();
     
     public TicTacTwoBrain(GameConfiguration gameConfiguration)
@@ -411,27 +409,28 @@ public class TicTacTwoBrain
     
     public void AiMakeAMove()
     {
-        var gridXCoordinatesList = GridXCoordinates.ToList();
-        var gridYCoordinatesList = GridYCoordinates.ToList();
+        var validMoves = new List<(int x, int y)>();
         
-        do
+        foreach (var x in GridXCoordinates)
         {
-            var randomIndexX = RandomGenerator.Next(gridXCoordinatesList.Count);
-            var randomIndexY = RandomGenerator.Next(gridYCoordinatesList.Count);
-            
-            _randomX = gridXCoordinatesList[randomIndexX];
-            _randomY = gridYCoordinatesList[randomIndexY];
+            foreach (var y in GridYCoordinates)
+            {
+                if (MakeAMoveCheck(x - 1, y - 1)) // Adjusting for index-based grid access
+                {
+                    validMoves.Add((x - 1, y - 1)); // Store valid move
+                }
+            }
+        }
 
-        } while (!MakeAMoveCheck(_randomX, _randomY));
+        if (validMoves.Count == 0)
+        {
+            Console.WriteLine("No valid moves left for AI.");
+            return;
+        }
         
-        _gameState.GameBoard[_randomX][_randomY] = _gameState.NextMoveBy;
+        var randomMove = validMoves[RandomGenerator.Next(validMoves.Count)];
+        var (moveX, moveY) = randomMove;
         
-        _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
+        MakeAMove(moveX, moveY);
     }
-
-    public void AiMovePiece()
-    {
-        
-    }
-
 }

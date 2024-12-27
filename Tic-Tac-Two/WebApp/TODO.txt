@@ -47,13 +47,11 @@ NEW GAME - mb choose as checkbox? and in the bottom start?
 
 
 AI:
-- When play with ai, just make one function where 
-
-- Make button in web like "AI move" and when player presses it, goes to function and ai chooses random coordinates, 
-where there is no any piece.
+- Can't place piece when AI move. Give Error. Or maybe if you try t put piece, then AI makes random move
 -Mb add move grid func? Have all movement directions in list, like [D, L, DL,...] and AI randomly makes
 a move or moves grid. 
 - Also i have to manage somehow, how they will move piece
+- Optimize AI, give him coord combos that he can't use
 
 
 
