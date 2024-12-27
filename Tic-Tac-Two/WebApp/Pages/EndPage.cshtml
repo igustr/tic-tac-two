@@ -1,15 +1,46 @@
 ﻿@page
 @model WebApp.Pages.EndPage
 
-
 <div class="text-center">
-    <h1 class="display-4">WINNER: @Model.Winner</h1>
+    <h1 class="display-4" style="color: #28a745; font-weight: 600;">WINNER: @Model.Winner</h1>
 </div>
 
 <div class="row justify-content-center mt-4">
     <div class="col-md-6 text-center">
         <div class="btn-group-vertical" role="group" style="width: 100%;">
-            <a asp-page="/Index" class="btn btn-info btn-lg mb-2">New Game</a>
+            <a asp-page="/Index" class="btn btn-lg btn-success mb-2" style="padding: 15px 0; font-size: 1.4rem; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">New Game</a>
         </div>
     </div>
 </div>
+
+<style>
+    .text-center h1 {
+        font-size: 3rem;
+        color: #343a40;
+        font-weight: 700;
+    }
+
+    .btn-lg {
+        font-size: 1.4rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 600;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+
+    .btn-success:active {
+        background-color: #1e7e34;
+        transform: scale(0.95);
+    }
+</style>
