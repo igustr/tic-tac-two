@@ -409,28 +409,52 @@ public class TicTacTwoBrain
     
     public void AiMakeAMove()
     {
-        var validMoves = new List<(int x, int y)>();
+        (int x, int y) deletedPieceCoords = (-1, -1);
+        
+        if (GetPiecesOnBoardCount().Item2 >= AmountOfPieces)
+        {
+            deletedPieceCoords = AiDeletePiece();
+        }
+
+        var emptySlot = new List<(int x, int y)>();
         
         foreach (var x in GridXCoordinates)
         {
             foreach (var y in GridYCoordinates)
             {
-                if (MakeAMoveCheck(x - 1, y - 1)) // Adjusting for index-based grid access
+                if (MakeAMoveCheck(x - 1, y - 1) && deletedPieceCoords != (x - 1, y - 1)) 
                 {
-                    validMoves.Add((x - 1, y - 1)); // Store valid move
-                }
+                    emptySlot.Add((x - 1, y - 1)); 
+                } 
             }
         }
-
-        if (validMoves.Count == 0)
-        {
-            Console.WriteLine("No valid moves left for AI.");
-            return;
-        }
         
-        var randomMove = validMoves[RandomGenerator.Next(validMoves.Count)];
+        var randomMove = emptySlot[RandomGenerator.Next(emptySlot.Count)];
         var (moveX, moveY) = randomMove;
         
         MakeAMove(moveX, moveY);
+    }
+
+    private (int x, int y) AiDeletePiece()
+    {
+        var pieceSlot = new List<(int x, int y)>();
+        
+        foreach (var x in GridXCoordinates)
+        {
+            foreach (var y in GridYCoordinates)
+            {
+                if (!MakeAMoveCheck(x - 1, y - 1) && GameBoard[x - 1][y - 1] == EGamePiece.O)
+                {
+                    pieceSlot.Add((x - 1, y - 1));
+                }
+            }
+        }
+        
+        var randomPiece = pieceSlot[RandomGenerator.Next(pieceSlot.Count)];
+        var (randomX, randomY) = randomPiece;
+        
+        Console.WriteLine("random X: " + randomX + ", random Y: " + randomY);
+        _gameState.GameBoard[randomX][randomY] = EGamePiece.Empty;
+        return (randomX, randomY);
     }
 }
