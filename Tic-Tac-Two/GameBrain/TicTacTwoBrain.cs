@@ -428,4 +428,10 @@ public class TicTacTwoBrain
         
         _gameState.NextMoveBy = _gameState.NextMoveBy == EGamePiece.X ? EGamePiece.O : EGamePiece.X;
     }
+
+    public void AiMovePiece()
+    {
+        
+    }
+
 }

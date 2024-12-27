@@ -1,0 +1,70 @@
+﻿dotnet aspnet-codegenerator razorpage -m Game -outDir Pages/Games -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m Configuration -outDir Pages/Configurations -dc AppDbContext -udl --referenceScriptLibraries
+
+dotnet ef migrations add InitialMigration --project "DAL/DAL.csproj"
+dotnet ef database update --project "DAL/DAL.csproj"
+
+
+TODO:
+- Make Reset Game button
+- Fix if input 0,0 or out of array size
+- Check if HashSet needed in TicTacTwoBrain in GridXCoordinates and GridYCoordinates
+- Check if board is full and no winner - mb play until find the winner
+- Do something with getters in tictactwobrain
+- In options menu make that x or o can start
+- Clear menu when go between different menu levels
+- If can't find config of the game, handle problem somehow
+- when save game, handle problem when game name is typed with whitespaces. "test 1"
+- when move grid out of zone check who's trun
+
+OPTIONS:
+- You can choose turn on or off move afterNMoves in gameconfig. If off - 0 
+
+JSON SAVE HW:
+- If no saved games ande press load game there is an error
+- You can delete game from load game menu
+
+DB
+- Save game name with whitespaces
+
+Console UI:
+-Numbers above 10 sdvigajutsa from the place
+- Delete plusses on visualizer, when grid is on the right
+
+WebAPP:
+- SAVING GAME IN WEB. When person leaves game ask if they want to save game. If yes ask for
+game name and change it in db. If not just delete game from db
+- AI
+- Password
+- Options (save game and exit, show current password/change password?)
+- When goes to endpage deletes game from db.
+
+NEW GAME - mb choose as checkbox? and in the bottom start? 
+* AI vs AI - WHEN AI vs AI MAKE NEXT MOVE BUTTON!
+* PLAYER vs AI 
+* PLAYER vs PLAYER
+
+
+
+AI:
+- When play with ai, just make one function where 
+
+- Make button in web like "AI move" and when player presses it, goes to function and ai chooses random coordinates, 
+where there is no any piece.
+-Mb add move grid func? Have all movement directions in list, like [D, L, DL,...] and AI randomly makes
+a move or moves grid. 
+- Also i have to manage somehow, how they will move piece
+
+
+
+
+
+
+OPTIONS
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6 text-center">
+        <div class="btn-group-vertical" role="group" style="width: 30%; justify-content: right;">
+            <a asp-page="/Options" class="btn btn-info btn-lg mb-2">Options (Not implemented)</a>
+        </div>
+    </div>
+</div>
