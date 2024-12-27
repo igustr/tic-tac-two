@@ -1,20 +1,60 @@
 ﻿@page
 @model WebApp.Pages.ChooseConfig
 
-<h1>Choose Config</h1>
+<h1 class="text-center" style="font-weight: 600; color: #343a40;">Choose Config</h1>
 
-<div class="row">
+<div class="row justify-content-center mt-4">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="font-size: 1.2rem;"></div>
             <div class="form-group">
                 <label asp-for="ConfigName" class="control-label"></label>
-                <select asp-for="ConfigName" class="form-select" asp-items="Model.ConfigSelectList"></select>
+                <select asp-for="ConfigName" class="form-select" asp-items="Model.ConfigSelectList">
+                    <option value="">--Select Config--</option> <!-- Added a default option for better UX -->
+                </select>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+            <div class="form-group mt-4">
+                <input type="submit" value="Create" class="btn btn-lg btn-primary w-100" style="padding: 15px 0; font-size: 1.4rem;" />
             </div>
         </form>
     </div>
 </div>
+
+<style>
+    .btn-lg {
+        padding: 15px 30px;
+        font-size: 1.4rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 500;
+        border-radius: 5px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-primary {
+        background-color: #5a9bd5; /* Softer blue */
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #4a87c1; /* Less bright blue on hover */
+        transform: scale(1.05);
+    }
+    .btn-primary:active {
+        background-color: #41799f; /* More muted blue on click */
+        transform: scale(0.95);
+    }
+
+    .form-select {
+        padding: 0.75rem 1.25rem;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        background-color: #f8f9fa;
+        transition: border-color 0.2s ease;
+    }
+
+    .form-select:focus {
+        border-color: #5a9bd5;
+        box-shadow: 0 0 5px rgba(90, 155, 213, 0.5);
+    }
+</style>

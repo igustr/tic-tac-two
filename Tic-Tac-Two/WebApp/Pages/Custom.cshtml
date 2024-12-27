@@ -3,35 +3,88 @@
 
 @if (!string.IsNullOrWhiteSpace(Model.Error))
 {
-<div class="danger-message" role="alert">
-    @Model.Error
-</div>
+    <div class="alert alert-danger" role="alert">
+        @Model.Error
+    </div>
 }
 
-<h1>Custom Game</h1>
+<h1 class="text-center mb-5" style="color: #343a40; font-weight: 600;">Custom Game</h1>
 
-<!DOCTYPE html>
+<form method="post" class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="form-group mb-4">
+            <label for="ConfName" class="control-label" style="font-weight: 600;">Config Name:</label>
+            <input type="text" id="ConfName" name="ConfName" required class="form-control" style="font-size: 1.1rem; padding: 10px;"/>
+        </div>
 
-<form method="post">
-    <label for="ConfName">Config name: </label>
-    <input type="text" id="ConfName" name="ConfName" required />
-    <br />
-    
-    <label for="BoardSize">Board size: </label>
-    <input type="text" id="BoardSize" name="BoardSize" required/>
-    <br/>
+        <div class="form-group mb-4">
+            <label for="BoardSize" class="control-label" style="font-weight: 600;">Board Size:</label>
+            <input type="text" id="BoardSize" name="BoardSize" required class="form-control" style="font-size: 1.1rem; padding: 10px;"/>
+        </div>
 
-    <label for="GridSize">Grid Size: </label>
-    <input type="text" id="GridSize" name="GridSize" required/>
-    <br/>
+        <div class="form-group mb-4">
+            <label for="GridSize" class="control-label" style="font-weight: 600;">Grid Size:</label>
+            <input type="text" id="GridSize" name="GridSize" required class="form-control" style="font-size: 1.1rem; padding: 10px;"/>
+        </div>
 
-    <label for="PiecesAmount">Amount of Pieces: </label>
-    <input type="text" id="PiecesAmount" name="PiecesAmount" required/>
-    <br/>
+        <div class="form-group mb-4">
+            <label for="PiecesAmount" class="control-label" style="font-weight: 600;">Amount of Pieces:</label>
+            <input type="text" id="PiecesAmount" name="PiecesAmount" required class="form-control" style="font-size: 1.1rem; padding: 10px;"/>
+        </div>
 
-    <label for="PiecesToWin">Amount of Pieces to Win: </label>
-    <input type="text" id="PiecesToWin" name="PiecesToWin" required/>
-    <br/>
-    
-    <button type="submit">Submit</button>
+        <div class="form-group mb-4">
+            <label for="PiecesToWin" class="control-label" style="font-weight: 600;">Amount of Pieces to Win:</label>
+            <input type="text" id="PiecesToWin" name="PiecesToWin" required class="form-control" style="font-size: 1.1rem; padding: 10px;"/>
+        </div>
+
+        <div class="form-group mb-4">
+            <button type="submit" class="btn btn-info btn-lg w-100" style="padding: 15px 0; font-size: 1.4rem;">Submit</button>
+        </div>
+    </div>
 </form>
+
+<style>
+    .alert-danger {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        font-size: 1.1rem;
+        padding: 10px;
+        border-radius: 5px;
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+
+    .form-control:focus {
+        border-color: #FF5722;
+        box-shadow: 0 0 5px rgba(255, 87, 34, 0.3);
+    }
+
+    .control-label {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .btn-info {
+        background-color: #FF5722;
+        color: black;
+    }
+
+    .btn-info:hover {
+        background-color: #E64A19;
+        transform: scale(1.05);
+    }
+
+    .btn-info:active {
+        background-color: #D84315;
+        transform: scale(0.95);
+    }
+
+    /* Adjusting the form group for consistent spacing */
+    .form-group {
+        margin-bottom: 20px;
+    }
+</style>

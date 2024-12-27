@@ -34,10 +34,10 @@ Console UI:
 WebAPP:
 - SAVING GAME IN WEB. When person leaves game ask if they want to save game. If yes ask for
 game name and change it in db. If not just delete game from db
-- AI
 - Password
 - Options (save game and exit, show current password/change password?)
 - When goes to endpage deletes game from db.
+- Instead "new", "loadconfig", etc make ENum
 
 NEW GAME - mb choose as checkbox? and in the bottom start? 
 * AI vs AI - WHEN AI vs AI MAKE NEXT MOVE BUTTON!
@@ -57,7 +57,6 @@ AI:
 a move or moves grid. 
 - When choosing custom game and load config should be same function of choosing AivsAI and etc.
 - Maybe add gameMode to db? So when it loads game with ai for example, it will continue with ai
-- Make AIvsAI
 
 
 

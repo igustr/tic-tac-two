@@ -4,53 +4,92 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">TIC-TAC-TWO</h1>
+<div class="text-center mb-5">
+    <h1 class="display-4" style="color: #343a40; font-weight: 600;">TIC-TAC-TWO</h1>
 </div>
-
 
 @if (!string.IsNullOrWhiteSpace(Model.Error))
 {
-<div class="alert alert-danger" role="alert">
-    @Model.Error
-</div>
+    <div class="alert alert-danger" role="alert" style="font-size: 1.2rem; font-weight: 500;">
+        @Model.Error
+    </div>
 }
 
 <div class="row justify-content-center mt-4">
     <div class="col-md-6 text-center">
         <div class="btn-group-vertical" role="group" style="width: 100%;">
-            <a asp-page="/NewGame" class="btn btn-info btn-lg mb-2">New Game</a>
-            <a asp-page="/Load" class="btn btn-info btn-lg mb-2">Load Game</a>
-            <a asp-page="/ChooseConfig" class="btn btn-info btn-lg mb-2">Configurations</a>
-            <a asp-page="/Home" class="btn btn-success btn-lg">Connect to Existing Game</a>
+
+            <a asp-page="/NewGame" class="btn btn-lg btn-primary mb-3" style="padding: 15px 0; font-size: 1.4rem;">New Game</a>
+
+            <a asp-page="/Load" class="btn btn-lg btn-warning mb-3" style="padding: 15px 0; font-size: 1.4rem;">Load Game</a>
+
+            <a asp-page="/ChooseConfig" class="btn btn-lg btn-info mb-3" style="padding: 15px 0; font-size: 1.4rem;">Configurations</a>
+
+            <a asp-page="/Home" class="btn btn-lg btn-success" style="padding: 15px 0; font-size: 1.4rem;">Connect to Existing Game</a>
+
         </div>
     </div>
 </div>
 
-
 <style>
-    .btn-info {
-        background-color: #FF5722; /* Orange background */
-        color: #000; /* Black text */
-        border: none;
+    .btn-lg {
         padding: 15px 30px;
-        font-size: 1.4rem; /* Increased font size */
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Beautiful font */
-        font-weight: 500; /* Thicker font */
+        font-size: 1.4rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 500;
         border-radius: 5px;
         transition: background-color 0.2s ease, transform 0.2s ease;
     }
 
+    .btn-primary {
+        background-color: #5a9bd5; /* Softer blue */
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #4a87c1; /* Less bright blue on hover */
+        transform: scale(1.05);
+    }
+    .btn-primary:active {
+        background-color: #41799f; /* More muted blue on click */
+        transform: scale(0.95);
+    }
+
+    .btn-warning {
+        background-color: #f5a623; /* Softer orange */
+        color: black;
+    }
+    .btn-warning:hover {
+        background-color: #e59517; /* Darker orange on hover */
+        transform: scale(1.05);
+    }
+    .btn-warning:active {
+        background-color: #cc7f0c; /* Muted dark orange on click */
+        transform: scale(0.95);
+    }
+
+    .btn-info {
+        background-color: #f08958; /* Softer orange-red */
+        color: black;
+    }
     .btn-info:hover {
-        background-color: #E64A19; /* Darker orange on hover */
-        transform: scale(1.05); /* Slight scale effect on hover */
+        background-color: #e37647; /* Slightly darker orange-red on hover */
+        transform: scale(1.05);
     }
-
     .btn-info:active {
-        background-color: #D84315; /* Even darker orange when clicked */
-        transform: scale(0.95); /* Slight scale effect when clicked */
+        background-color: #d56538; /* Muted orange-red on click */
+        transform: scale(0.95);
     }
 
-
+    .btn-success {
+        background-color: #66bb6a; /* Softer green */
+        color: white;
+    }
+    .btn-success:hover {
+        background-color: #5caa5c; /* Muted green on hover */
+        transform: scale(1.05);
+    }
+    .btn-success:active {
+        background-color: #4e9750; /* Darker muted green on click */
+        transform: scale(0.95);
+    }
 </style>
-
