@@ -25,6 +25,7 @@ public class GameRepositoryDB : IGameRepository
             return gameId;
         }
         
+        
         Random random = new Random();
         var password = random.Next(0, 999999);
         
@@ -33,12 +34,13 @@ public class GameRepositoryDB : IGameRepository
         {
             GameState = jsonStateString,
             GameName = gameName,
-            Password = password.ToString()
+            Password = password.ToString(),
         };
         _context.Games.Add(newGame);
         _context.SaveChanges();
         return newGame.Id;
     }
+    
 
     public List<string> GetSavedGamesNames()
     {
@@ -81,12 +83,8 @@ public class GameRepositoryDB : IGameRepository
     {
         var data = _context.Games.First(g => g.Id == gameId);
         
-        if (data == null)
-        {
-            // Log or throw a custom exception if needed
-            throw new KeyNotFoundException($"Game with id '{gameId}' not found.");
-        }
         var gameState = System.Text.Json.JsonSerializer.Deserialize<GameState>(data.GameState);
+        
         return gameState;
     }
 

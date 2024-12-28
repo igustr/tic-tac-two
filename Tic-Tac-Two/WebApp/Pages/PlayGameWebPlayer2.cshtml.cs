@@ -29,9 +29,16 @@ public class PlayGameWebPlayer2 : PageModel
 
     public IActionResult OnGet(int? x, int? y, string? gameType)
     {
-
-        
         OnGetLoadGame(gameType);
+        
+        if (TicTacTwoBrain.CheckWin())
+        {
+            if (TicTacTwoBrain.NextMoveBy == EGamePiece.X)
+            {
+                return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy});
+            }
+            return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
+        }
         
         if (TicTacTwoBrain.NextMoveBy != EGamePiece.O)
         {
@@ -53,12 +60,12 @@ public class PlayGameWebPlayer2 : PageModel
             {
                 Error = "You can't place piece outside of grid!";
                 FinalStageCheckAction(TicTacTwoBrain);
-                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
                 return Page();
             }
             TicTacTwoBrain.MovePieceWeb(SelectedX, SelectedY, x.Value, y.Value);
             FinalStageCheckAction(TicTacTwoBrain);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
         }
         else if (x != null && y != null && gameType != "MovePiece" && gameType != "SelectPiece")
         {
@@ -66,12 +73,12 @@ public class PlayGameWebPlayer2 : PageModel
             {
                 Error = "You can't place piece outside of grid!";
                 FinalStageCheckAction(TicTacTwoBrain);
-                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
                 return Page();
             }
             TicTacTwoBrain.MakeAMove(x.Value, y.Value);
             FinalStageCheckAction(TicTacTwoBrain);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
         } 
 
         TicTacTwoBrain.GridPlacement();
@@ -79,6 +86,10 @@ public class PlayGameWebPlayer2 : PageModel
 
         if (TicTacTwoBrain.CheckWin())
         {
+            if (TicTacTwoBrain.NextMoveBy == EGamePiece.X)
+            {
+                return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy});
+            }
             return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
         }
 
@@ -93,15 +104,26 @@ public class PlayGameWebPlayer2 : PageModel
 
     public IActionResult OnPost(int? x, int? y, string action)
     {
+        Console.WriteLine("gameid: " + GameId);
+        
+        if (GameId == 0)
+        {
+            return RedirectToPage("./EndPage", new { piece = 'X' });
+        }
+        
         var gameState = _gameRepository.LoadGame(GameId);
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         var actionList = new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" };
 
         if (action == "Refresh")
         {
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
             if (TicTacTwoBrain.CheckWin())
             {
+                if (TicTacTwoBrain.NextMoveBy == EGamePiece.X)
+                {
+                    return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy});
+                }
                 return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
             }
             return Page();
@@ -120,11 +142,11 @@ public class PlayGameWebPlayer2 : PageModel
                 //Console.WriteLine("here in MoveGridCheckWeb");
                 Error = "You can't move grid in this direction!";
                 FinalStageCheckAction(TicTacTwoBrain);
-                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+                GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
                 return Page();
             }
             FinalStageCheckAction(TicTacTwoBrain);
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
         } 
         else if (CurrentAction == "ChoosePiece" && x != null && y != null)
         {
@@ -137,10 +159,13 @@ public class PlayGameWebPlayer2 : PageModel
 
         if (TicTacTwoBrain.CheckWin())
         {
+            if (TicTacTwoBrain.NextMoveBy == EGamePiece.X)
+            {
+                return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy});
+            }
             return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
         }
-
-
+        
         return Page();
     }
 
@@ -155,7 +180,7 @@ public class PlayGameWebPlayer2 : PageModel
         else if (gameType == "new")
         {
             TicTacTwoBrain = new TicTacTwoBrain(new GameConfiguration());
-            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+            GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
         }
         else
         {

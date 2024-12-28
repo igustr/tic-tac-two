@@ -45,7 +45,7 @@ public class PlayGameWebAi : PageModel
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         
         TicTacTwoBrain.AiMakeAMove();
-        GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
+        GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "aiGame");
         if (TicTacTwoBrain.CheckWin()) 
         { 
             return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});

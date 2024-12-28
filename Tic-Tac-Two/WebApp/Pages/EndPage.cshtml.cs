@@ -9,7 +9,6 @@ namespace WebApp.Pages;
 public class EndPage : PageModel
 {
     private readonly IGameRepository _gameRepository;
-    [BindProperty(SupportsGet = true)] public int GameId { get; set; } = default!;
     public string? Winner { get; set; }
     
     public EndPage(IGameRepository gameRepository)
@@ -17,15 +16,18 @@ public class EndPage : PageModel
         _gameRepository = gameRepository;
     }
     
-    public void OnGet(string? piece)
+    public void OnGet(string? piece, int? gameId)
     {
         piece = piece == "X" ? "O" : "X";
 
         Winner = piece;
         
-        
-        Console.WriteLine("game id in endpage: " + GameId);
-        _gameRepository.DeleteGame(GameId);
+        Console.WriteLine("gameid endpage: " + gameId);
+
+        if (gameId.HasValue)
+        {
+            _gameRepository.DeleteGame(gameId.Value);  
+        }
     }
     
 }
