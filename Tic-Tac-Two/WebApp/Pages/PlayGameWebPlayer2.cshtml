@@ -1,0 +1,426 @@
+﻿@page
+@using GameBrain
+@model WebApp.Pages.PlayGameWebPlayer2
+
+@if (!string.IsNullOrWhiteSpace(Model.Error))
+{
+<div class="danger-message" role="alert">
+    @Model.Error
+</div>
+}
+
+
+<h2 style="justify-content: flex-end;">Tic-Tac-Two</h2>
+
+<p>@Model.GameMode</p>
+
+<p style="justify-content: flex-end;">Next move by: <strong>@Model.TicTacTwoBrain.NextMoveBy</strong></p>
+
+<div class="markers-container">
+    <div class="markers-left">
+        @for (var x = 0; x < Model.TicTacTwoBrain.AmountOfPieces - Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item1; x++)
+        {
+            <div class="marker marker-x">x</div>
+        }
+    </div>
+    <div class="markers-right">
+        @for (var o = 0; o < Model.TicTacTwoBrain.AmountOfPieces - Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2; o++)
+        {
+            <div class="marker marker-o">o</div>
+        }
+    </div>
+</div>
+
+<!-- Display Game State Based on Current Action -->
+@if (Model.CurrentAction == "SelectPiece")
+{
+    <h4 style="text-align: center;">Select a piece to move</h4>
+}
+else if (Model.CurrentAction == "MovePiece")
+{
+    <p>Selected piece: (@Model.SelectedX, @Model.SelectedY). Choose a target.</p>
+}
+
+<!-- Game Board -->
+<table class="board">
+    @for (var y = 0; y < Model.TicTacTwoBrain.DimY; y++)
+    {
+        <tr>
+            @for (var x = 0; x < Model.TicTacTwoBrain.DimX; x++)
+            {
+                @if (x < Model.TicTacTwoBrain.DimX 
+                     && Model.TicTacTwoBrain.gridXCoordinates.Contains(x + 1)
+                     && Model.TicTacTwoBrain.gridYCoordinates.Contains(y + 1))
+                    //&& x != Model.TicTacTwoBrain.gridXCoordinates.Max() - 1)
+                {
+                    if (Model.CurrentAction == "SelectPiece")
+                    {
+
+                     //Console.WriteLine("here1 " + x + "," + y + " -red");
+                    <td class="red-cell" style="width: 50px; height: 50px;">
+                        @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                        {
+                            <a> </a>
+                        } else if (Model.TicTacTwoBrain.NextMoveBy != Model.TicTacTwoBrain.GameBoard[x][y])
+                        {
+                            @(Model.TicTacTwoBrain.GameBoard[x][y])
+                        }
+                        else
+                        {
+                            <form method="post" asp-route-GameId="@Model.GameId" asp-route-GameMode="@Model.GameMode">
+                                <input type="hidden" name="x" value="@x" />
+                                <input type="hidden" name="y" value="@y" />
+                                <input type="hidden" name="Action" value="ChoosePiece" />
+                                <button type="submit" style="border: none; background: none; padding: 0;">
+                                    @(Model.TicTacTwoBrain.GameBoard[x][y])
+                                </button>
+                            </form>
+                        }
+                    </td>
+                    }
+                    else
+                    {
+                        <td class="red-cell" style="width: 50px; height: 50px;">
+                            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                            {
+                                if (Model.CurrentAction == "MovePiece")
+                                {
+                                    <a asp-route-x="@x" asp-route-y="@y"
+                                       asp-route-GameId="@Model.GameId" 
+                                       asp-route-gameType="MovePiece"
+                                       asp-route-GameMode="@Model.GameMode"
+                                       asp-route-SelectedX="@Model.SelectedX" 
+                                       asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
+                                }
+                                else
+                                {
+                                    <a asp-route-x="@x" asp-route-y="@y" 
+                                       asp-route-GameId="@Model.GameId" 
+                                       asp-route-GameMode="@Model.GameMode">&nbsp;</a>
+                                }
+                            }
+                            else
+                            {
+                                @(Model.TicTacTwoBrain.GameBoard[x][y])
+                            }
+                        </td> 
+                    }
+                }
+                
+                else
+                {
+                    if (Model.CurrentAction == "SelectPiece")
+                    {
+                        //Console.WriteLine("here2 " + x + "," + y);
+                        <td style="width: 50px; height: 50px;">
+                            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                            {
+                                <a> </a>
+                               //<a asp-route-x="@x" asp-route-y="@y" asp-route-GameId="@Model.GameId">&nbsp;</a>
+                            } 
+                            else if (Model.TicTacTwoBrain.NextMoveBy != Model.TicTacTwoBrain.GameBoard[x][y])
+                            {
+                                @(Model.TicTacTwoBrain.GameBoard[x][y])
+                            }
+                            else
+                            {
+                                <form method="post" asp-route-GameId="@Model.GameId" asp-route-GameMode="@Model.GameMode">
+                                    <input type="hidden" name="x" value="@x" />
+                                    <input type="hidden" name="y" value="@y" />
+                                    <input type="hidden" name="Action" value="ChoosePiece" />
+                                    <button type="submit" style="border: none; background: none; padding: 0;">
+                                        @(Model.TicTacTwoBrain.GameBoard[x][y])
+                                    </button>
+                                </form>
+                            }
+                            </td>
+                    }
+                    else
+                    { 
+                        <td style="width: 50px; height: 50px;">
+                            @if (Model.TicTacTwoBrain.GameBoard[x][y] == EGamePiece.Empty)
+                            {
+                                if (Model.CurrentAction == "MovePiece")
+                                {
+                                    <a asp-route-x="@x" asp-route-y="@y" 
+                                       asp-route-GameId="@Model.GameId" 
+                                       asp-route-gameType="MovePiece"
+                                       asp-route-GameMode="@Model.GameMode"
+                                       asp-route-SelectedX="@Model.SelectedX"
+                                       asp-route-SelectedY="@Model.SelectedY">&nbsp;</a>
+                                }
+                                else
+                                {
+                                    <a asp-route-x="@x" asp-route-y="@y" 
+                                       asp-route-GameId="@Model.GameId" 
+                                       asp-route-GameMode="@Model.GameMode">&nbsp;</a>
+                                }
+                            }
+                            else
+                            {
+                                @(Model.TicTacTwoBrain.GameBoard[x][y])
+                            }
+                            </td>
+                    }
+                }
+            }
+        </tr>
+    }
+</table>
+
+
+@if (Model.TicTacTwoBrain.NextMoveBy != EGamePiece.O)
+{
+    <form method="post" class="centered-form">
+        <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-info" name="Action" value="Refresh">Refresh</button>
+        </div>
+    </form>
+}
+else
+{
+   if (Model.TicTacTwoBrain.GetPiecesOnBoardCount().Item2 >= Model.TicTacTwoBrain.MovePieceAfterNMoves)
+    {
+        if (string.IsNullOrEmpty(Model.CurrentAction) || Model.CurrentAction == "SelectAction")
+        {
+            <form method="post" class="centered-form">
+                <h3>Select Action</h3>
+                <div class="btn-group" role="group">
+                    <button type="submit" class="btn btn-info" name="Action" value="MoveGrid">Move Grid</button>
+                    <button type="submit" class="btn btn-info" name="Action" value="SelectPiece">Move Piece</button>
+                </div>
+            </form>
+        }
+        else if (Model.CurrentAction == "MoveGrid")
+        {        
+            <form method="post">
+            <div style="
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            align-items: center;
+            justify-items: center;
+            max-width: 250px;
+            margin: 30px auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            
+                <button type="submit" class="direction-btn" name="Action" value="UL">↖️</button>
+                <button type="submit" class="direction-btn" name="Action" value="U">⬆️</button>
+                <button type="submit" class="direction-btn" name="Action" value="UR">↗️</button>
+            
+                <button type="submit" class="direction-btn" name="Action" value="L">⬅️</button>
+                <span style="width: 50px; height: 50px;"></span> <!-- Empty Space -->
+                <button type="submit" class="direction-btn" name="Action" value="R">➡️</button>
+            
+                <button type="submit" class="direction-btn" name="Action" value="DL">↙️</button>
+                <button type="submit" class="direction-btn" name="Action" value="D">⬇️</button>
+                <button type="submit" class="direction-btn" name="Action" value="DR">↘️</button>
+            </div>
+            </form>
+        
+        <form method="post">
+            @if (!Model.FinalStageCheck(Model.TicTacTwoBrain))
+            {
+                <button type="submit" class="btn btn-info" name="Action" value="SelectAction">Back</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-info" name="Action" value="SelectPiece">Back</button>
+            }
+        </form>
+    } else if (Model.CurrentAction == "SelectPiece")
+    {
+        <form method="post" class="centered-form">
+            <h3>Select Action</h3>
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-info" name="Action" value="MoveGrid">Move Grid</button>
+                @if (!Model.FinalStageCheck(Model.TicTacTwoBrain))
+                {
+                    <button type="submit" class="btn btn-info" name="Action" value="SelectAction">Back</button>
+                }
+            </div>
+        </form>
+    }
+    } 
+}
+
+
+
+<!-- OPTIONS HERE -->
+
+
+
+<style>
+    .board {
+        border-collapse: collapse;
+        margin: 20px auto;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+
+    /* Regular cells */
+    .board td {
+        width: 50px;
+        height: 50px;
+        border: 2px solid #4d5154;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #f8f8f8;
+        cursor: pointer;
+    }
+
+    /* Center 3x3 grid */
+    .board td.red-cell {
+        width: 50px;
+        height: 50px;
+        border: 3px solid red;
+        background-color: #ffebee;
+    }
+
+    /* Anchor link style */
+    .board td a {
+        text-decoration: none;
+        color: #4d5154;
+        display: block;
+        width: 100%;
+        height: 100%;
+        line-height: 50px;
+    }
+
+    .board td a:hover {
+        background-color: #e8f5e9;
+    }
+
+    .board span {
+        color: #777;
+        font-size: 14px;
+        line-height: 1.5;
+        display: inline-block;
+    }
+
+    /* Container for markers */
+    .markers-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 20px 0;
+    }
+
+    /* Left and right marker columns */
+    .markers-left, .markers-right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    /* Marker container */
+    .marker {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    /* X marker style */
+    .marker-x {
+        color: #ffffff;
+        background-color: #007BFF; /* Blue */
+        border: 2px solid #0056b3;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* O marker style */
+    .marker-o {
+        color: #ffffff;
+        background-color: #ff5722; /* Orange */
+        border: 2px solid #e64a19;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Add spacing and alignment */
+    .markers-left {
+        justify-content: flex-start;
+    }
+
+    .markers-right {
+        justify-content: flex-end;
+    }
+
+    .marker:hover {
+        transform: scale(1.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .direction-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .direction-btn:hover {
+        transform: scale(1.1);
+        background-color: #218838;
+    }
+
+    .direction-btn:active {
+        transform: scale(0.95);
+    }
+
+    /* Ensure that the buttons are placed immediately after the board */
+    .centered-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: 20px; /* Add margin top to create space after the board */
+    }
+
+    /* Adjust the form to fit just below the board */
+    .centered-form h3 {
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 20px;
+    }
+
+    /* Center the buttons */
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .btn {
+        padding: 15px 30px;
+        font-size: 1.3rem;
+        background-color: #fd7e14; /* Yellow background color */
+        border: none;
+        color: black ;
+        border-radius: 5px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+        background-color: #fd7e14; /* Slightly darker yellow on hover */
+        transform: scale(1.05); /* Slight scale effect on hover */
+    }
+
+    .btn:active {
+        background-color: #fd7e14; /* Darker yellow when active */
+        transform: scale(0.95); /* Slight scale effect when button is clicked */
+    }
+    
+
+</style>

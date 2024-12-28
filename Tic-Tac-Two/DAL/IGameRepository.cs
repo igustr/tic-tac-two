@@ -11,4 +11,5 @@ public interface IGameRepository
     public GameState LoadGame(int gameId);
     public int GetIdByName(string name);
     public void DeleteGame(int gameId);
+    public int GetGameIdByPassword(string password);
 }

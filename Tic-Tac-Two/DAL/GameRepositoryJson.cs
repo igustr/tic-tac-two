@@ -58,4 +58,9 @@ public class GameRepositoryJson : IGameRepository
     {
         throw new NotImplementedException();
     }
+
+    public int GetGameIdByPassword(string password)
+    {
+        throw new NotImplementedException();
+    }
 }

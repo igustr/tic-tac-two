@@ -99,4 +99,16 @@ public class GameRepositoryDB : IGameRepository
             _context.SaveChanges();
         }
     }
+    
+    public int GetGameIdByPassword(string password)
+    {
+        var data = _context.Games.FirstOrDefault(g => g.Password == password);
+        
+        if (data == null)
+        {
+            return -1;
+        }
+        
+        return data.Id;
+    }
 }

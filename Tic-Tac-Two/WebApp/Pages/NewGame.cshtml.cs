@@ -16,16 +16,22 @@ public class NewGame : PageModel
             return Page();
         }
 
-        if (GameType == "default" && GameMode == "AIvsAI")
-        {
-            return RedirectToPage("./PlayGameWebAi", new { gameType = "new"});   
-        }
-        
         if (GameType == "default")
         {
-            return RedirectToPage("./PlayGameWeb", new { gameType = "new", gameMode = GameMode });
+            if (GameMode == "AIvsAI")
+            {
+                return RedirectToPage("./PlayGameWebAi", new { gameType = "new"}); 
+            } 
+            if (GameMode == "Multiplayer")
+            {
+                return RedirectToPage("./PlayGameWebPlayer1", new { gameType = "new"}); 
+            } 
+            if (GameMode is "PlayerVsPlayer" or "PlayerVsAI")
+            {
+                return RedirectToPage("./PlayGameWeb", new { gameType = "new", gameMode = GameMode });
+            }
         }
-
+        
         if (GameType == "custom")
         {
             return RedirectToPage("./Custom");
