@@ -38,6 +38,13 @@ public class PlayGameWeb : PageModel
             gameType = "SelectPiece";
         }
         
+        if (TicTacTwoBrain.NextMoveBy == EGamePiece.O)
+        {
+            TicTacTwoBrain.GridPlacement();
+            Error = "It's not your turn!";
+            return Page();
+        }
+        
         // Load game state based on the game type
         if (gameType == nameof(EGameAction.MovePiece) && x != null && y != null)
         {
