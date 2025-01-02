@@ -34,7 +34,7 @@ public class NewGame : PageModel
         
         if (GameType == "custom")
         {
-            return RedirectToPage("./Custom");
+            return RedirectToPage("./Custom", new { gameMode = GameMode });
         }
 
         return Page(); 

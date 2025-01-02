@@ -92,12 +92,6 @@ public class PlayGameWebPlayer1 : PageModel
             }
             return RedirectToPage("./EndPage", new {piece = TicTacTwoBrain.NextMoveBy, gameId = GameId});
         }
-
-
-        /*
-        Console.WriteLine("grid X coords: " + string.Join(", ", TicTacTwoBrain.GridXCoordinates));
-        Console.WriteLine("grid Y coords: " + string.Join(", ", TicTacTwoBrain.GridYCoordinates));
-        */
         
         return Page();
     }
@@ -125,15 +119,12 @@ public class PlayGameWebPlayer1 : PageModel
         
         CurrentAction = action;
         
-        //Console.WriteLine("action POST: " + CurrentAction);
-        
         if (!string.IsNullOrEmpty(moveDirection) && actionList.Contains(moveDirection))
         {
 
             TicTacTwoBrain.MoveGrid(moveDirection);
             if (!TicTacTwoBrain.GridPlacement())
             {
-                //Console.WriteLine("here in MoveGridCheckWeb");
                 Error = "You can't move grid in this direction!";
                 FinalStageCheckAction(TicTacTwoBrain);
                 GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");

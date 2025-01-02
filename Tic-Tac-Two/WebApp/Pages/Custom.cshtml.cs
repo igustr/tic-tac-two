@@ -14,6 +14,7 @@ public class Custom : PageModel
     {
         _configRepository = configRepository;
     }
+    [BindProperty] public string GameMode { get; set; } = default!; 
     [BindProperty] public string ConfName { get; set; } = string.Empty;
     [BindProperty] public int BoardSize { get; set; } = default!;
     [BindProperty] public int GridSize { get; set; } = default!;
@@ -40,12 +41,24 @@ public class Custom : PageModel
             MovePieceAfterNMoves = (int)(PiecesAmount / 2.0),
             AmountOfPieces = PiecesAmount
         };
-        Console.WriteLine("in custom, ConfName: " + ConfName);
         
         var jsonConfStr = System.Text.Json.JsonSerializer.Serialize(gameConfiguration);
         var configId = _configRepository.SaveConfig(jsonConfStr, ConfName);  
         
-        return RedirectToPage("./PlayGameWeb", new { ConfigId = configId, gameType = "loadConfig" });
+        if (GameMode == "AIvsAI")
+        {
+            return RedirectToPage("./PlayGameWebAi", new { ConfigId = configId, gameType = "loadConfig"}); 
+        } 
+        if (GameMode == "Multiplayer")
+        {
+            return RedirectToPage("./PlayGameWebPlayer1", new { ConfigId = configId, gameType = "loadConfig"}); 
+        } 
+        if (GameMode is "PlayerVsPlayer" or "PlayerVsAI")
+        {
+            return RedirectToPage("./PlayGameWeb", new { ConfigId = configId, gameType = "loadConfig", gameMode = GameMode });
+        }
+        
+        return Page();
     }
 
 
