@@ -34,9 +34,7 @@ Console UI:
 WebAPP:
 - SAVING GAME IN WEB. When person leaves game ask if they want to save game. If yes ask for
 game name and change it in db. If not just delete game from db
-- Password, win
 - Options (save game and exit, show current password/change password?)
-- When goes to endpage deletes game from db.
 - Instead "new", "loadconfig", etc make ENum
 
 
@@ -55,12 +53,6 @@ a move or moves grid.
 
 
 PASSWORD:
-- Player1 - always X, Player2 - always O.
-- When NextMoveBy = X, then 0 can't make move and he has refresh button which makes post requsest, which loads onGet again
-- Need to make func in GameRepDB to get a password.
-- Make button Multiplayer next to AIvsAI and etc. When Singleplayer then goes to regular PlayGameWeb. If multiplayer
-goes to PlayGameWebPlayer1 and person who connects trough password goes to PlayGameWebPlayer2.
-- Need to make func, where you get GameId trough password
 - If singleplayer. then cannot connect to a game. Mb add gameMode into db
 
 
