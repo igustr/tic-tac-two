@@ -42,7 +42,6 @@ using var db = new AppDbContext(optionsBuilder.Options);
 var configRepository = new ConfigRepositoryDB(db);
 var gameRepository = new GameRepositoryDB(db);
 
-
 //var configRepository = new ConfigRepositoryJson();
 //var gameRepository = new GameRepositoryJson();
 
