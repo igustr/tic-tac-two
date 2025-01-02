@@ -1,11 +1,12 @@
 ﻿namespace WebApp.Pages;
 
-public enum GameAction
+public enum EGameAction
 {
     SelectAction,
     SelectPiece,
     MovePiece,
     ChoosePiece,
     AIMove,
-    MoveGrid
+    MoveGrid,
+    Refresh
 }

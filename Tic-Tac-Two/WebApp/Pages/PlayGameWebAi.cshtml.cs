@@ -40,7 +40,7 @@ public class PlayGameWebAi : PageModel
 
     public IActionResult OnPost()
     {
-        Console.WriteLine("GameId: " + GameId);
+        //Console.WriteLine("GameId: " + GameId);
         var gameState = _gameRepository.LoadGame(GameId);
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         

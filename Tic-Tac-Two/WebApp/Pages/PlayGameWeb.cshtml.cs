@@ -20,26 +20,26 @@ public class PlayGameWeb : PageModel
 
     [BindProperty(SupportsGet = true)] public string? Error { get; set; }
     [BindProperty(SupportsGet = true)] public int ConfigId { get; set; } = default!;
-    public GameAction CurrentAction { get; set; }
+    public EGameAction CurrentAction { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedY { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
     [BindProperty(SupportsGet = true)] public string GameMode { get; set; }
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
-    public IActionResult OnGet(int? x, int? y, string? gameType)
+    public IActionResult OnGet(int? x, int? y, string? gameType, EGameType eGameType)
     {
         
         OnGetLoadGame(gameType);
         
-        if (FinalStageCheck(TicTacTwoBrain) && gameType != nameof(GameAction.MovePiece))
+        if (FinalStageCheck(TicTacTwoBrain) && gameType != nameof(EGameAction.MovePiece))
         {
-            CurrentAction = GameAction.SelectPiece;
+            CurrentAction = EGameAction.SelectPiece;
             gameType = "SelectPiece";
         }
         
         // Load game state based on the game type
-        if (gameType == nameof(GameAction.MovePiece) && x != null && y != null)
+        if (gameType == nameof(EGameAction.MovePiece) && x != null && y != null)
         {
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
@@ -52,7 +52,7 @@ public class PlayGameWeb : PageModel
             FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         }
-        else if (x != null && y != null && gameType != nameof(GameAction.MovePiece) && gameType != nameof(GameAction.SelectPiece))
+        else if (x != null && y != null && gameType != nameof(EGameAction.MovePiece) && gameType != nameof(EGameAction.SelectPiece))
         {
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
@@ -83,13 +83,13 @@ public class PlayGameWeb : PageModel
         return Page();
     }
 
-    public IActionResult OnPost(int? x, int? y, GameAction action, string? moveDirection)
+    public IActionResult OnPost(int? x, int? y, EGameAction action, string? moveDirection)
     {
         var gameState = _gameRepository.LoadGame(GameId);
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         var actionList = new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" };
 
-        if (action == GameAction.AIMove)
+        if (action == EGameAction.AIMove)
         {
             TicTacTwoBrain.AiMakeAMove();
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
@@ -117,12 +117,12 @@ public class PlayGameWeb : PageModel
             FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "gameName");
         } 
-        else if (CurrentAction == GameAction.ChoosePiece && x != null && y != null)
+        else if (CurrentAction == EGameAction.ChoosePiece && x != null && y != null)
         {
             SelectedX = x.Value;
             SelectedY = y.Value;
 
-            CurrentAction = GameAction.MovePiece;
+            CurrentAction = EGameAction.MovePiece;
         } 
         
 
@@ -172,11 +172,11 @@ public class PlayGameWeb : PageModel
     {
         if (FinalStageCheck(gameInstance))
         {
-            CurrentAction = GameAction.SelectPiece;
+            CurrentAction = EGameAction.SelectPiece;
         }
         else
         {
-            CurrentAction = GameAction.SelectAction;
+            CurrentAction = EGameAction.SelectAction;
         }
     }
 }

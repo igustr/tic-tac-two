@@ -20,7 +20,7 @@ public class PlayGameWebPlayer1 : PageModel
 
     [BindProperty(SupportsGet = true)] public string? Error { get; set; }
     [BindProperty(SupportsGet = true)] public int ConfigId { get; set; } = default!;
-    public string CurrentAction { get; set; }
+    public EGameAction CurrentAction { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedY { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
@@ -47,14 +47,14 @@ public class PlayGameWebPlayer1 : PageModel
             return Page();
         }
         
-        if (FinalStageCheck(TicTacTwoBrain) && gameType != "MovePiece")
+        if (FinalStageCheck(TicTacTwoBrain) && gameType != nameof(EGameAction.MovePiece))
         {
-            CurrentAction = "SelectPiece";
+            CurrentAction = EGameAction.SelectPiece;
             gameType = "SelectPiece";
         }
         
         // Load game state based on the game type
-        if (gameType == "MovePiece" && x != null && y != null)
+        if (gameType == nameof(EGameAction.MovePiece) && x != null && y != null)
         {
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
@@ -67,7 +67,7 @@ public class PlayGameWebPlayer1 : PageModel
             FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
         }
-        else if (x != null && y != null && gameType != "MovePiece" && gameType != "SelectPiece")
+        else if (x != null && y != null && gameType != nameof(EGameAction.MovePiece) && gameType != nameof(EGameAction.SelectPiece))
         {
             if (!TicTacTwoBrain.MakeAMoveCheck(x.Value, y.Value))
             {
@@ -102,16 +102,15 @@ public class PlayGameWebPlayer1 : PageModel
         return Page();
     }
 
-    public IActionResult OnPost(int? x, int? y, string action)
+    public IActionResult OnPost(int? x, int? y, EGameAction action, string? moveDirection)
     {
         
         var gameState = _gameRepository.LoadGame(GameId);
         TicTacTwoBrain = new TicTacTwoBrain(gameState);
         var actionList = new List<string> { "U", "D", "L", "R", "UL", "UR", "DL", "DR" };
 
-        if (action == "Refresh")
+        if (action == EGameAction.Refresh)
         {
-            
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
             if (TicTacTwoBrain.CheckWin())
             {
@@ -128,10 +127,10 @@ public class PlayGameWebPlayer1 : PageModel
         
         //Console.WriteLine("action POST: " + CurrentAction);
         
-        if (actionList.Contains(CurrentAction))
+        if (!string.IsNullOrEmpty(moveDirection) && actionList.Contains(moveDirection))
         {
 
-            TicTacTwoBrain.MoveGrid(CurrentAction);
+            TicTacTwoBrain.MoveGrid(moveDirection);
             if (!TicTacTwoBrain.GridPlacement())
             {
                 //Console.WriteLine("here in MoveGridCheckWeb");
@@ -143,12 +142,12 @@ public class PlayGameWebPlayer1 : PageModel
             FinalStageCheckAction(TicTacTwoBrain);
             GameId = _gameRepository.SaveGame(TicTacTwoBrain.GetGameStateJson(), GameId, "multiplayer");
         } 
-        else if (CurrentAction == "ChoosePiece" && x != null && y != null)
+        else if (CurrentAction == EGameAction.ChoosePiece && x != null && y != null)
         {
             SelectedX = x.Value;
             SelectedY = y.Value;
 
-            CurrentAction = "MovePiece";
+            CurrentAction = EGameAction.MovePiece;
         } 
         
 
@@ -202,11 +201,11 @@ public class PlayGameWebPlayer1 : PageModel
     {
         if (FinalStageCheck(gameInstance))
         {
-            CurrentAction = "SelectPiece";
+            CurrentAction = EGameAction.SelectPiece;
         }
         else
         {
-            CurrentAction = "SelectAction";
+            CurrentAction = EGameAction.SelectAction;
         }
     }
 }
