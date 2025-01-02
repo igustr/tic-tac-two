@@ -56,13 +56,18 @@ PASSWORD:
 - If singleplayer. then cannot connect to a game. Mb add gameMode into db
 
 
+FINAL CHECKS:
+NEW GAME:
+- multipl
+- plVsAi
+- aivsai
 
+CUSTOM:
+- singleplayer
+- multipl
+- plVsAi
+- aivsai
 
-OPTIONS
-<div class="row justify-content-center mt-4">
-    <div class="col-md-6 text-center">
-        <div class="btn-group-vertical" role="group" style="width: 30%; justify-content: right;">
-            <a asp-page="/Options" class="btn btn-info btn-lg mb-2">Options (Not implemented)</a>
-        </div>
-    </div>
-</div>
+LOAD:
+
+CONFIG:
