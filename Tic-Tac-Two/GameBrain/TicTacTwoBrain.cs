@@ -418,10 +418,13 @@ public class TicTacTwoBrain
     {
         (int x, int y) deletedPieceCoords = (-1, -1);
 
-        if (GetPiecesOnBoardCount().Item2 >= AmountOfPieces)
+        if ((NextMoveBy == EGamePiece.X && GetPiecesOnBoardCount().Item1 >= AmountOfPieces) || 
+            (NextMoveBy == EGamePiece.O && GetPiecesOnBoardCount().Item2 >= AmountOfPieces)) 
         {
-            deletedPieceCoords = AiDeletePiece();
+            deletedPieceCoords = AiDeletePiece(NextMoveBy);
         }
+
+        
 
         var emptySlot = new List<(int x, int y)>();
 
@@ -442,7 +445,7 @@ public class TicTacTwoBrain
         MakeAMove(moveX, moveY);
     }
 
-    private (int x, int y) AiDeletePiece()
+    private (int x, int y) AiDeletePiece(EGamePiece pieceToDelete)
     {
         var pieceSlot = new List<(int x, int y)>();
 
@@ -450,7 +453,7 @@ public class TicTacTwoBrain
         {
             for (var x = 0; x < DimX; x++)
             {
-                if (!MakeAMoveCheck(x, y) && GameBoard[x][y] == EGamePiece.O) 
+                if (!MakeAMoveCheck(x, y) && GameBoard[x][y] == pieceToDelete) 
                 {
                     pieceSlot.Add((x, y)); 
                 }
