@@ -7,23 +7,15 @@ namespace WebApp.Pages;
 
 public class Password : PageModel
 {
-    private readonly ILogger<Password> _logger;
     private readonly IGameRepository _gameRepository;
 
-    public Password(ILogger<Password> logger, IGameRepository gameRepository)
+    public Password(IGameRepository gameRepository)
     {
-        _logger = logger;
         _gameRepository = gameRepository;
     }
 
     [BindProperty(SupportsGet = true)] public string? Error { get; set; }
-
     [BindProperty] public string? InsertedPassword { get; set; }
-    [BindProperty(SupportsGet = true)] public int GameId { get; set; }
-
-    public void OnGet()
-    {
-    }
     
     public IActionResult OnPost()
     {
