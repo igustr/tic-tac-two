@@ -171,7 +171,7 @@ else if (Model.CurrentAction == EGameAction.MovePiece)
 </table>
 
 
-@if (Model.GameMode == "PlayerVsAI" && Model.TicTacTwoBrain.NextMoveBy == EGamePiece.O)
+@if (Model.GameMode == EGameMode.AIvsPlayer && Model.TicTacTwoBrain.NextMoveBy == EGamePiece.O)
 {
     <form method="post" class="centered-form">
         <div class="btn-group" role="group">

@@ -1,9 +1,9 @@
 ﻿namespace WebApp.Pages;
 
-public enum EGameType
+public enum EGameMode
 {
     Multiplayer,
     AIvsAI,
-    AIvsPLAYER,
+    AIvsPlayer,
     Singleplayer
 }

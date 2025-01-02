@@ -24,7 +24,7 @@ public class PlayGameWebPlayer1 : PageModel
     [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedY { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
-    [BindProperty(SupportsGet = true)] public string GameMode { get; set; }
+    [BindProperty(SupportsGet = true)] public EGameMode GameMode { get; set; }
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
     public IActionResult OnGet(int? x, int? y, string? gameType)

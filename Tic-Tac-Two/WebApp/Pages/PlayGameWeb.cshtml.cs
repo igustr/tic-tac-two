@@ -24,10 +24,10 @@ public class PlayGameWeb : PageModel
     [BindProperty(SupportsGet = true)] public int SelectedX { get; set; }
     [BindProperty(SupportsGet = true)] public int SelectedY { get; set; } 
     [BindProperty(SupportsGet = true)] public int GameId { get; set; }
-    [BindProperty(SupportsGet = true)] public string GameMode { get; set; }
+    [BindProperty(SupportsGet = true)] public EGameMode GameMode { get; set; }
     public TicTacTwoBrain TicTacTwoBrain { get; set; } = default!;
 
-    public IActionResult OnGet(int? x, int? y, string? gameType, EGameType eGameType)
+    public IActionResult OnGet(int? x, int? y, string? gameType)
     {
         
         OnGetLoadGame(gameType);
@@ -38,7 +38,7 @@ public class PlayGameWeb : PageModel
             gameType = "SelectPiece";
         }
         
-        if (TicTacTwoBrain.NextMoveBy == EGamePiece.O)
+        if (GameMode == EGameMode.AIvsPlayer && TicTacTwoBrain.NextMoveBy == EGamePiece.O)
         {
             TicTacTwoBrain.GridPlacement();
             Error = "It's not your turn!";

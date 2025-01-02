@@ -5,28 +5,28 @@ namespace WebApp.Pages;
 
 public class NewGame : PageModel
 {
-    [BindProperty] public string GameMode { get; set; } = default!;  
+    [BindProperty] public EGameMode GameMode { get; set; } = default!;  
     [BindProperty] public string GameType { get; set; } = default!;  
 
     public IActionResult OnPost()
     {
 
-        if (string.IsNullOrEmpty(GameMode) || string.IsNullOrEmpty(GameType))
+        if (string.IsNullOrEmpty(nameof(GameMode)) || string.IsNullOrEmpty(GameType))
         {
             return Page();
         }
 
         if (GameType == "default")
         {
-            if (GameMode == "AIvsAI")
+            if (GameMode == EGameMode.AIvsAI)
             {
                 return RedirectToPage("./PlayGameWebAi", new { gameType = "new"}); 
             } 
-            if (GameMode == "Multiplayer")
+            if (GameMode == EGameMode.Multiplayer)
             {
                 return RedirectToPage("./PlayGameWebPlayer1", new { gameType = "new"}); 
             } 
-            if (GameMode is "PlayerVsPlayer" or "PlayerVsAI")
+            if (GameMode is EGameMode.Singleplayer or EGameMode.AIvsPlayer)
             {
                 return RedirectToPage("./PlayGameWeb", new { gameType = "new", gameMode = GameMode });
             }
