@@ -1,0 +1,31 @@
+dotnet aspnet-codegenerator razorpage -m Game -outDir Pages/Games -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m Configuration -outDir Pages/Configurations -dc AppDbContext -udl --referenceScriptLibraries
+
+dotnet ef migrations add InitialCreate --project WebApp --startup-project WebApp
+
+UPDATE DB:
+dotnet ef database update --project WebApp --startup-project WebApp 
+
+DELETE DB:
+dotnet ef database drop --project WebApp --startup-project WebApp 
+
+
+
+RAZOR PAGE SCAFFOLDING
+
+GO TO: cd WebApp
+
+After each press build
+
+dotnet aspnet-codegenerator razorpage -m Teacher -outDir Pages/Teacher -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m Subjects -outDir Pages/Subjects -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m Grade -outDir Pages/Grade -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m Student -outDir Pages/Student -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m Semester -outDir Pages/Semester -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m SubjectTeacher -outDir Pages/SubjectTeacher -dc AppDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator razorpage -m Enrollment -outDir Pages/Enrollment -dc AppDbContext -udl --referenceScriptLibraries
+
+
+Go to _Layout and make all tables: /Grade/Index
+
+IN appsettings.json ADD CONNECTION STRING
