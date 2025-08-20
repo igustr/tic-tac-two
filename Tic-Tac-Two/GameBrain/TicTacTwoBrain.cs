@@ -424,8 +424,6 @@ public class TicTacTwoBrain
             deletedPieceCoords = AiDeletePiece(NextMoveBy);
         }
 
-        
-
         var emptySlot = new List<(int x, int y)>();
 
         foreach (var x in GridXCoordinates)
